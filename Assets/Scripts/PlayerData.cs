@@ -7,14 +7,10 @@ using UnityEngine;
 public class PlayerData
 {
     public int drons;
-    public int resource1;
-    public int resource2;
-    public int resource3;
+    public List<Resource> resources;
 
     public PlayerData(Player player){
         drons = player.drons;
-        resource1 = player.resource1;
-        resource2 = player.resource2;
-        resource3 = player.resource3;
+        resources = player.resources;
     }
 }

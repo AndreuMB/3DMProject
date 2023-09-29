@@ -5,9 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public int drons;
-    public int resource1;
-    public int resource2;
-    public int resource3;
+    public List<Resource> resources;
     GameObject optionsMenu;
 
     void Start(){

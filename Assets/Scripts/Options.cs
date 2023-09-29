@@ -19,9 +19,7 @@ public class Options : MonoBehaviour
         Player player = FindObjectOfType<Player>();
         PlayerData data = DataSystem.LoadFromJson();
         player.drons = data.drons;
-        player.resource1 = data.resource1;
-        player.resource2 = data.resource2;
-        player.resource3 = data.resource3;
+        player.resources = data.resources;
     }
 
     public void ExitGame(){

@@ -9,7 +9,6 @@ public class DataSystem : MonoBehaviour
     public static void SaveToJson(Player player){
         PlayerData data = new PlayerData(player);
         
-        print("Application.dataPath = " + Application.dataPath);
         string json = JsonUtility.ToJson(data,true);
         File.WriteAllText(Application.dataPath + "/PlayerDataFile.json", json);
     }
