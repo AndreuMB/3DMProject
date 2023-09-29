@@ -8,5 +8,18 @@ public class Player : MonoBehaviour
     public int resource1;
     public int resource2;
     public int resource3;
+    GameObject optionsMenu;
+
+    void Start(){
+        optionsMenu = FindAnyObjectByType<Options>().gameObject;
+        optionsMenu.SetActive(false);
+    }
+
+    void Update(){
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            optionsMenu.SetActive(!optionsMenu.activeInHierarchy);
+        }
+    }
 
 }
