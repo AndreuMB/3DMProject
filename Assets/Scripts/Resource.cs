@@ -5,8 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public class Resource
 {
-    public string name;
-    public string quantity;
+    public ResourcesEnum name;
+    public float quantity;
     [System.NonSerialized]
     public GameObject HUDGO;
 }

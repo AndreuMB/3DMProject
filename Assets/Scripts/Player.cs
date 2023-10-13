@@ -34,3 +34,12 @@ public class Player : MonoBehaviour
     }
 
 }
+
+public enum ResourcesEnum
+{
+    R1,
+    R2,
+    R3,
+    R4,
+    R5,
+}
