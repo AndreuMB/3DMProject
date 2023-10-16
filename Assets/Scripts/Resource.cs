@@ -9,4 +9,10 @@ public class Resource
     public float quantity;
     [System.NonSerialized]
     public GameObject HUDGO;
+
+    public Resource(ResourcesEnum nameSet, float quantitySet)
+   {
+      name = nameSet;
+      quantity = quantitySet;
+   }
 }

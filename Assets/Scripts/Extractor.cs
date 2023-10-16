@@ -9,13 +9,16 @@ public class Extractor : MonoBehaviour
     public ResourcesEnum resource;
     [SerializeField] float quantity;
     [SerializeField] float rate;
-    [SerializeField] float storage;
+    [SerializeField] Resource storage;
+    // float inventory;
+    [SerializeField] float maxStorage;
     Player player;
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<Player>();
         StartCoroutine(nameof(ExtractResource));
+        storage.name = resource;
     }
 
     // Update is called once per frame
@@ -25,11 +28,12 @@ public class Extractor : MonoBehaviour
     }
 
     IEnumerator ExtractResource(){
-        if (!player) yield break;
-        while (isActiveAndEnabled)
+        // if (!player) yield break;
+        while (isActiveAndEnabled && storage.quantity <= maxStorage) // when storage full stop producing
         {
             yield return new WaitForSeconds(rate);
-            player.resources[(int)resource].quantity+=quantity;  
+            // player.resources[(int)resource].quantity+=quantity;
+            storage.quantity+=quantity;
         }
         yield break;
     }
