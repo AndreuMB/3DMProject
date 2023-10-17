@@ -11,6 +11,6 @@ public class PlayerData
 
     public PlayerData(Player player){
         drons = player.drons;
-        resources = player.resources;
+        // resources = player.resources;
     }
 }

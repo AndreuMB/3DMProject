@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
     public int drons;
-    public List<Resource> resources;
     GameObject optionsMenu;
     GameObject mainRadialMenu;
+    // GameObject selectedGO;
+    public UnityEvent<GameObject> selectedGO;
 
     void Start(){
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
@@ -31,6 +33,22 @@ public class Player : MonoBehaviour
             Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
             mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
         }
+
+        GameObject sGO = GetClickedGO();
+        if(sGO != null) selectedGO.Invoke(sGO);
+    }
+
+    GameObject GetClickedGO(){
+        if(Input.GetMouseButtonDown(0)) // left click
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
+            {
+                return hit.transform.gameObject;
+            }
+        }
+        return null;
     }
 
 }

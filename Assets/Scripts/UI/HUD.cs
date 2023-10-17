@@ -11,38 +11,59 @@ public class HUD : MonoBehaviour
     Player player;
     [SerializeField] GameObject resourceContainer;
     [SerializeField] GameObject resourcePrefab;
+    List<Resource> resourcesSE;
 
     void Start(){
         player = FindObjectOfType<Player>();
         if (!player) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
-        List<Resource> resources = player.resources;
-        foreach (Resource resource in resources)
-        {
-            GameObject newResource = Instantiate(resourcePrefab);
-            newResource.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
-            newResource.transform.SetParent(resourceContainer.transform, false);
-            resource.HUDGO = newResource;
-        }
+        
+        player.selectedGO.AddListener(ShowGOHUD);
     }
 
     void Update(){
         if (!player) return;
         drons.text = "DRONS " + player.drons.ToString();
-        List<Resource> resources = player.resources;
-        foreach (Resource resource in resources)
+        if (resourcesSE == null) return;
+        foreach (Resource resource in resourcesSE)
         {
             resource.HUDGO.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
         }
     }
 
-    public void InstanciateResources(){
-        List<Resource> resources = player.resources;
-        foreach (Resource resource in resources)
+    // public void InstanciateResources(){
+    //     List<Resource> resources = player.resources;
+    //     foreach (Resource resource in resources)
+    //     {
+    //         GameObject newResource = Instantiate(resourcePrefab);
+    //         newResource.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
+    //         newResource.transform.SetParent(resourceContainer.transform, false);
+    //         resource.HUDGO = newResource;
+    //     }
+    // }
+    
+    void ShowGOHUD(GameObject selectedGO){
+        CleanHUDContainer();
+        if (selectedGO.GetComponent<Extractor>())
+        {
+            ShowResourcesExtractor(selectedGO.GetComponent<Extractor>());
+        }
+    }
+
+    void ShowResourcesExtractor(Extractor selectedExtractor){
+        resourcesSE = selectedExtractor.storage;
+        foreach (Resource resource in resourcesSE)
         {
             GameObject newResource = Instantiate(resourcePrefab);
             newResource.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
             newResource.transform.SetParent(resourceContainer.transform, false);
             resource.HUDGO = newResource;
+        }
+    }
+
+    void CleanHUDContainer(){
+        resourcesSE = null;
+        foreach (Transform child in resourceContainer.transform) {
+            Destroy(child.gameObject);
         }
     }
 }

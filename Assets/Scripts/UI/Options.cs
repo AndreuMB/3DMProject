@@ -29,6 +29,6 @@ public class Options : MonoBehaviour
         if (!player) return;
         PlayerData data = DataSystem.LoadFromJson();
         player.drons = data.drons;
-        player.resources = data.resources;
+        // player.resources = data.resources;
     }
 }
