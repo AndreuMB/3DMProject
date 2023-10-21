@@ -1,0 +1,75 @@
+{
+    "drons": 2,
+    "buildings": [
+        {
+            "buildingType": 2,
+            "quantity": 0.0,
+            "rate": 0.0,
+            "storage": [],
+            "maxStorage": 0.0,
+            "parentName": "MainBase",
+            "parentPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 1.0,
+            "storage": [
+                {
+                    "name": 0,
+                    "quantity": 52.0
+                },
+                {
+                    "name": 0,
+                    "quantity": 0.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor2",
+            "parentPosition": {
+                "x": 12.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 1.0,
+            "storage": [
+                {
+                    "name": 0,
+                    "quantity": 52.0
+                },
+                {
+                    "name": 0,
+                    "quantity": 0.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor1",
+            "parentPosition": {
+                "x": 6.0,
+                "y": 0.0,
+                "z": 0.0
+            }
+        },
+        {
+            "buildingType": 1,
+            "quantity": 0.0,
+            "rate": 0.0,
+            "storage": [],
+            "maxStorage": 0.0,
+            "parentName": "Storage",
+            "parentPosition": {
+                "x": 0.0,
+                "y": 0.0,
+                "z": 3.5
+            }
+        }
+    ]
+}

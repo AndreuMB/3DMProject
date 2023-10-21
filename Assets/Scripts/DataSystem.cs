@@ -6,16 +6,23 @@ using UnityEngine;
 public class DataSystem : MonoBehaviour
 {
     public static bool newgame;
-    public static void SaveToJson(Player player){
-        PlayerData data = new PlayerData(player);
+    public static void SaveToJson(Player player,List<BuildingData> buildings){
+        // PlayerData data = new PlayerData(player);
+        GameData data = new GameData(player,buildings);
         
         string json = JsonUtility.ToJson(data,true);
-        File.WriteAllText(Application.dataPath + "/PlayerDataFile.json", json);
+        File.WriteAllText(Application.dataPath + "/GameDataFile.json", json);
     }
 
     public static PlayerData LoadFromJson(){
         string json = File.ReadAllText(Application.dataPath + "/PlayerDataFile.json");
         PlayerData data = JsonUtility.FromJson<PlayerData>(json);
+        return data;
+    }
+
+    public static GameData LoadFromJson2(){
+        string json = File.ReadAllText(Application.dataPath + "/GameDataFile.json");
+        GameData data = JsonUtility.FromJson<GameData>(json);
         return data;
     }
 }

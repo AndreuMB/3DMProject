@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerData
 {
     public int drons;
-    public List<Resource> resources;
+    // public List<Resource> resources;
 
     public PlayerData(Player player){
         drons = player.drons;

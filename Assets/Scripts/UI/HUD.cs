@@ -42,15 +42,16 @@ public class HUD : MonoBehaviour
     // }
     
     void ShowGOHUD(GameObject selectedGO){
+        print("enter showGOHUD");
         CleanHUDContainer();
-        if (selectedGO.GetComponent<Extractor>())
+        if (selectedGO.GetComponent<Building>())
         {
-            ShowResourcesExtractor(selectedGO.GetComponent<Extractor>());
+            ShowResourcesExtractor(selectedGO.GetComponent<Building>());
         }
     }
 
-    void ShowResourcesExtractor(Extractor selectedExtractor){
-        resourcesSE = selectedExtractor.storage;
+    void ShowResourcesExtractor(Building selectedExtractor){
+        resourcesSE = selectedExtractor.data.storage;
         foreach (Resource resource in resourcesSE)
         {
             GameObject newResource = Instantiate(resourcePrefab);
