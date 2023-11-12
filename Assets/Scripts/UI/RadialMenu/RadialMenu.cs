@@ -33,7 +33,6 @@ public class RadialMenu : MonoBehaviour
         // convert radian to coordinates, don't ask
         float x = Mathf.Cos(elementRadian * order) * SEPARATION;
         float y = Mathf.Sin(elementRadian * order) * SEPARATION;
-        print(x + " " + y);
 
         element.GetComponent<RectTransform>().anchoredPosition = new Vector3(x,y,0);
     }

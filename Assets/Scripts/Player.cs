@@ -6,11 +6,15 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    public int drons;
     GameObject optionsMenu;
     GameObject mainRadialMenu;
-    // GameObject selectedGO;
-    public UnityEvent<GameObject> selectedGO;
+    HUD HUDR;
+    [Header("Dron Settings")]
+    public int drons;
+    public int dronStorage;
+    public float dronSpeed;
+    public GameObject selectedGO;
+    public UnityEvent<GameObject> selectedGOev;
 
     void Start(){
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
@@ -18,6 +22,8 @@ public class Player : MonoBehaviour
 
         mainRadialMenu = FindAnyObjectByType<RadialMenu>().gameObject;
         mainRadialMenu.SetActive(false);
+
+        HUDR = FindObjectOfType<HUD>();
     }
 
     void Update(){
@@ -35,21 +41,40 @@ public class Player : MonoBehaviour
             mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
         }
 
-        GameObject sGO = GetClickedGO();
-        if(sGO != null) selectedGO.Invoke(sGO);
-    }
+        if(HUDR.DMMenu.activeInHierarchy) return;
 
-    GameObject GetClickedGO(){
         if(Input.GetMouseButtonDown(0)) // left click
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            // selectedGO = GetClickedGO();
+            SetClickedGO();
+        }
 
-            if (Physics.Raycast(ray, out RaycastHit hit))
-            {
-                return hit.transform.gameObject;
-            }
+    }
+
+    public GameObject GetClickedGO(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            return hit.transform.gameObject;
         }
         return null;
+    }
+
+    public void SetDrons(int dronsNew){
+        drons = dronsNew;
+        HUDR.UpdateDronsHUD();
+    }
+
+    void SetClickedGO(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            selectedGO = hit.transform.gameObject;
+            print("selectedGO = " + selectedGO.name);
+        }
+        if(selectedGO != null) selectedGOev.Invoke(selectedGO);
     }
 
 }

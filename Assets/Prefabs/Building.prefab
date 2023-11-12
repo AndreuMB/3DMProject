@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7818300422196003943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 12, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119,12 +119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e8a34b7f0a134141b6752f1e7e08d36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resource: 0
+  resource: 4
   data:
     buildingType: 0
-    quantity: 0
-    rate: 0
+    quantity: 2
+    rate: 1
     storage: []
-    maxStorage: 0
-    parentName: Storage
-    parentPosition: {x: 0, y: 0, z: 3.5}
+    maxStorage: 100
+    parentName: Extractor2(Clone)(Clone)
+    parentPosition: {x: 12, y: 0, z: 0}

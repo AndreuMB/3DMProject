@@ -32,13 +32,46 @@ public class Building : MonoBehaviour
    }
 
    IEnumerator ExtractResource(){
-      // if (!player) yield break;
-      while (isActiveAndEnabled && data.storage[0].quantity <= data.maxStorage) // when storage full stop producing
+      while (isActiveAndEnabled) 
       {
          yield return new WaitForSeconds(data.rate);
-         data.storage[0].quantity+=data.quantity;
+         // when storage full stop producing
+         if (data.storage[0].quantity <= data.maxStorage) data.storage[0].quantity+=data.quantity;
+         
       }
       yield break;
+   }
+
+   public IEnumerator StartDronCoroutine(string dronDestiny){ // STOPs when dronmenu close
+      int rQuantity = player.dronStorage;
+      while (isActiveAndEnabled)
+      {
+         yield return new WaitForSeconds(player.dronSpeed);
+         // when storage empty stop deliver
+         if (data.storage[0].quantity >= rQuantity) {
+            data.storage[0].quantity += -rQuantity;
+            GameObject address = GameObject.Find(dronDestiny);
+            List<Resource> addressStorage = address.GetComponent<Building>().data.storage;
+            Resource addressR = addressStorage.Find(x => x.name == data.storage[0].name);
+            if (addressR != null)
+            {
+               addressR.quantity += rQuantity;
+            }else{
+               addressStorage.Add(new Resource(data.storage[0].name,rQuantity));
+            }
+         }
+         
+      }
+      // yield break;
+   }
+
+   public Coroutine StartDron(string dronDestiny){
+      Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dronDestiny));
+      return coroutineInstance;
+   }
+
+   public void StopDron(Coroutine dronCoroutine){
+      StopCoroutine(dronCoroutine);
    }
 }
 

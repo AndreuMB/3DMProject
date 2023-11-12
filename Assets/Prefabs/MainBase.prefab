@@ -49,6 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drons: 2
+  dronStorage: 2
+  dronSpeed: 5
+  selectedGO: {fileID: 0}
+  selectedGOev:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!33 &2292519462015130126
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -120,7 +126,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &20905051900225555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,3 +148,4 @@ MonoBehaviour:
     maxStorage: 0
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
+    setDrons: []

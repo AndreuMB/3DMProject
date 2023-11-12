@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Options : MonoBehaviour
 {
-    [SerializeField] GameObject extractor;
+    [SerializeField] GameObject buildingPrefab;
     
     void Awake(){
         if (!DataSystem.newgame) LoadData();
@@ -19,7 +20,6 @@ public class Options : MonoBehaviour
         List<BuildingData> buildings = new();
         foreach (GameObject extractor in buildingsGO)
         {
-            print(extractor.name);
             Building extractorComp = extractor.GetComponent<Building>();
             extractorComp.data.parentName = extractor.name;
             extractorComp.data.parentPosition = extractor.transform.position;
@@ -42,7 +42,10 @@ public class Options : MonoBehaviour
         if (!player) return;
         // PlayerData data = DataSystem.LoadFromJson();
         GameData data = DataSystem.LoadFromJson2();
+        if(data == null) return;
         player.drons = data.drons;
+        player.dronStorage = data.dronStorage;
+        player.dronSpeed = data.dronSpeed;
         foreach (BuildingData building in data.buildings)
         {
             GameObject buildingGO = GameObject.Find(building.parentName);
@@ -50,10 +53,10 @@ public class Options : MonoBehaviour
             {
                 buildingGO.GetComponent<Building>().data = building;
             }else{
-                Instantiate(extractor);
-                extractor.transform.position = building.parentPosition;
-                extractor.name = building.parentName;
-                extractor.GetComponent<Building>().data = building;
+                GameObject newBuilding = Instantiate(buildingPrefab);
+                newBuilding.transform.position = building.parentPosition;
+                newBuilding.name = building.parentName;
+                newBuilding.GetComponent<Building>().data = building;
             }
         }
         // player.resources = data.resources;

@@ -7,12 +7,16 @@ using UnityEngine;
 public class GameData
 {
     public int drons;
+    public int dronStorage;
+    public float dronSpeed;
     // public List<Extractor> extractors;
     public List<BuildingData> buildings;
     // public Building building;
 
     public GameData(Player player,List<BuildingData> buildings){
         drons = player.drons;
+        dronStorage = player.dronStorage;
+        dronSpeed = player.dronSpeed;
         // building = extractor.data;
         // this.extractors = extractors;
         this.buildings = buildings;

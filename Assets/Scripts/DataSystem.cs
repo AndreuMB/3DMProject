@@ -21,6 +21,7 @@ public class DataSystem : MonoBehaviour
     }
 
     public static GameData LoadFromJson2(){
+        if (!File.Exists(Application.dataPath + "/GameDataFile.json")) return null;
         string json = File.ReadAllText(Application.dataPath + "/GameDataFile.json");
         GameData data = JsonUtility.FromJson<GameData>(json);
         return data;
