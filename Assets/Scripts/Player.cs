@@ -1,13 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    public int drons;
-    public List<Resource> resources;
     GameObject optionsMenu;
     GameObject mainRadialMenu;
+    HUD HUDR;
+    [Header("Dron Settings")]
+    public int drons;
+    public int dronStorage;
+    public float dronSpeed;
+    public GameObject selectedGO;
+    public UnityEvent<GameObject> selectedGOev;
 
     void Start(){
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
@@ -15,6 +22,8 @@ public class Player : MonoBehaviour
 
         mainRadialMenu = FindAnyObjectByType<RadialMenu>().gameObject;
         mainRadialMenu.SetActive(false);
+
+        HUDR = FindObjectOfType<HUD>();
     }
 
     void Update(){
@@ -31,6 +40,49 @@ public class Player : MonoBehaviour
             Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
             mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
         }
+
+        if(HUDR.DMMenu.activeInHierarchy) return;
+
+        if(Input.GetMouseButtonDown(0)) // left click
+        {
+            // selectedGO = GetClickedGO();
+            SetClickedGO();
+        }
+
     }
 
+    public GameObject GetClickedGO(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            return hit.transform.gameObject;
+        }
+        return null;
+    }
+
+    public void SetDrons(int dronsNew){
+        drons = dronsNew;
+        HUDR.UpdateDronsHUD();
+    }
+
+    void SetClickedGO(){
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            selectedGO = hit.transform.gameObject;
+        }
+        if(selectedGO != null) selectedGOev.Invoke(selectedGO);
+    }
+
+}
+
+public enum ResourcesEnum
+{
+    R1,
+    R2,
+    R3,
+    R4,
+    R5,
 }
