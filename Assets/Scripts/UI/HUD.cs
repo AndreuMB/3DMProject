@@ -37,7 +37,7 @@ public class HUD : MonoBehaviour
         }
     }
     
-    void ShowGOHUD(GameObject selectedGO){
+    public void ShowGOHUD(GameObject selectedGO){
         CleanHUDContainer();
         Building selectedBuilding = selectedGO.GetComponent<Building>();
         if (selectedBuilding)

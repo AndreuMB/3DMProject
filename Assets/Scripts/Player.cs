@@ -72,7 +72,6 @@ public class Player : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             selectedGO = hit.transform.gameObject;
-            print("selectedGO = " + selectedGO.name);
         }
         if(selectedGO != null) selectedGOev.Invoke(selectedGO);
     }

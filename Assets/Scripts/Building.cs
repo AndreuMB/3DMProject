@@ -42,22 +42,27 @@ public class Building : MonoBehaviour
       yield break;
    }
 
-   public IEnumerator StartDronCoroutine(string dronDestiny){ // STOPs when dronmenu close
-      int rQuantity = player.dronStorage;
+   public IEnumerator StartDronCoroutine(Dron dron){
+      HUD hud = FindObjectOfType<HUD>();
       while (isActiveAndEnabled)
       {
          yield return new WaitForSeconds(player.dronSpeed);
+         
+         dron.resource.quantity = player.dronStorage;
+         Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
+         // if (storageResource == null) yield return new WaitForSeconds(player.dronSpeed);
          // when storage empty stop deliver
-         if (data.storage[0].quantity >= rQuantity) {
-            data.storage[0].quantity += -rQuantity;
-            GameObject address = GameObject.Find(dronDestiny);
+         if (storageResource.quantity >= dron.resource.quantity) {
+            storageResource.quantity += -dron.resource.quantity;
+            GameObject address = GameObject.Find(dron.destiny);
             List<Resource> addressStorage = address.GetComponent<Building>().data.storage;
-            Resource addressR = addressStorage.Find(x => x.name == data.storage[0].name);
+            Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
             if (addressR != null)
             {
-               addressR.quantity += rQuantity;
+               addressR.quantity += dron.resource.quantity;
             }else{
-               addressStorage.Add(new Resource(data.storage[0].name,rQuantity));
+               addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
+               hud.ShowGOHUD(player.selectedGO);
             }
          }
          
@@ -65,8 +70,8 @@ public class Building : MonoBehaviour
       // yield break;
    }
 
-   public Coroutine StartDron(string dronDestiny){
-      Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dronDestiny));
+   public Coroutine StartDron(Dron dron){
+      Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dron));
       return coroutineInstance;
    }
 
