@@ -17,7 +17,7 @@ MonoBehaviour:
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5014751512273419124, guid: 31d3a5f06889ff94298205b3333f9f78, type: 3}
-  - <Name>k__BackingField: Barrels
+  - <Name>k__BackingField: Rover
     <ID>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 4523469524891458474, guid: 4ec253d91c7986c4a8163cdd4e8e3f92, type: 3}
@@ -25,11 +25,11 @@ MonoBehaviour:
     <ID>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5014751512273419124, guid: 31d3a5f06889ff94298205b3333f9f78, type: 3}
-  - <Name>k__BackingField: Barrels
+  - <Name>k__BackingField: Satelite
     <ID>k__BackingField: 3
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 7737193449556233481, guid: 4fed4dbb34e83de40b635f5f3cff0f1d, type: 3}
-  - <Name>k__BackingField: Barrels
+  - <Name>k__BackingField: Turret
     <ID>k__BackingField: 4
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 990055272624877314, guid: 8844f3466a158704bbf677bcc240ffa4, type: 3}
