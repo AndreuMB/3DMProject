@@ -13,5 +13,4 @@ MonoBehaviour:
   m_Name: Building
   m_EditorClassIdentifier: 
   elementName: Building
-  icon: {fileID: 0}
-  subMenu: {fileID: 0}
+  customFunctionName: Build

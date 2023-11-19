@@ -12,7 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
   m_Name: DeleteBuilding
   m_EditorClassIdentifier: 
-  elementName: DeleteBuilding
-  order: 0
-  icon: {fileID: 0}
-  subMenu: {fileID: 0}
+  elementName: Delete Building
+  customFunctionName: DestroyBuilding

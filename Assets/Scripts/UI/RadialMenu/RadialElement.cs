@@ -6,16 +6,18 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Windows;
 using Unity.VisualScripting;
+using UnityEngine.Events;
 
 
 public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public delegate void RadialElementDelegate(RadialElement sElement);
-    [SerializeField] public TMP_Text label;
+    public TMP_Text label;
     [SerializeField] Image background;
     float shadow = 0.1f;
     RadialElementDelegate callback;
     Color bgColor;
+    public string customFunctionName;
 
     void Awake(){
         bgColor = background.color;
@@ -38,10 +40,11 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void SetData(RadialElementSO data){
         label.text = data.elementName;
-        callback = data.callback;
+        // callback = data.callback;
+        customFunctionName = data.customFunctionName;
     }
 
-    public void setCallback(RadialElementDelegate sCallback){
+    public void SetCallback(RadialElementDelegate sCallback){
         callback = sCallback;
     }
 

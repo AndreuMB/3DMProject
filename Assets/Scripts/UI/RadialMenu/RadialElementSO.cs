@@ -9,6 +9,8 @@ public class RadialElementSO : ScriptableObject
     public string elementName;
     // public Sprite icon;
     // public RadialMenuSO subMenu;
-    public RadialElement.RadialElementDelegate callback;
+    // public RadialElement.RadialElementDelegate callback;
+    // public UnityEvent customFunction;
+    public string customFunctionName;
 
 }
