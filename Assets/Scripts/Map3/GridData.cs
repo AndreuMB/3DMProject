@@ -40,6 +40,16 @@ public class GridData
         return true;
     }
 
+    public bool VoidCell(Vector3Int gridPosition)
+    {
+        List<Vector3Int> positionToOccupy = CalculatePositions(gridPosition, Vector2Int.one);
+        foreach (var pos in positionToOccupy)
+        {
+            if (placedObjects.ContainsKey(pos)) return false;
+        }
+        return true;
+    }
+
     internal int GetRepresentationIndex(Vector3Int gridPosition)
     {
         if (placedObjects.ContainsKey(gridPosition) == false) {  return -1; }

@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Factory
   m_EditorClassIdentifier: 
   elementName: Factory
-  customFunctionName: 
+  customFunctionName: BuildBuilding
+  buildId: 1
+  parent: {fileID: 0}

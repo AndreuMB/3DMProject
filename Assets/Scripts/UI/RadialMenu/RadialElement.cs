@@ -18,6 +18,9 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     RadialElementDelegate callback;
     Color bgColor;
     public string customFunctionName;
+    public int buildId;
+    public BuildingsEnum buildingType;
+    public RadialMenuSO parent;
 
     void Awake(){
         bgColor = background.color;
@@ -42,6 +45,9 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         label.text = data.elementName;
         // callback = data.callback;
         customFunctionName = data.customFunctionName;
+        buildId = data.buildId;
+        buildingType = data.buildingType;
+        parent = data.parent;
     }
 
     public void SetCallback(RadialElementDelegate sCallback){

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +11,23 @@ public class RadialMenu : MonoBehaviour
     public RadialMenuSO data;
     public RadialMenu parent;
     public GameObject radialElementPrefab;
+    [SerializeField] GameObject radialMenuPrefab;
+    PlacementSystem ps;
+    RadialElement clickedRE;
 
 
     void Start()
     {
-        // Mathf.PI * 2 radians = 360º
+        // BuildRM();
+        ps = FindObjectOfType<PlacementSystem>();
+    }
+
+    public void BuildRM(){
+
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+
         float elementRadian = Mathf.PI * 2 / data.elements.Length;
 
         // need an index for use the arrange function
@@ -24,8 +37,12 @@ public class RadialMenu : MonoBehaviour
             RadialElement radialElement = elementGO.GetComponent<RadialElement>();
             radialElement.SetData(data.elements[i]);
             // radialElement.SetCallback(TestDelegate);
-            elementGO.GetComponent<Button>().onClick.AddListener(() => Invoke(radialElement.customFunctionName,0));
-
+            if (radialElement.parent)
+            {
+                elementGO.GetComponent<Button>().onClick.AddListener(() => NewRM(radialElement.parent));
+            }else{
+                elementGO.GetComponent<Button>().onClick.AddListener(() => FunctionInvoke(radialElement));
+            }
             Arrange(elementGO,elementRadian,i);
         }
     }
@@ -56,11 +73,36 @@ public class RadialMenu : MonoBehaviour
     // }
 
     public void Build(){
-        print("Build");
+        
+    }
+
+    private void FunctionInvoke(RadialElement radialElement){
+        clickedRE = radialElement;
+        Invoke(radialElement.customFunctionName,0);
+        Destroy(gameObject);
+    }
+
+    public void BuildBuilding(){
+        ps.Placement(5,clickedRE.buildingType);
     }
 
     public void DestroyBuilding(){
-        print("DestroyBuilding");
+        ps.Remove();
+    }
+
+    public void NewRM(RadialMenuSO rmSO){
+        // RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
+
+        // Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
+        GameObject rmGO = Instantiate(radialMenuPrefab);
+        rmGO.transform.SetParent(transform.parent,false);
+        rmGO.GetComponent<RadialMenu>().data=rmSO;
+        rmGO.GetComponent<RadialMenu>().BuildRM();
+        rmGO.SetActive(true);
+        rmGO.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
+        parent = rmGO.GetComponent<RadialMenu>();
+        // gameObject.SetActive(!gameObject.activeInHierarchy);
+        Destroy(gameObject);
     }
 
 

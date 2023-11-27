@@ -24,12 +24,12 @@ public class RemovingState : IBuildingtState
         this.buildData = buildData;
         this.objectPlacer = objectPlacer;
 
-        previewSystem.StartShowingRemovePreview();
+        // previewSystem.StartShowingRemovePreview();
     }
 
     public void EndState()
     {
-        previewSystem.StopShowingPreview();
+        // previewSystem.StopShowingPreview();
     }
 
     public void OnAction(Vector3Int gridPosition)
@@ -54,18 +54,18 @@ public class RemovingState : IBuildingtState
             selectedData.RemoveObjectAt(gridPosition);
             objectPlacer.RemoveObjectAt(gameObjectIndex);
         }
-        Vector3 cellPosition = grid.CellToWorld(gridPosition);
-        previewSystem.UndatePosition(cellPosition, CheckIfSelectedIsValid(gridPosition));
+        // Vector3 cellPosition = grid.CellToWorld(gridPosition);
+        // previewSystem.UndatePosition(cellPosition, CheckIfSelectedIsValid(gridPosition));
     }
 
-    private bool CheckIfSelectedIsValid(Vector3Int gridPosition)
-    {
-        return !(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one));
-    }
+    // private bool CheckIfSelectedIsValid(Vector3Int gridPosition)
+    // {
+    //     return !(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one));
+    // }
 
     public void UpdateState(Vector3Int gridPosition)
     {
-        bool validity = CheckIfSelectedIsValid(gridPosition);
-        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), validity);
+        // bool validity = CheckIfSelectedIsValid(gridPosition);
+        // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), validity);
     }
 }

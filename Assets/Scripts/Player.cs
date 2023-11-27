@@ -7,7 +7,9 @@ using UnityEngine.Events;
 public class Player : MonoBehaviour
 {
     GameObject optionsMenu;
-    GameObject mainRadialMenu;
+    // RadialMenu mainRadialMenu;
+    RMManager rMManager;
+    GameObject rmGO;
     HUD HUDR;
     [Header("Dron Settings")]
     public int drons;
@@ -15,15 +17,19 @@ public class Player : MonoBehaviour
     public float dronSpeed;
     public GameObject selectedGO;
     public UnityEvent<GameObject> selectedGOev;
+    public Canvas canvasCPS;
+    PlacementSystem ps;
 
     void Start(){
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
         optionsMenu.SetActive(false);
 
-        mainRadialMenu = FindAnyObjectByType<RadialMenu>().gameObject;
-        mainRadialMenu.SetActive(false);
+        // mainRadialMenu = FindAnyObjectByType<RadialMenu>();
+        // mainRadialMenu.gameObject.SetActive(false);
 
         HUDR = FindObjectOfType<HUD>();
+        ps = FindObjectOfType<PlacementSystem>();
+        rMManager = FindAnyObjectByType<RMManager>();
     }
 
     void Update(){
@@ -34,11 +40,36 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            mainRadialMenu.SetActive(!mainRadialMenu.activeInHierarchy);
-            RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
+            // if (mainRadialMenu.parent)
+            // {
+            //     Destroy(mainRadialMenu.parent.gameObject);
+            //     return;
+            // }
+            if (rmGO) {
+                if (rmGO.GetComponent<RadialMenu>().parent) 
+                    Destroy(rmGO.GetComponent<RadialMenu>().parent.gameObject);
+                Destroy(rmGO);
+                return;
+            }
+            Vector3Int selectedCell = ps.SelectCell();
+            bool content = ps.floorData.VoidCell(selectedCell);
+            RadialMenuSO RMSO;
+            if(content){
+                RMSO = rMManager.RMSOs.Find(x => x.name == "VoidCell");
+            }else{
+                RMSO = rMManager.RMSOs.Find(x => x.name == "BuildCell");
+            }
+
+            // GameObject mainRadialMenuGO = mainRadialMenu.gameObject;
+
+            // mainRadialMenuGO.SetActive(!mainRadialMenuGO.activeInHierarchy);
+            RectTransform canvasRect = canvasCPS.GetComponent<RectTransform>();
 
             Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
-            mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
+            // mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
+            rmGO = rMManager.NewRM(RMSO, Input.mousePosition - canvasRectHalf);
+
+            // mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition;
         }
 
         if(HUDR.DMMenu.activeInHierarchy) return;

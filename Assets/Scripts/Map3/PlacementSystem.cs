@@ -11,7 +11,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private ObjectsDatabaseSO database;
     [SerializeField] private GameObject gridVisualization;
 
-    private GridData floorData, buildData;
+    public GridData floorData, buildData;
     private Renderer previewRenderer;
 
     [SerializeField] private ObjectPlacer objectPlacer;
@@ -20,42 +20,45 @@ public class PlacementSystem : MonoBehaviour
     
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
-    IBuildingtState buildingtState;
+    public GameState buildingtState;
+    Vector3Int gridPosition;
 
     private void Start()
     {
-        StopPlacement();
+        gridVisualization.SetActive(true);
+        // StopPlacement();
         floorData = new ();
         buildData = new ();
+        buildingtState = new GameState(grid,preview,floorData,buildData,objectPlacer,database);
     }
-    public void StartPlacement (int ID)
-    {
-        StopPlacement();
-        gridVisualization.SetActive(true);
-        buildingtState = new PlacementState (ID,grid,preview,database,floorData,buildData,objectPlacer);
-        inputManager.OnCliched += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
-    }
-    public void StartRemoving()
-    {
-        StopPlacement();
-        gridVisualization.SetActive (true);
-        buildingtState = new RemovingState(grid,preview,floorData,buildData,objectPlacer);
+    // public void StartPlacement (int ID)
+    // {
+    //     StopPlacement();
+    //     // gridVisualization.SetActive(true);
+    //     buildingtState = new PlacementState (ID,grid,preview,database,floorData,buildData,objectPlacer);
+    //     inputManager.OnCliched += PlaceStructure;
+    //     inputManager.OnExit += StopPlacement;
+    // }
+    // public void StartRemoving()
+    // {
+    //     StopPlacement();
+    //     // gridVisualization.SetActive (true);
+    //     buildingtState = new RemovingState(grid,preview,floorData,buildData,objectPlacer);
 
-        inputManager.OnCliched += PlaceStructure;
-        inputManager.OnExit += StopPlacement;
-    }
-    private void PlaceStructure()
-    {
-        if (inputManager.IsPointerOverUI())
-        {
-            Debug.Log("Vuelve :" + inputManager.IsPointerOverUI());
-            return;
-        }
-        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
-        Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-        buildingtState.OnAction(gridPosition);
-    }
+    //     inputManager.OnCliched += PlaceStructure;
+    //     inputManager.OnExit += StopPlacement;
+    // }
+    // private void PlaceStructure()
+    // {
+    //     if (inputManager.IsPointerOverUI())
+    //     {
+    //         Debug.Log("Vuelve :" + inputManager.IsPointerOverUI());
+    //         return;
+    //     }
+    //     Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+    //     Vector3Int gridPosition = grid.WorldToCell(mousePosition);
+    //     buildingtState.OnAction(gridPosition);
+    // }
 
     /*
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
@@ -64,16 +67,16 @@ public class PlacementSystem : MonoBehaviour
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
     */
-    private void StopPlacement()
-    {
-        if (buildingtState == null) { return; }
-        gridVisualization.SetActive(false);
-        buildingtState.EndState();
-        inputManager.OnCliched -= PlaceStructure;
-        inputManager.OnExit -= StopPlacement;
-        lastDetectedPosition = Vector3Int.zero;
-        buildingtState = null;
-    }
+    // private void StopPlacement()
+    // {
+    //     if (buildingtState == null) { return; }
+    //     // gridVisualization.SetActive(false);
+    //     buildingtState.EndState();
+    //     inputManager.OnCliched -= PlaceStructure;
+    //     inputManager.OnExit -= StopPlacement;
+    //     lastDetectedPosition = Vector3Int.zero;
+    //     buildingtState = null;
+    // }
 
     private void Update()
     {
@@ -86,6 +89,24 @@ public class PlacementSystem : MonoBehaviour
             lastDetectedPosition = gridPosition;
         }
 
+    }
+
+    public void Placement (int id, BuildingsEnum bType)
+    {
+        // buildingtState = new PlacementState (ID,grid,preview,database,floorData,buildData,objectPlacer);
+        buildingtState.Build(gridPosition, id, bType);
+    }
+
+    public void Remove()
+    {
+        // buildingtState = new RemovingState(grid,preview,floorData,buildData,objectPlacer);
+        buildingtState.Remove(gridPosition);
+    }
+
+    public Vector3Int SelectCell(){
+        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        gridPosition = grid.WorldToCell(mousePosition);
+        return gridPosition;
     }
 
 }

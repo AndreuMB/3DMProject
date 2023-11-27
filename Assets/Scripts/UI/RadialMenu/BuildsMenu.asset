@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1c45f753a2e29a4b9d8abbca45d16f8, type: 3}
-  m_Name: BuldsMenu
+  m_Name: BuildsMenu
   m_EditorClassIdentifier: 
   elements:
-  - {fileID: 11400000, guid: 3851513004d58a54d926c129d1429f79, type: 2}
+  - {fileID: 11400000, guid: b2e7e8e7af95f0c4ea9724839db4b7ca, type: 2}
   - {fileID: 11400000, guid: 566492f7721c32644aaa66427ff134cc, type: 2}

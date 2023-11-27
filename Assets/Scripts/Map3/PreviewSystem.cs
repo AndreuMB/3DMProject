@@ -14,7 +14,7 @@ public class PreviewSystem : MonoBehaviour
 
     private Renderer cellIndicatorRenderer;
 
-    private void Start()
+    private void Awake()
     {
         previewMaterialInstance = new Material(previewMaterialsPrefab);
         cellIndicator.SetActive(false);
@@ -34,7 +34,6 @@ public class PreviewSystem : MonoBehaviour
         { 
             cellIndicator.transform.localScale = new Vector3(size.x,1,size.y);
             cellIndicatorRenderer.material.mainTextureScale = size;
-
         }
     }
 
@@ -54,12 +53,11 @@ public class PreviewSystem : MonoBehaviour
 
     public void StopShowingPreview()
     {
-        cellIndicator.SetActive(false );
+        cellIndicator.SetActive(false);
         if( previewObject != null)
         {
             Destroy(previewObject);
         }
-        
     }
     public void UndatePosition(Vector3 position, bool validity)
     {
@@ -80,7 +78,7 @@ public class PreviewSystem : MonoBehaviour
     }
     private void ApllyFeedbackToCursor(bool validity)
     {
-        Color c = validity ? Color.cyan : Color.red;
+        Color c = validity ? Color.cyan : Color.blue;
         c.a = 0.5f;
         cellIndicatorRenderer.material.color = c;
     }
@@ -96,6 +94,13 @@ public class PreviewSystem : MonoBehaviour
     }
 
     internal void StartShowingRemovePreview()
+    {
+        cellIndicator.SetActive(true);
+        PrepareCursor(Vector2Int.one);
+        ApllyFeedbackToCursor(false);
+    }
+
+    internal void StartShowingPreview()
     {
         cellIndicator.SetActive(true);
         PrepareCursor(Vector2Int.one);

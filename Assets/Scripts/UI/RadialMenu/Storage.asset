@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Storage
   m_EditorClassIdentifier: 
   elementName: Storage
-  order: 0
-  icon: {fileID: 0}
-  subMenu: {fileID: 0}
+  customFunctionName: BuildBuilding
+  buildId: 0
+  buildingType: 1
+  parent: {fileID: 0}

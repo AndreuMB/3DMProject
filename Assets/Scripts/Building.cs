@@ -13,22 +13,7 @@ public class Building : MonoBehaviour
    void Start()
    {
       player = FindObjectOfType<Player>();
-      switch (data.buildingType)
-      {
-         case BuildingsEnum.Extractor:
-            data.storage.Add(new Resource(resource,0));
-            StartCoroutine(nameof(ExtractResource));
-            GetComponent<MeshRenderer>().material.color = Color.green;
-            break;
-         case BuildingsEnum.Storage:
-            GetComponent<MeshRenderer>().material.color = Color.blue;
-            break;
-         case BuildingsEnum.MainBase:
-            GetComponent<MeshRenderer>().material.color = Color.red;
-            break;
-         default:
-            break;
-      }
+      Format();
    }
 
    IEnumerator ExtractResource(){
@@ -77,6 +62,31 @@ public class Building : MonoBehaviour
 
    public void StopDron(Coroutine dronCoroutine){
       StopCoroutine(dronCoroutine);
+   }
+
+   public void SetBuildType(BuildingsEnum bType){
+      data.buildingType = bType;
+      Format();
+   }
+
+   void Format(){
+      print("data.buildingType = " + data.buildingType.ToString());
+      switch (data.buildingType)
+      {
+         case BuildingsEnum.Extractor:
+            data.storage.Add(new Resource(resource,0));
+            StartCoroutine(nameof(ExtractResource));
+            GetComponent<MeshRenderer>().material.color = Color.green;
+            break;
+         case BuildingsEnum.Storage:
+            GetComponent<MeshRenderer>().material.color = Color.blue;
+            break;
+         case BuildingsEnum.MainBase:
+            GetComponent<MeshRenderer>().material.color = Color.red;
+            break;
+         default:
+            break;
+      }
    }
 }
 

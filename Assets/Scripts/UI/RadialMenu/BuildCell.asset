@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
-  m_Name: Building
+  m_Script: {fileID: 11500000, guid: b1c45f753a2e29a4b9d8abbca45d16f8, type: 3}
+  m_Name: BuildCell
   m_EditorClassIdentifier: 
-  elementName: Building
-  customFunctionName: Build
-  parent: {fileID: 11400000, guid: fff4115cdf215ea45a92bae7109ce920, type: 2}
+  elements:
+  - {fileID: 11400000, guid: 777ceeb026de2f84e9ab120f35d6c292, type: 2}
