@@ -8,11 +8,13 @@ public class Building : MonoBehaviour
    public ResourcesEnum resource;
    public BuildingData data;
    Player player;
+   HUD hud;
    
    // Start is called before the first frame update
    void Start()
    {
       player = FindObjectOfType<Player>();
+      hud = FindObjectOfType<HUD>();
       Format();
    }
 
@@ -20,15 +22,19 @@ public class Building : MonoBehaviour
       while (isActiveAndEnabled) 
       {
          yield return new WaitForSeconds(data.rate);
-         // when storage full stop producing
-         if (data.storage[0].quantity <= data.maxStorage) data.storage[0].quantity+=data.quantity;
+         if (data.storage.Count > 0){
+            // when storage full stop producing
+            if (data.storage[0].quantity < data.maxStorage) data.storage[0].quantity+=data.quantity;
+         }else{
+            data.storage.Add(new Resource(resource,data.quantity));
+            hud.ShowGOHUD(player.selectedGO);
+         }
          
       }
       yield break;
    }
 
    public IEnumerator StartDronCoroutine(Dron dron){
-      HUD hud = FindObjectOfType<HUD>();
       while (isActiveAndEnabled)
       {
          yield return new WaitForSeconds(player.dronSpeed);
@@ -37,7 +43,7 @@ public class Building : MonoBehaviour
          Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
          // if (storageResource == null) yield return new WaitForSeconds(player.dronSpeed);
          // when storage empty stop deliver
-         if (storageResource.quantity >= dron.resource.quantity) {
+         if (storageResource.quantity > dron.resource.quantity) {
             storageResource.quantity += -dron.resource.quantity;
             GameObject address = GameObject.Find(dron.destiny);
             List<Resource> addressStorage = address.GetComponent<Building>().data.storage;
@@ -70,16 +76,17 @@ public class Building : MonoBehaviour
    }
 
    void Format(){
-      print("data.buildingType = " + data.buildingType.ToString());
       switch (data.buildingType)
       {
          case BuildingsEnum.Extractor:
+            data.storageBool = true;
             data.storage.Add(new Resource(resource,0));
             StartCoroutine(nameof(ExtractResource));
-            GetComponent<MeshRenderer>().material.color = Color.green;
+            // GetComponent<MeshRenderer>().material.color = Color.green;
             break;
          case BuildingsEnum.Storage:
             GetComponent<MeshRenderer>().material.color = Color.blue;
+            data.storageBool = true;
             break;
          case BuildingsEnum.MainBase:
             GetComponent<MeshRenderer>().material.color = Color.red;
@@ -87,6 +94,13 @@ public class Building : MonoBehaviour
          default:
             break;
       }
+   }
+
+   public void SetModel(GameObject model){
+      GetComponent<MeshFilter>().mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
+      GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
+      transform.localScale = model.transform.localScale;
+      transform.rotation = model.transform.rotation;
    }
 }
 

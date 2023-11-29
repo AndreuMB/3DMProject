@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
   m_Name: Extractor
   m_EditorClassIdentifier: 
-  elementName: Storage
+  elementName: Extractor
   customFunctionName: BuildBuilding
+  buildId: 0
+  buildingType: 0
   parent: {fileID: 0}

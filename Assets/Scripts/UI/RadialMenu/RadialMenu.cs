@@ -14,12 +14,14 @@ public class RadialMenu : MonoBehaviour
     [SerializeField] GameObject radialMenuPrefab;
     PlacementSystem ps;
     RadialElement clickedRE;
+    Player player;
 
 
     void Start()
     {
         // BuildRM();
         ps = FindObjectOfType<PlacementSystem>();
+        player = FindObjectOfType<Player>();
     }
 
     public void BuildRM(){
@@ -101,6 +103,7 @@ public class RadialMenu : MonoBehaviour
         rmGO.SetActive(true);
         rmGO.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
         parent = rmGO.GetComponent<RadialMenu>();
+        player.rmGO = rmGO;
         // gameObject.SetActive(!gameObject.activeInHierarchy);
         Destroy(gameObject);
     }

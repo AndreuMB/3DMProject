@@ -123,7 +123,7 @@ MonoBehaviour:
   data:
     buildingType: 0
     quantity: 2
-    rate: 1
+    rate: 2
     storageBool: 0
     storage: []
     maxStorage: 100

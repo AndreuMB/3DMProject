@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     GameObject optionsMenu;
     // RadialMenu mainRadialMenu;
     RMManager rMManager;
-    GameObject rmGO;
+    public GameObject rmGO;
     HUD HUDR;
     [Header("Dron Settings")]
     public int drons;
@@ -87,6 +87,7 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            if (!hit.transform.gameObject.CompareTag("Building")) return null;
             return hit.transform.gameObject;
         }
         return null;
@@ -102,6 +103,7 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
+            if (!hit.transform.gameObject.CompareTag("Building")) return;
             selectedGO = hit.transform.gameObject;
         }
         if(selectedGO != null) selectedGOev.Invoke(selectedGO);

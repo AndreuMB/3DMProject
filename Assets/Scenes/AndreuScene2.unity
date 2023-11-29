@@ -362,7 +362,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6852864100501219350, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6852864100501219350, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: m_LocalPosition.y
@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6852864100501219350, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6852864100501219350, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: m_LocalRotation.w
@@ -822,7 +822,6 @@ MonoBehaviour:
   previewYOffset: 0.06
   cellIndicator: {fileID: 2122863028}
   previewMaterialsPrefab: {fileID: 2100000, guid: 0aef9ec00fbfbf94ca90e4be4aa8ef78, type: 2}
-  cellIndicatorDefaultRender: {fileID: 2039863694}
 --- !u!4 &1085651636 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
@@ -1213,7 +1212,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1552423682
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1336,7 +1335,7 @@ GameObject:
   - component: {fileID: 1553187809}
   - component: {fileID: 1553187808}
   - component: {fileID: 1553187807}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1543,6 +1542,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placedGameObject: []
+  buildingPrefab: {fileID: 7818300422196003943, guid: 862bc10c1cd8d2d4fa3ab343f5eaef2c, type: 3}
 --- !u!1 &1836740401
 GameObject:
   m_ObjectHideFlags: 0
@@ -1615,11 +1615,6 @@ Transform:
   - {fileID: 501543866}
   m_Father: {fileID: 1836740402}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &2039863694 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
-  m_PrefabInstance: {fileID: 182042482}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &2048047440 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3168616545285535234, guid: b1c47bf4c5d49424a867de022cc1409d, type: 3}
@@ -1860,7 +1855,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2874905678440596922
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2152,7 +2147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &6054489520780381469
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2333,7 +2328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &8319346608571488910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2364,8 +2359,8 @@ SceneRoots:
   - {fileID: 1192480664}
   - {fileID: 1313745758}
   - {fileID: 61033298}
-  - {fileID: 2874905678440596922}
   - {fileID: 2142433843}
+  - {fileID: 2874905678440596922}
   - {fileID: 1659898675}
   - {fileID: 330517772}
   - {fileID: 6971257494448014204}

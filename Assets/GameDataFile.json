@@ -1,0 +1,57 @@
+{
+    "drons": 3,
+    "dronStorage": 4,
+    "dronSpeed": 4.0,
+    "buildings": [
+        {
+            "buildingType": 2,
+            "quantity": 0.0,
+            "rate": 0.0,
+            "storageBool": false,
+            "storage": [],
+            "maxStorage": 0.0,
+            "parentName": "MainBase",
+            "parentPosition": {
+                "x": 0.5,
+                "y": 0.0,
+                "z": 0.5
+            },
+            "setDrons": []
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "name": 4,
+                    "quantity": 22.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor(-5, 0)",
+            "parentPosition": {
+                "x": -4.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "setDrons": []
+        },
+        {
+            "buildingType": 1,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [],
+            "maxStorage": 100.0,
+            "parentName": "Storage(4, 0)",
+            "parentPosition": {
+                "x": 4.5,
+                "y": 0.0,
+                "z": -4.5
+            },
+            "setDrons": []
+        }
+    ]
+}

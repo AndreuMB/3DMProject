@@ -44,12 +44,12 @@ public class HUD : MonoBehaviour
         {
             if (selectedBuilding.data.storageBool) DMBtn.SetActive(true);
             if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
-            ShowResourcesExtractor(selectedGO.GetComponent<Building>());
+            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
         }
     }
 
-    void ShowResourcesExtractor(Building selectedExtractor){
-        resourcesSE = selectedExtractor.data.storage;
+    void ShowResourcesBuilding(Building selectedBuilding){
+        resourcesSE = selectedBuilding.data.storage;
         foreach (Resource resource in resourcesSE)
         {
             if (resource.quantity <= 0) {

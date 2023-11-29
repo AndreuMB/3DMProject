@@ -54,20 +54,21 @@ public class GameState : IBuildingtState
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true);
     }
 
-    private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
+    private bool CheckPlacementValidity(Vector3Int gridPosition, ObjectData selectedObject)
     {
         GridData selectedData = floorData;
-        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
+        return selectedData.CanPlaceObjectAt(gridPosition, selectedObject.Size);
     }
 
     public void Build(Vector3Int gridPosition, int selectedObjectIndex, BuildingsEnum bType){
-        bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
+        ObjectData buildingData = database.objectsData.Find(x => x.Type == bType);
+        bool placementValidity = CheckPlacementValidity(gridPosition, buildingData);
         if (!placementValidity) { return; }
         // int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
-        int index = objectPlacer.PlaceBuild(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition),bType);
+        int index = objectPlacer.PlaceBuild(buildingData.Prefab, grid.CellToWorld(gridPosition),bType);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
-        selectedData.AddObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size, database.objectsData[selectedObjectIndex].ID, index);
+        selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, index);
         previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false);
     }
 
