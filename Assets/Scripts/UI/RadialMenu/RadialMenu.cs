@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class RadialMenu : MonoBehaviour
 {
     public RadialMenuSO data;
-    public RadialMenu parent;
+    public RadialMenuSO parent;
     public GameObject radialElementPrefab;
     [SerializeField] GameObject radialMenuPrefab;
     PlacementSystem ps;
@@ -30,10 +30,19 @@ public class RadialMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        float elementRadian = Mathf.PI * 2 / data.elements.Length;
+        // create backBtn if not exist
+        RadialElementSO backRESO = FindObjectOfType<RMManager>().backRESO;
+        bool existBBtn = data.elements.Find(x => x.elementName == backRESO.elementName);
+
+        if (parent || parent != null){
+            backRESO.parent = parent;
+            if (!existBBtn) data.elements.Add(backRESO);
+        }
+
+        float elementRadian = Mathf.PI * 2 / data.elements.Count;
 
         // need an index for use the arrange function
-        for (int i = 0; i < data.elements.Length; i++)
+        for (int i = 0; i < data.elements.Count; i++)
         {
             GameObject elementGO = Instantiate(radialElementPrefab, transform);
             RadialElement radialElement = elementGO.GetComponent<RadialElement>();
@@ -41,7 +50,8 @@ public class RadialMenu : MonoBehaviour
             // radialElement.SetCallback(TestDelegate);
             if (radialElement.parent)
             {
-                elementGO.GetComponent<Button>().onClick.AddListener(() => NewRM(radialElement.parent));
+                RadialElementSO dataRE = data.elements[i];
+                elementGO.GetComponent<Button>().onClick.AddListener(() => NewRM(radialElement.parent, dataRE));
             }else{
                 elementGO.GetComponent<Button>().onClick.AddListener(() => FunctionInvoke(radialElement));
             }
@@ -74,10 +84,6 @@ public class RadialMenu : MonoBehaviour
     //     }
     // }
 
-    public void Build(){
-        
-    }
-
     private void FunctionInvoke(RadialElement radialElement){
         clickedRE = radialElement;
         Invoke(radialElement.customFunctionName,0);
@@ -92,18 +98,23 @@ public class RadialMenu : MonoBehaviour
         ps.Remove();
     }
 
-    public void NewRM(RadialMenuSO rmSO){
+    public void NewRM(RadialMenuSO rmSO, RadialElementSO reSO){
         // RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
 
         // Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
-        GameObject rmGO = Instantiate(radialMenuPrefab);
-        rmGO.transform.SetParent(transform.parent,false);
-        rmGO.GetComponent<RadialMenu>().data=rmSO;
-        rmGO.GetComponent<RadialMenu>().BuildRM();
-        rmGO.SetActive(true);
-        rmGO.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
-        parent = rmGO.GetComponent<RadialMenu>();
-        player.rmGO = rmGO;
+        RadialMenu newRM = Instantiate(radialMenuPrefab).GetComponent<RadialMenu>();
+        newRM.transform.SetParent(transform.parent,false);
+        newRM.data=rmSO;
+
+        const string BACK_RE = "Back";
+        newRM.parent = reSO.elementName != BACK_RE ? data : null;
+
+        newRM.BuildRM();
+        
+        newRM.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
+        newRM.gameObject.SetActive(true);
+        // parent = rmGO.GetComponent<RadialMenu>();
+        player.rmGO = newRM.gameObject;
         // gameObject.SetActive(!gameObject.activeInHierarchy);
         Destroy(gameObject);
     }

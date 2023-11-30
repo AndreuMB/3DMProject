@@ -3,7 +3,12 @@ guid: f9745f7731716ac4a88262143576705f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - data: {instanceID: 0}
+  - parent: {instanceID: 0}
+  - radialElementPrefab: {instanceID: 0}
+  - radialMenuPrefab: {instanceID: 0}
+  - backRE: {fileID: 11400000, guid: 2120c7d90048f314f84b7feaae366a37, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

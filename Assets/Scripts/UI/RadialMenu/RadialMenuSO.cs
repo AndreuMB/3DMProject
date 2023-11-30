@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "RadialMenu", menuName = "RadialMenu/RadialMenu", order = 1)]
 public class RadialMenuSO : ScriptableObject
 {
-    public RadialElementSO[] elements;
+    public List<RadialElementSO> elements;
 }

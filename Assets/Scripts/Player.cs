@@ -46,8 +46,8 @@ public class Player : MonoBehaviour
             //     return;
             // }
             if (rmGO) {
-                if (rmGO.GetComponent<RadialMenu>().parent) 
-                    Destroy(rmGO.GetComponent<RadialMenu>().parent.gameObject);
+                // if (rmGO.GetComponent<RadialMenu>().parent) 
+                    // Destroy(rmGO.GetComponent<RadialMenu>().parent.gameObject);
                 Destroy(rmGO);
                 return;
             }

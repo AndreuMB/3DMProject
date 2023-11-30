@@ -337,6 +337,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1789f271f7f74c0459ebc20381106017, type: 2}
   rmPrefab: {fileID: 9190915602208657328, guid: fcb94d86fedc17c41840212054f2500f, type: 3}
   rePrefab: {fileID: 3831022693738628878, guid: 293160e0f0d1aa741b35ff80ca57e0a0, type: 3}
+  backRESO: {fileID: 11400000, guid: 2120c7d90048f314f84b7feaae366a37, type: 2}
 --- !u!4 &236445253
 Transform:
   m_ObjectHideFlags: 0
@@ -822,7 +823,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewYOffset: 0.06
   cellIndicator: {fileID: 2122863028}
-  cellSelector: {fileID: 1392533070}
   previewMaterialsPrefab: {fileID: 2100000, guid: 0aef9ec00fbfbf94ca90e4be4aa8ef78, type: 2}
 --- !u!4 &1085651636 stripped
 Transform:

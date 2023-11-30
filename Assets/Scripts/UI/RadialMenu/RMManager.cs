@@ -8,6 +8,7 @@ public class RMManager : MonoBehaviour
     public List<RadialMenuSO> RMSOs; 
     [SerializeField] GameObject rmPrefab;
     [SerializeField] GameObject rePrefab;
+    public RadialElementSO backRESO;
     
     public GameObject NewRM(RadialMenuSO rmSO, Vector2 mcPosition){
         // RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
