@@ -6,6 +6,7 @@ public class PreviewSystem : MonoBehaviour
     private float previewYOffset = 0.06f;
     [SerializeField]
     private GameObject cellIndicator;
+    private GameObject cellSelector;
     private GameObject previewObject;
 
     [SerializeField]
@@ -17,7 +18,9 @@ public class PreviewSystem : MonoBehaviour
     private void Awake()
     {
         previewMaterialInstance = new Material(previewMaterialsPrefab);
+        cellSelector = Instantiate(cellIndicator);
         cellIndicator.SetActive(false);
+        cellSelector.SetActive(false);
         cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
     public void StartShowingPOlacementPreview(GameObject prefab, Vector2Int size)
@@ -59,14 +62,18 @@ public class PreviewSystem : MonoBehaviour
             Destroy(previewObject);
         }
     }
-    public void UndatePosition(Vector3 position, bool validity)
+    public void UndatePosition(Vector3 position, bool validity, bool selector = false)
     {
-        if(previewObject != null)
+        if(previewObject != null && !selector)
         {
             MovePreview(position);
             ApllyFeedbackToPreview(validity);
+        }else if(selector){
+            cellSelector.SetActive(true);
+            cellSelector.transform.position = position;
+        }else{
+            MoveCursor(position);
         }
-        MoveCursor(position);
         ApllyFeedbackToCursor(validity);
     }
 

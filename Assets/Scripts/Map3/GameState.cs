@@ -69,7 +69,7 @@ public class GameState : IBuildingtState
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
         selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, index);
-        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false);
+        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
     }
 
     public void Remove(Vector3Int gridPosition){
@@ -93,5 +93,9 @@ public class GameState : IBuildingtState
             selectedData.RemoveObjectAt(gridPosition);
             objectPlacer.RemoveObjectAt(selectedObjectIndex);
         }
+    }
+
+    public void SelectCell(Vector3Int gridPosition){
+        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true,true);
     }
 }

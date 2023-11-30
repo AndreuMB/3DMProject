@@ -9,6 +9,7 @@ public class Building : MonoBehaviour
    public BuildingData data;
    Player player;
    HUD hud;
+   bool formatB = true;
    
    // Start is called before the first frame update
    void Start()
@@ -76,6 +77,7 @@ public class Building : MonoBehaviour
    }
 
    void Format(){
+      if (!formatB) return;
       switch (data.buildingType)
       {
          case BuildingsEnum.Extractor:
@@ -94,6 +96,7 @@ public class Building : MonoBehaviour
          default:
             break;
       }
+      formatB = false;
    }
 
    public void SetModel(GameObject model){

@@ -17,6 +17,7 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private ObjectPlacer objectPlacer;
 
     [SerializeField] private PreviewSystem preview;
+    [SerializeField] private PreviewSystem preview2;
     
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
@@ -103,9 +104,17 @@ public class PlacementSystem : MonoBehaviour
         buildingtState.Remove(gridPosition);
     }
 
-    public Vector3Int SelectCell(){
+    public Vector3Int GetCell(){
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         gridPosition = grid.WorldToCell(mousePosition);
+        return gridPosition;
+    }
+
+    public Vector3Int SelectCell(){
+        // GameState buildingtState2 = new GameState(grid,preview2,floorData,buildData,objectPlacer,database);
+        Vector3 mousePosition = inputManager.GetSelectedMapPosition();
+        gridPosition = grid.WorldToCell(mousePosition);
+        buildingtState.SelectCell(gridPosition);
         return gridPosition;
     }
 

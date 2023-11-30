@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
                 Destroy(rmGO);
                 return;
             }
-            Vector3Int selectedCell = ps.SelectCell();
+            Vector3Int selectedCell = ps.GetCell();
             bool content = ps.floorData.VoidCell(selectedCell);
             RadialMenuSO RMSO;
             if(content){
@@ -74,10 +74,11 @@ public class Player : MonoBehaviour
 
         if(HUDR.DMMenu.activeInHierarchy) return;
 
-        if(Input.GetMouseButtonDown(0)) // left click
+        if(Input.GetMouseButtonDown(0) && !rmGO) // left click
         {
             // selectedGO = GetClickedGO();
             SetClickedGO();
+            ps.SelectCell();
         }
 
     }
@@ -107,6 +108,11 @@ public class Player : MonoBehaviour
             selectedGO = hit.transform.gameObject;
         }
         if(selectedGO != null) selectedGOev.Invoke(selectedGO);
+    }
+
+    public void SetActiveGO(GameObject sGO){
+        selectedGO = sGO;
+        selectedGOev.Invoke(selectedGO);
     }
 
 }
