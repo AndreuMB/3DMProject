@@ -43,6 +43,14 @@ public class Building : MonoBehaviour
       while (isActiveAndEnabled)
       {
 
+         Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
+         if (storageResource == null) yield return null;
+         
+         // check storage quantity and choose dron storage quantity
+         dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
+
+         storageResource.quantity += -dron.resource.quantity;
+
          if (firstTime)
          {
             yield return new WaitForSeconds(distance/player.dronSpeed);
@@ -50,23 +58,15 @@ public class Building : MonoBehaviour
          }else{
             yield return new WaitForSeconds((distance/player.dronSpeed)*2);
          }
-
          
-         dron.resource.quantity = player.dronStorage;
-         Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
-         // if (storageResource == null) yield return new WaitForSeconds(player.dronSpeed);
-         // when storage empty stop deliver
-         if (storageResource.quantity > dron.resource.quantity) {
-            storageResource.quantity += -dron.resource.quantity;
-            List<Resource> addressStorage = dron.destiny.GetComponent<Building>().data.storage;
-            Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
-            if (addressR != null)
-            {
-               addressR.quantity += dron.resource.quantity;
-            }else{
-               addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
-               hud.ShowGOHUD(player.selectedGO);
-            }
+         List<Resource> addressStorage = dron.destiny.GetComponent<Building>().data.storage;
+         Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
+         if (addressR != null)
+         {
+            addressR.quantity += dron.resource.quantity;
+         }else{
+            addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
+            hud.ShowGOHUD(player.selectedGO);
          }
          
       }
