@@ -82,7 +82,7 @@ public class HUD : MonoBehaviour
 
     public void UpgradeDrons(){
         player.drons += 1;
-        player.dronSpeed -= 1;
+        player.dronSpeed += 1;
         player.dronStorage += 2;
         UpdateDronsHUD();
     }

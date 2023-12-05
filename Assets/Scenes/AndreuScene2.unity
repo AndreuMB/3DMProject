@@ -2005,6 +2005,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 7684646247614423487, guid: 37f8055680f62214ea9af4980da706ec, type: 3}
+      propertyPath: dronPrefab
+      value: 
+      objectReference: {fileID: 8720792688561788689, guid: 9a9da80afca820c4f84a71a6cc582d5e, type: 3}
     - target: {fileID: 8946938755023415678, guid: 37f8055680f62214ea9af4980da706ec, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

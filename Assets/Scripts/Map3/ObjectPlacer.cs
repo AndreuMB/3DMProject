@@ -28,7 +28,7 @@ public class ObjectPlacer : MonoBehaviour
         GameObject newObject = Instantiate(buildingPrefab);
         Building building = newObject.GetComponent<Building>();
         // if (building){
-        newObject.name = bType.ToString() + new Vector2Int((int) position.x,(int) position.y);
+        newObject.name = bType.ToString();
         building.SetBuildType(bType);
         // print();
         if (prefab) building.SetModel(prefab);

@@ -15,6 +15,7 @@ public class DronMenu : MonoBehaviour
     Player player;
     GameObject selectedGODron;
     BuildingData dataSGO;
+    [SerializeField] GameObject dronPrefab;
 
     // Start is called before the first frame update
     void Awake()
@@ -32,7 +33,7 @@ public class DronMenu : MonoBehaviour
         List<Dron> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
         foreach (Dron dron in listDrons)
         {
-            if(dron.origin == player.selectedGO.name) AddRow(dron);
+            if(dron.origin == player.selectedGO) AddRow(dron);
         }
         dataSGO = player.selectedGO.GetComponent<Building>().data;
         selectedGODron = null;
@@ -69,8 +70,12 @@ public class DronMenu : MonoBehaviour
         player.SetDrons(player.drons-1);
 
         Resource dronR = new Resource(dataSGO.storage[0].name, player.dronStorage);
-        Dron dron = new Dron(player.selectedGO.name,selectedGODron.name, dronR);
 
+        GameObject dronGO = Instantiate(dronPrefab);
+        dronGO.AddComponent<Dron>();
+        Dron dron = dronGO.GetComponent<Dron>();
+        dron.SetData(player.selectedGO,selectedGODron, dronR);
+        dron.transform.position = dron.origin.transform.position;
         dron.coroutine = player.selectedGO.GetComponent<Building>().StartDron(dron);
 
         AddRow(dron);
@@ -95,13 +100,14 @@ public class DronMenu : MonoBehaviour
 
         dropdown.onValueChanged.AddListener((int selected) => ChangeResource(dron,dropdown));
 
-        rowGO.GetComponentsInChildren<TMP_Text>()[1].text = dron.destiny;
+        rowGO.GetComponentsInChildren<TMP_Text>()[1].text = dron.destiny.name;
         rowGO.GetComponentInChildren<Button>().onClick.AddListener(() => RemoveDron(dron, rowGO));
     }
 
     void RemoveDron(Dron dron, GameObject rowGO){
         player.SetDrons(player.drons+1);
         Destroy(rowGO);
+        Destroy(dron.gameObject);
         player.selectedGO.GetComponent<Building>().StopDron(dron.coroutine);
         List<Dron> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
         listDrons.Remove(dron);

@@ -36,9 +36,21 @@ public class Building : MonoBehaviour
    }
 
    public IEnumerator StartDronCoroutine(Dron dron){
+      
+      float distance = dron.getDistance();
+      bool firstTime = true;
+      
       while (isActiveAndEnabled)
       {
-         yield return new WaitForSeconds(player.dronSpeed);
+
+         if (firstTime)
+         {
+            yield return new WaitForSeconds(distance/player.dronSpeed);
+            firstTime = false;
+         }else{
+            yield return new WaitForSeconds((distance/player.dronSpeed)*2);
+         }
+
          
          dron.resource.quantity = player.dronStorage;
          Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
@@ -46,8 +58,7 @@ public class Building : MonoBehaviour
          // when storage empty stop deliver
          if (storageResource.quantity > dron.resource.quantity) {
             storageResource.quantity += -dron.resource.quantity;
-            GameObject address = GameObject.Find(dron.destiny);
-            List<Resource> addressStorage = address.GetComponent<Building>().data.storage;
+            List<Resource> addressStorage = dron.destiny.GetComponent<Building>().data.storage;
             Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
             if (addressR != null)
             {

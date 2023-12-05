@@ -48,13 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8021a884a24b7141b2a27a629212c8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rmGO: {fileID: 0}
   drons: 2
   dronStorage: 2
-  dronSpeed: 5
+  dronSpeed: 1
   selectedGO: {fileID: 0}
   selectedGOev:
     m_PersistentCalls:
       m_Calls: []
+  canvasCPS: {fileID: 0}
 --- !u!33 &2292519462015130126
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -144,6 +146,7 @@ MonoBehaviour:
     buildingType: 2
     quantity: 0
     rate: 0
+    storageBool: 0
     storage: []
     maxStorage: 0
     parentName: 
