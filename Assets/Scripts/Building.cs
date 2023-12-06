@@ -38,11 +38,10 @@ public class Building : MonoBehaviour
    public IEnumerator StartDronCoroutine(Dron dron){
       
       float distance = dron.getDistance();
-      bool firstTime = true;
       
       while (isActiveAndEnabled)
       {
-
+         dron.speed = player.dronSpeed;
          Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
          if (storageResource == null) yield return null;
          
@@ -51,13 +50,7 @@ public class Building : MonoBehaviour
 
          storageResource.quantity += -dron.resource.quantity;
 
-         if (firstTime)
-         {
-            yield return new WaitForSeconds(distance/player.dronSpeed);
-            firstTime = false;
-         }else{
-            yield return new WaitForSeconds((distance/player.dronSpeed)*2);
-         }
+         yield return new WaitForSeconds(distance/dron.speed);
          
          List<Resource> addressStorage = dron.destiny.GetComponent<Building>().data.storage;
          Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
@@ -68,9 +61,10 @@ public class Building : MonoBehaviour
             addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
             hud.ShowGOHUD(player.selectedGO);
          }
+
+         yield return new WaitForSeconds(distance/dron.speed);
          
       }
-      // yield break;
    }
 
    public Coroutine StartDron(Dron dron){

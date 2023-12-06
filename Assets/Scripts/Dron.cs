@@ -11,6 +11,7 @@ public class Dron : MonoBehaviour
     public Coroutine coroutine;
     Player player;
     Vector3 movingTo;
+    public float speed;
     
     public Dron(GameObject origin, GameObject destiny, Resource resource){
         this.origin = origin;
@@ -34,7 +35,7 @@ public class Dron : MonoBehaviour
     }
 
     void Update(){
-        float step = player.dronSpeed * Time.deltaTime;
+        float step = speed * Time.deltaTime;
         if (destiny.transform.position == transform.position) {
             movingTo = origin.transform.position;
             transform.LookAt(movingTo);
