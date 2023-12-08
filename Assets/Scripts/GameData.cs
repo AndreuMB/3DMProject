@@ -20,6 +20,7 @@ public class GameData
         // building = extractor.data;
         // this.extractors = extractors;
         this.buildings = buildings;
+        
         // buildings.Add(extractors[0].data);
         // foreach (Extractor extractor in extractors)
         // {

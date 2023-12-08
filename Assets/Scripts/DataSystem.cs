@@ -14,12 +14,6 @@ public class DataSystem : MonoBehaviour
         File.WriteAllText(Application.dataPath + "/GameDataFile.json", json);
     }
 
-    public static PlayerData LoadFromJson(){
-        string json = File.ReadAllText(Application.dataPath + "/PlayerDataFile.json");
-        PlayerData data = JsonUtility.FromJson<PlayerData>(json);
-        return data;
-    }
-
     public static GameData LoadFromJson2(){
         if (!File.Exists(Application.dataPath + "/GameDataFile.json")) return null;
         string json = File.ReadAllText(Application.dataPath + "/GameDataFile.json");

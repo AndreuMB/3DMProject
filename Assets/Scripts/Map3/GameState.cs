@@ -60,16 +60,18 @@ public class GameState : IBuildingtState
         return selectedData.CanPlaceObjectAt(gridPosition, selectedObject.Size);
     }
 
-    public void Build(Vector3Int gridPosition, int selectedObjectIndex, BuildingsEnum bType){
+    public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType){
         ObjectData buildingData = database.objectsData.Find(x => x.Type == bType);
         bool placementValidity = CheckPlacementValidity(gridPosition, buildingData);
-        if (!placementValidity) { return; }
+        if (!placementValidity) { return null; }
         // int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
-        int index = objectPlacer.PlaceBuild(buildingData.Prefab, grid.CellToWorld(gridPosition),bType);
+        (int,GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, grid.CellToWorld(gridPosition),bType);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
-        selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, index);
+        selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, dataB.Item1);
+        dataB.Item2.GetComponent<Building>().data.id = dataB.Item1;
         previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
+        return dataB.Item2;
     }
 
     public void Remove(Vector3Int gridPosition){

@@ -35,34 +35,73 @@ public class Building : MonoBehaviour
       yield break;
    }
 
-   public IEnumerator StartDronCoroutine(Dron dron){
+   public IEnumerator StartDronCoroutine(Dron dron) {
       
-      float distance = dron.getDistance();
+      if (!player) player = FindObjectOfType<Player>();
+      float distance = dron.GetDistance();
       
       while (isActiveAndEnabled)
       {
          dron.speed = player.dronSpeed;
          Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
          if (storageResource == null) yield return null;
-         
-         // check storage quantity and choose dron storage quantity
-         dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
 
-         storageResource.quantity += -dron.resource.quantity;
 
-         yield return new WaitForSeconds(distance/dron.speed);
-         
-         List<Resource> addressStorage = dron.destiny.GetComponent<Building>().data.storage;
-         Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
-         if (addressR != null)
-         {
-            addressR.quantity += dron.resource.quantity;
+         if (dron.movingTo == dron.destination.transform.position) {
+            // check storage quantity and choose dron storage quantity
+            dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
+
+            storageResource.quantity += -dron.resource.quantity;
          }else{
-            addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
-            hud.ShowGOHUD(player.selectedGO);
+            List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
+            Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
+            if (addressR != null)
+            {
+               addressR.quantity += dron.resource.quantity;
+            }else{
+               addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
+               // hud.ShowGOHUD(player.selectedGO);
+            }
          }
 
+         
+
          yield return new WaitForSeconds(distance/dron.speed);
+         
+         distance = dron.GetDistance();
+         if (distance <= 1)
+         {
+            yield return new WaitForSeconds(.5f);
+            distance = dron.GetDistance();
+         }
+         print("distance = " + distance);
+
+         if (dron.movingTo == dron.destination.transform.position) {
+            // check storage quantity and choose dron storage quantity
+            dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
+
+            storageResource.quantity += -dron.resource.quantity;
+         }else{
+            List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
+            Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
+            if (addressR != null)
+            {
+               addressR.quantity += dron.resource.quantity;
+            }else{
+               addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
+               // hud.ShowGOHUD(player.selectedGO);
+            }
+         }
+         
+         yield return new WaitForSeconds(distance/dron.speed);
+         
+         distance = dron.GetDistance();
+         if (distance <= 1)
+         {
+            yield return new WaitForSeconds(.5f);
+            distance = dron.GetDistance();
+         }
+         print("distance = " + distance);
          
       }
    }

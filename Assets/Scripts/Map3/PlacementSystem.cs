@@ -28,9 +28,7 @@ public class PlacementSystem : MonoBehaviour
     {
         gridVisualization.SetActive(true);
         // StopPlacement();
-        floorData = new ();
-        buildData = new ();
-        buildingtState = new GameState(grid,preview,floorData,buildData,objectPlacer,database);
+        if (buildingtState == null) BuildingtStateGS();
     }
     // public void StartPlacement (int ID)
     // {
@@ -92,10 +90,10 @@ public class PlacementSystem : MonoBehaviour
 
     }
 
-    public void Placement (int id, BuildingsEnum bType)
+    public void Placement (BuildingsEnum bType)
     {
         // buildingtState = new PlacementState (ID,grid,preview,database,floorData,buildData,objectPlacer);
-        buildingtState.Build(gridPosition, id, bType);
+        buildingtState.Build(gridPosition, bType);
     }
 
     public void Remove()
@@ -116,6 +114,20 @@ public class PlacementSystem : MonoBehaviour
         gridPosition = grid.WorldToCell(mousePosition);
         buildingtState.SelectCell(gridPosition);
         return gridPosition;
+    }
+
+    public GameObject LoadBuildings(Vector3 position, BuildingsEnum bType){
+        gridPosition = grid.WorldToCell(position);
+        // buildingtState.SelectCell(gridPosition);
+        if (buildingtState == null) BuildingtStateGS();
+        GameObject building = buildingtState.Build(gridPosition, bType);
+        return building;
+    }
+
+    void BuildingtStateGS(){
+        floorData = new ();
+        buildData = new ();
+        buildingtState = new GameState(grid,preview,floorData,buildData,objectPlacer,database);
     }
 
 }

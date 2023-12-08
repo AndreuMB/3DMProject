@@ -353,6 +353,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &326811568 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6160992605522940733, guid: 37f8055680f62214ea9af4980da706ec, type: 3}
+  m_PrefabInstance: {fileID: 3039770075374236364}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eeb7ddf5926a0245af84ac7889943b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &330517772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -402,9 +413,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8196551889172628342, guid: d98614b3523b762469aec1a3f0892063, type: 3}
+      propertyPath: HUDR
+      value: 
+      objectReference: {fileID: 326811568}
+    - target: {fileID: 8196551889172628342, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: canvasCPS
       value: 
       objectReference: {fileID: 2142433842}
+    - target: {fileID: 8196551889172628342, guid: d98614b3523b762469aec1a3f0892063, type: 3}
+      propertyPath: optionsMenu
+      value: 
+      objectReference: {fileID: 1109000401}
     - target: {fileID: 8776846934783521998, guid: d98614b3523b762469aec1a3f0892063, type: 3}
       propertyPath: m_Name
       value: MainBase
@@ -828,6 +847,11 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
   m_PrefabInstance: {fileID: 182042482}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1109000401 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4920191616206096398, guid: 37f8055680f62214ea9af4980da706ec, type: 3}
+  m_PrefabInstance: {fileID: 3039770075374236364}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1192480661
 GameObject:
@@ -1336,6 +1360,7 @@ MonoBehaviour:
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &1552423683
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1879,6 +1904,7 @@ MonoBehaviour:
     parentName: Extractor2(Clone)(Clone)
     parentPosition: {x: 12, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &526527834367244570
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2124,6 +2150,7 @@ MonoBehaviour:
     parentName: Extractor2(Clone)(Clone)
     parentPosition: {x: 12, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &4296465325032303283
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2433,7 +2460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &8319346608571488910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2457,6 +2484,7 @@ MonoBehaviour:
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

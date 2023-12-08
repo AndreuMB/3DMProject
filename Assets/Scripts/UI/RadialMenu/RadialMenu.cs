@@ -69,21 +69,6 @@ public class RadialMenu : MonoBehaviour
         element.GetComponent<RectTransform>().anchoredPosition = new Vector3(x,y,0);
     }
 
-    // void TestDelegate(RadialElement sRadialElement){
-    //     print("test = " + sRadialElement.label.text);
-    // }
-
-    // void ButtonFunction(string functionName){
-    //     // sRadialElement.
-    //     switch (functionName)
-    //     {
-            
-    //         default:
-    //             print("default");
-    //             break;
-    //     }
-    // }
-
     private void FunctionInvoke(RadialElement radialElement){
         clickedRE = radialElement;
         Invoke(radialElement.customFunctionName,0);
@@ -91,7 +76,7 @@ public class RadialMenu : MonoBehaviour
     }
 
     public void BuildBuilding(){
-        ps.Placement(5,clickedRE.buildingType);
+        ps.Placement(clickedRE.buildingType);
     }
 
     public void DestroyBuilding(){

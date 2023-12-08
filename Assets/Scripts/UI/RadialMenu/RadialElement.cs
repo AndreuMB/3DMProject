@@ -58,12 +58,4 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (callback != null) callback.Invoke(this);
     }
-
-    public void Build(RadialElement sRadialElement){
-        print("Build");
-    }
-
-    public void DestroyBuilding(RadialElement sRadialElement){
-        print("DestroyBuilding");
-    }
 }

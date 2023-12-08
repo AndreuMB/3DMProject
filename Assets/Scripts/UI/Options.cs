@@ -9,8 +9,9 @@ public class Options : MonoBehaviour
 {
     [SerializeField] GameObject buildingPrefab;
     
-    void Awake(){
+    void Start(){
         if (!DataSystem.newgame) LoadData();
+        gameObject.SetActive(false);
     }
 
     public void SaveGame(){
@@ -38,27 +39,55 @@ public class Options : MonoBehaviour
     }
 
     public void LoadData(){
+        CleanMap();
         Player player = FindObjectOfType<Player>();
         if (!player) return;
         // PlayerData data = DataSystem.LoadFromJson();
         GameData data = DataSystem.LoadFromJson2();
         if(data == null) return;
+
+        // dron upgrades
         player.drons = data.drons;
         player.dronStorage = data.dronStorage;
         player.dronSpeed = data.dronSpeed;
+
+        // map grid placement
+        PlacementSystem ps = FindObjectOfType<PlacementSystem>();
+        HUD hud = FindObjectOfType<HUD>();
+        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
+
         foreach (BuildingData building in data.buildings)
         {
-            GameObject buildingGO = GameObject.Find(building.parentName);
-            if (buildingGO)
-            {
-                buildingGO.GetComponent<Building>().data = building;
-            }else{
-                GameObject newBuilding = Instantiate(buildingPrefab);
-                newBuilding.transform.position = building.parentPosition;
-                newBuilding.name = building.parentName;
-                newBuilding.GetComponent<Building>().data = building;
-            }
+            if (building.buildingType == BuildingsEnum.MainBase) continue;
+            // if (buildingGO)
+            // {
+            //     buildingGO.GetComponent<Building>().data = building;
+            // }else{
+            // GameObject newBuilding = Instantiate(buildingPrefab);
+            // newBuilding.transform.position = building.parentPosition;
+            // newBuilding.name = building.parentName;
+            GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
+            if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+            // print("dm = " + dm);
+            // dm.LoadDrons(building.setDrons,buildingGO);
+            // }
         }
+
+        foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
+        {
+            Building building = buildingGO.GetComponent<Building>();
+            if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
+        }
+
+        hud.UpdateDronsHUD();
         // player.resources = data.resources;
+    }
+    
+    void CleanMap(){
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
+        foreach (var building in buildings)
+        {
+            if (building.GetComponent<Building>().data.buildingType != BuildingsEnum.MainBase) Destroy(building);
+        }
     }
 }

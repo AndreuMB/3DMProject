@@ -23,12 +23,12 @@ public class ObjectPlacer : MonoBehaviour
         return placedGameObject.Count - 1;
     }
 
-    public int PlaceBuild(GameObject prefab, Vector3 position, BuildingsEnum bType)
+    public (int, GameObject) PlaceBuild(GameObject prefab, Vector3 position, BuildingsEnum bType)
     {
         GameObject newObject = Instantiate(buildingPrefab);
         Building building = newObject.GetComponent<Building>();
         // if (building){
-        newObject.name = bType.ToString();
+        newObject.name = bType.ToString() + placedGameObject.Count;
         building.SetBuildType(bType);
         // print();
         if (prefab) building.SetModel(prefab);
@@ -38,8 +38,8 @@ public class ObjectPlacer : MonoBehaviour
         newParent.transform.position = position;
         newObject.transform.localPosition = new Vector3(0.5f,0,0.5f);
         placedGameObject.Add(newObject);
-        player.SetActiveGO(newObject);
-        return placedGameObject.Count - 1;
+        if (player) player.SetActiveGO(newObject);
+        return (placedGameObject.Count - 1, newObject);
         // return newObject;
     }
 

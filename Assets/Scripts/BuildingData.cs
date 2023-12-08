@@ -14,7 +14,8 @@ public class BuildingData
    public float maxStorage;
    public string parentName;
    public Vector3 parentPosition;
-   public List<Dron> setDrons;
+   public List<DronData> setDrons;
+   public int id;
 
    // public Building(ResourcesEnum nameSet, float quantitySet)
    // {

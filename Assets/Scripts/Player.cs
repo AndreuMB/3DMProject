@@ -6,11 +6,11 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    GameObject optionsMenu;
+    [SerializeField] GameObject optionsMenu;
     // RadialMenu mainRadialMenu;
     RMManager rMManager;
     public GameObject rmGO;
-    HUD HUDR;
+    [SerializeField] HUD HUDR;
     [Header("Dron Settings")]
     public int drons;
     public int dronStorage;
@@ -21,13 +21,10 @@ public class Player : MonoBehaviour
     PlacementSystem ps;
 
     void Start(){
-        optionsMenu = FindAnyObjectByType<Options>().gameObject;
-        optionsMenu.SetActive(false);
 
         // mainRadialMenu = FindAnyObjectByType<RadialMenu>();
         // mainRadialMenu.gameObject.SetActive(false);
 
-        HUDR = FindObjectOfType<HUD>();
         ps = FindObjectOfType<PlacementSystem>();
         rMManager = FindAnyObjectByType<RMManager>();
     }
