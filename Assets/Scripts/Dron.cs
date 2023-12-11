@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class Dron : MonoBehaviour
@@ -8,10 +10,12 @@ public class Dron : MonoBehaviour
     public GameObject origin;
     public GameObject destination;
     public Resource resource;
-    public Coroutine coroutine;
+    public Resource newResource;
+    // public Coroutine coroutine;
     public Vector3 movingTo;
     public float speed;
     public DronData dronData;
+    public UnityEvent dronGoal = new UnityEvent();
     
     public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
         this.origin = origin;
@@ -31,11 +35,13 @@ public class Dron : MonoBehaviour
     void Update(){
         float step = speed * Time.deltaTime;
         if (destination.transform.position == transform.position) {
+            dronGoal.Invoke();
             movingTo = origin.transform.position;
             dronData.movingTo = origin.transform.position;
             transform.LookAt(movingTo);
         }
         if (origin.transform.position == transform.position){
+            dronGoal.Invoke();
             movingTo = destination.transform.position;
             dronData.movingTo = destination.transform.position;
             transform.LookAt(movingTo);

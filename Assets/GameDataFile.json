@@ -1,7 +1,7 @@
 {
     "drons": 0,
-    "dronStorage": 2,
-    "dronSpeed": 1.0,
+    "dronStorage": 4,
+    "dronSpeed": 2.0,
     "buildings": [
         {
             "buildingType": 2,
@@ -27,7 +27,7 @@
             "storage": [
                 {
                     "name": 4,
-                    "quantity": 14.0
+                    "quantity": 100.0
                 }
             ],
             "maxStorage": 100.0,
@@ -40,10 +40,10 @@
             "setDrons": [
                 {
                     "origin": "Extractor0",
-                    "destination": "Storage1",
+                    "destination": "Storage2",
                     "resource": {
                         "name": 4,
-                        "quantity": 2.0
+                        "quantity": 4.0
                     },
                     "movingTo": {
                         "x": -8.5,
@@ -51,33 +51,12 @@
                         "z": -3.5
                     },
                     "dronPosition": {
-                        "x": 5.6828413009643559,
+                        "x": -6.8885369300842289,
                         "y": 0.0,
-                        "z": -6.336570739746094
+                        "z": -3.039583683013916
                     },
                     "dronRef": {
-                        "instanceID": -107314
-                    }
-                },
-                {
-                    "origin": "Extractor0",
-                    "destination": "Storage2",
-                    "resource": {
-                        "name": 4,
-                        "quantity": 2.0
-                    },
-                    "movingTo": {
-                        "x": -1.5,
-                        "y": 0.0,
-                        "z": -1.5
-                    },
-                    "dronPosition": {
-                        "x": -3.8894805908203127,
-                        "y": 0.0,
-                        "z": -2.182710886001587
-                    },
-                    "dronRef": {
-                        "instanceID": -107664
+                        "instanceID": -65606
                     }
                 }
             ],
@@ -91,7 +70,11 @@
             "storage": [
                 {
                     "name": 4,
-                    "quantity": 2.0
+                    "quantity": 12.0
+                },
+                {
+                    "name": 0,
+                    "quantity": 16.0
                 }
             ],
             "maxStorage": 100.0,
@@ -109,7 +92,16 @@
             "quantity": 2.0,
             "rate": 2.0,
             "storageBool": true,
-            "storage": [],
+            "storage": [
+                {
+                    "name": 4,
+                    "quantity": 134.0
+                },
+                {
+                    "name": 0,
+                    "quantity": 96.0
+                }
+            ],
             "maxStorage": 100.0,
             "parentName": "Storage2",
             "parentPosition": {
@@ -117,8 +109,73 @@
                 "y": 0.0,
                 "z": -1.5
             },
-            "setDrons": [],
+            "setDrons": [
+                {
+                    "origin": "Storage2",
+                    "destination": "Storage1",
+                    "resource": {
+                        "name": 4,
+                        "quantity": 4.0
+                    },
+                    "movingTo": {
+                        "x": -1.5,
+                        "y": 0.0,
+                        "z": -1.5
+                    },
+                    "dronPosition": {
+                        "x": 1.1929327249526978,
+                        "y": 0.0,
+                        "z": -3.1830837726593019
+                    },
+                    "dronRef": {
+                        "instanceID": -65896
+                    }
+                }
+            ],
             "id": 2
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "name": 0,
+                    "quantity": 100.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor3",
+            "parentPosition": {
+                "x": -8.5,
+                "y": 0.0,
+                "z": -5.5
+            },
+            "setDrons": [
+                {
+                    "origin": "Extractor3",
+                    "destination": "Storage2",
+                    "resource": {
+                        "name": 0,
+                        "quantity": 4.0
+                    },
+                    "movingTo": {
+                        "x": -8.5,
+                        "y": 0.0,
+                        "z": -5.5
+                    },
+                    "dronPosition": {
+                        "x": -4.055251598358154,
+                        "y": 0.0,
+                        "z": -2.960141658782959
+                    },
+                    "dronRef": {
+                        "instanceID": -65620
+                    }
+                }
+            ],
+            "id": 3
         }
     ]
 }

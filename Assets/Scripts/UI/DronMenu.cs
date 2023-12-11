@@ -80,7 +80,7 @@ public class DronMenu : MonoBehaviour
         dron.SetData(player.selectedGO,selectedGODron, dronR, selectedGODron.transform.position);
         dron.CreateData();
         dron.transform.position = dron.origin.transform.position;
-        dron.coroutine = player.selectedGO.GetComponent<Building>().StartDron(dron);
+        player.selectedGO.GetComponent<Building>().StartDronV2(dron);
 
         AddRow(dron);
 
@@ -93,8 +93,6 @@ public class DronMenu : MonoBehaviour
         rowGO.transform.SetParent(contentGO.transform,false);
         TMP_Dropdown dropdown = rowGO.GetComponentsInChildren<TMP_Dropdown>()[0];
         dropdown.ClearOptions();
-
-        print("dataSGO.storage = " + dataSGO);
 
         foreach (Resource resource in dataSGO.storage)
         {
@@ -114,16 +112,15 @@ public class DronMenu : MonoBehaviour
         player.SetDrons(player.drons+1);
         Destroy(rowGO);
         Destroy(dron.gameObject);
-        player.selectedGO.GetComponent<Building>().StopDron(dron.coroutine);
         List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
         listDrons.Remove(dron.dronData);
     }
 
     void ChangeResource(Dron dron, TMP_Dropdown rowDropdown){
         ResourcesEnum parsed_enum = (ResourcesEnum)Enum.Parse( typeof(ResourcesEnum), rowDropdown.options[rowDropdown.value].text );
-        dron.resource.name = parsed_enum;
-        player.selectedGO.GetComponent<Building>().StopDron(dron.coroutine);
-        dron.coroutine = player.selectedGO.GetComponent<Building>().StartDron(dron);
+        dron.newResource = new Resource (parsed_enum,0);
+        // player.selectedGO.GetComponent<Building>().StopDron(dron.coroutine);
+        // dron.coroutine = player.selectedGO.GetComponent<Building>().StartDron(dron);
         
         // Resource dronR = new Resource(ResourcesEnum.rowDropdown.options[rowDropdown.value].text, player.dronStorage);
         // Resource r = dataSGO.storage.Find(r => r.name.ToString() == rowDropdown.options[rowDropdown.value].text);
@@ -140,8 +137,8 @@ public class DronMenu : MonoBehaviour
             dron.dronData = dronData;
             dron.dronData.dronRef = dron;
             dron.SetData(origin,GameObject.Find(dronData.destination), dronData.resource, dronData.movingTo);
-            // dron.transform.position = dron.origin.transform.position;
-            dron.coroutine = origin.GetComponent<Building>().StartDron(dron);
+            origin.GetComponent<Building>().StartDronV2(dron);
+            dron.dronGoal.Invoke();
         }
         
     }

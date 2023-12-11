@@ -79,7 +79,7 @@ public class Options : MonoBehaviour
             if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
         }
 
-        hud.UpdateDronsHUD();
+        // hud.UpdateDronsHUD();
         // player.resources = data.resources;
     }
     
