@@ -169,6 +169,14 @@ public class Building : MonoBehaviour
 
          storageResource.quantity += -dron.resource.quantity;
       }else{
+         if (dron.detele) {
+            player.SetDrons(player.drons+1);
+            List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
+            listDrons.Remove(dron.dronData);
+            if (dron.row) Destroy(dron.row);
+            Destroy(dron.gameObject);
+            yield return null;
+         }
          List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
          Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
          if (addressR != null)

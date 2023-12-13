@@ -16,6 +16,8 @@ public class Dron : MonoBehaviour
     public float speed;
     public DronData dronData;
     public UnityEvent dronGoal = new UnityEvent();
+    public GameObject row;
+    public bool detele;
     
     public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
         this.origin = origin;

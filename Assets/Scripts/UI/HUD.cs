@@ -52,9 +52,24 @@ public class HUD : MonoBehaviour
         resourcesSE = selectedBuilding.data.storage;
         foreach (Resource resource in resourcesSE)
         {
+            bool validation = true;
             if (resource.quantity <= 0) {
-                resourcesSE.Remove(resource);
-                return;
+                // check if extractor is mining this resource
+                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource == resource.name){
+                    validation = false;
+                }
+
+                // check if dron is delivering this resource
+                foreach (var dron in selectedBuilding.data.setDrons)
+                {
+                    if (dron.resource.name == resource.name) validation = false;
+                }
+
+                if (validation)
+                {
+                    resourcesSE.Remove(resource);
+                    return;
+                }
             }
             GameObject newResource = Instantiate(resourcePrefab);
             newResource.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();

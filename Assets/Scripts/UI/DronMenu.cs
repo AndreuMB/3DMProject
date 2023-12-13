@@ -92,6 +92,9 @@ public class DronMenu : MonoBehaviour
         GameObject rowGO = Instantiate(rowPrefab);
         rowGO.transform.SetParent(contentGO.transform,false);
         TMP_Dropdown dropdown = rowGO.GetComponentsInChildren<TMP_Dropdown>()[0];
+        dron.row = rowGO;
+        if (dron.detele) dron.row.GetComponentInChildren<Button>().interactable = false;
+
         dropdown.ClearOptions();
 
         foreach (Resource resource in dataSGO.storage)
@@ -105,15 +108,12 @@ public class DronMenu : MonoBehaviour
         dropdown.onValueChanged.AddListener((int selected) => ChangeResource(dron,dropdown));
 
         rowGO.GetComponentsInChildren<TMP_Text>()[1].text = dron.destination.name;
-        rowGO.GetComponentInChildren<Button>().onClick.AddListener(() => RemoveDron(dron, rowGO));
+        rowGO.GetComponentInChildren<Button>().onClick.AddListener(() => RemoveDron(dron));
     }
 
-    void RemoveDron(Dron dron, GameObject rowGO){
-        player.SetDrons(player.drons+1);
-        Destroy(rowGO);
-        Destroy(dron.gameObject);
-        List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
-        listDrons.Remove(dron.dronData);
+    void RemoveDron(Dron dron){
+        dron.row.GetComponentInChildren<Button>().interactable = false;
+        dron.detele = true;
     }
 
     void ChangeResource(Dron dron, TMP_Dropdown rowDropdown){
