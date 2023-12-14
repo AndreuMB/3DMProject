@@ -51,12 +51,12 @@
                         "z": -3.5
                     },
                     "dronPosition": {
-                        "x": -6.8885369300842289,
+                        "x": -3.5680220127105715,
                         "y": 0.0,
-                        "z": -3.039583683013916
+                        "z": -2.0908632278442385
                     },
                     "dronRef": {
-                        "instanceID": -65606
+                        "instanceID": -786386
                     }
                 }
             ],
@@ -70,7 +70,7 @@
             "storage": [
                 {
                     "name": 4,
-                    "quantity": 12.0
+                    "quantity": 16.0
                 },
                 {
                     "name": 0,
@@ -95,11 +95,11 @@
             "storage": [
                 {
                     "name": 4,
-                    "quantity": 134.0
+                    "quantity": 138.0
                 },
                 {
                     "name": 0,
-                    "quantity": 96.0
+                    "quantity": 100.0
                 }
             ],
             "maxStorage": 100.0,
@@ -118,17 +118,17 @@
                         "quantity": 4.0
                     },
                     "movingTo": {
-                        "x": -1.5,
+                        "x": 6.5,
                         "y": 0.0,
-                        "z": -1.5
+                        "z": -6.5
                     },
                     "dronPosition": {
-                        "x": 1.1929327249526978,
+                        "x": 5.258448123931885,
                         "y": 0.0,
-                        "z": -3.1830837726593019
+                        "z": -5.724030017852783
                     },
                     "dronRef": {
-                        "instanceID": -65896
+                        "instanceID": -786400
                     }
                 }
             ],
@@ -142,7 +142,7 @@
             "storage": [
                 {
                     "name": 0,
-                    "quantity": 100.0
+                    "quantity": 98.0
                 }
             ],
             "maxStorage": 100.0,
@@ -161,21 +161,42 @@
                         "quantity": 4.0
                     },
                     "movingTo": {
-                        "x": -8.5,
+                        "x": -1.5,
                         "y": 0.0,
-                        "z": -5.5
+                        "z": -1.5
                     },
                     "dronPosition": {
-                        "x": -4.055251598358154,
+                        "x": -3.26692795753479,
                         "y": 0.0,
-                        "z": -2.960141658782959
+                        "z": -2.509674072265625
                     },
                     "dronRef": {
-                        "instanceID": -65620
+                        "instanceID": -786414
                     }
                 }
             ],
             "id": 3
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "name": 2,
+                    "quantity": 2.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor4",
+            "parentPosition": {
+                "x": 2.5,
+                "y": 0.0,
+                "z": 3.5
+            },
+            "setDrons": [],
+            "id": 4
         }
     ]
 }

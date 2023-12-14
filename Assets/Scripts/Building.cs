@@ -124,6 +124,18 @@ public class Building : MonoBehaviour
       {
          case BuildingsEnum.Extractor:
             data.storageBool = true;
+            
+            ResourceCells rCells = FindObjectOfType<ResourceCells>();
+            
+            foreach (ResourceCell rc in rCells.resourceCells)
+            {
+               if (transform.parent == null) break;
+               if (transform.parent.position == rc.cellPosition) {
+                  resource = rc.resource;
+                  break;
+               }
+            }
+
             data.storage.Add(new Resource(resource,0));
             StartCoroutine(nameof(ExtractResource));
             // GetComponent<MeshRenderer>().material.color = Color.green;
