@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Extractor
   - Building
+  - ResourceCell
   layers:
   - Default
   - TransparentFX

@@ -29,7 +29,6 @@ public class ObjectPlacer : MonoBehaviour
         Building building = newObject.GetComponent<Building>();
         // if (building){
         newObject.name = bType.ToString() + placedGameObject.Count;
-        building.SetBuildType(bType);
         // print();
         if (prefab) building.SetModel(prefab);
         // }
@@ -37,6 +36,7 @@ public class ObjectPlacer : MonoBehaviour
         newObject.transform.parent = newParent.transform;
         newParent.transform.position = position;
         newObject.transform.localPosition = new Vector3(0.5f,0,0.5f);
+        building.SetBuildType(bType);
         placedGameObject.Add(newObject);
         if (player) player.SetActiveGO(newObject);
         return (placedGameObject.Count - 1, newObject);

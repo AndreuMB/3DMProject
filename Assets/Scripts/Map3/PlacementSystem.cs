@@ -130,4 +130,9 @@ public class PlacementSystem : MonoBehaviour
         buildingtState = new GameState(grid,preview,floorData,buildData,objectPlacer,database);
     }
 
+    public Vector3Int GetCellFromPosition(Vector3 position){
+        gridPosition = grid.WorldToCell(position);
+        return gridPosition;
+    }
+
 }
