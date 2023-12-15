@@ -142,10 +142,10 @@ public class Building : MonoBehaviour
    }
 
    public void SetModel(GameObject model){
-      GetComponent<MeshFilter>().mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
-      GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
-      transform.localScale = model.transform.localScale;
-      transform.rotation = model.transform.rotation;
+      transform.GetChild(0).GetComponent<MeshFilter>().mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
+      transform.GetChild(0).GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
+      transform.GetChild(0).localScale = model.transform.localScale;
+      transform.GetChild(0).rotation = model.transform.rotation;
    }
 
    public IEnumerator StartDronCoroutineV2(Dron dron) {
