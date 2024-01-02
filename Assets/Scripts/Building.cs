@@ -211,5 +211,7 @@ public class Building : MonoBehaviour
 public enum BuildingsEnum{
    Extractor,
    Storage,
-   MainBase
+   MainBase,
+   Forge,
+   Factory
 }

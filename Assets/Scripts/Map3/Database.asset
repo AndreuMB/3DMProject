@@ -23,3 +23,13 @@ MonoBehaviour:
     <Type>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 1488443158187168093, guid: 0fa1a29f5ebb9a64d9c9970f38af1abe, type: 3}
+  - <Name>k__BackingField: Forge
+    <ID>k__BackingField: 0
+    <Type>k__BackingField: 3
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 8307331563751633684, guid: 2eb838b3229966a49a6f6d69182bd71c, type: 3}
+  - <Name>k__BackingField: Factory
+    <ID>k__BackingField: 0
+    <Type>k__BackingField: 4
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 8307331563751633684, guid: d32f08f77350df648a14c560b1461845, type: 3}

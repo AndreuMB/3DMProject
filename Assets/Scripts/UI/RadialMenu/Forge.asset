@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
-  m_Name: Factory
+  m_Name: Forge
   m_EditorClassIdentifier: 
-  elementName: Factory
+  elementName: Forge
   customFunctionName: BuildBuilding
   buildId: 0
-  buildingType: 4
+  buildingType: 3
   parent: {fileID: 0}
