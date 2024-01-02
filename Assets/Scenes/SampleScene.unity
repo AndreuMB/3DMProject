@@ -760,6 +760,7 @@ MonoBehaviour:
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &454292710
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1534,6 +1535,7 @@ MonoBehaviour:
   gridVisualization: {fileID: 179303016}
   objectPlacer: {fileID: 1210746906}
   preview: {fileID: 1710174514}
+  preview2: {fileID: 0}
 --- !u!4 &699537121
 Transform:
   m_ObjectHideFlags: 0
@@ -1685,6 +1687,7 @@ MonoBehaviour:
     parentName: Extractor2(Clone)(Clone)
     parentPosition: {x: 12, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &905337915
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2457,6 +2460,7 @@ MonoBehaviour:
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &1005713187
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2803,6 +2807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placedGameObject: []
+  buildingPrefab: {fileID: 0}
 --- !u!1 &1314393035
 GameObject:
   m_ObjectHideFlags: 0
@@ -3526,6 +3531,7 @@ MonoBehaviour:
     parentName: Extractor2(Clone)(Clone)
     parentPosition: {x: 12, y: 0, z: 0}
     setDrons: []
+    id: 0
 --- !u!64 &1848665511
 MeshCollider:
   m_ObjectHideFlags: 0
