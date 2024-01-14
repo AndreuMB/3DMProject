@@ -18,38 +18,47 @@ public class Dron : MonoBehaviour
     public UnityEvent dronGoal = new UnityEvent();
     public GameObject row;
     public bool detele;
-    
-    public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
+
+    public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo)
+    {
         this.origin = origin;
         this.destination = destination;
         this.resource = resource;
         this.movingTo = movingTo;
     }
 
-    public void CreateData(){
-        dronData = new(origin.name,destination.name,resource,this,movingTo);
+    public void CreateData()
+    {
+        dronData = new(origin.name, destination.name, resource, this, movingTo);
     }
 
-    public float GetDistance(){
-        return Vector2.Distance(transform.position,movingTo);
+    public float GetDistance()
+    {
+        return Vector2.Distance(transform.position, movingTo);
     }
 
-    void Update(){
+    void Update()
+    {
         float step = speed * Time.deltaTime;
-        if (destination.transform.position == transform.position) {
-            dronGoal.Invoke();
-            movingTo = origin.transform.position;
-            dronData.movingTo = origin.transform.position;
-            transform.LookAt(movingTo);
-        }
-        if (origin.transform.position == transform.position){
-            dronGoal.Invoke();
-            movingTo = destination.transform.position;
-            dronData.movingTo = destination.transform.position;
-            transform.LookAt(movingTo);
+        {
+            if (destination.transform.position == transform.position)
+            {
+                dronGoal.Invoke();
+                movingTo = origin.transform.position;
+                dronData.movingTo = origin.transform.position;
+                transform.LookAt(movingTo);
+            }
+            if (origin.transform.position == transform.position)
+            {
+                dronGoal.Invoke();
+                movingTo = destination.transform.position;
+                dronData.movingTo = destination.transform.position;
+                transform.LookAt(movingTo);
+            }
+
+            transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
+            dronData.dronPosition = transform.position;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
-        dronData.dronPosition = transform.position;
     }
 }

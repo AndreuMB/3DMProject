@@ -147,7 +147,13 @@ public class Building : MonoBehaviour
          case BuildingsEnum.MainBase:
             GetComponent<MeshRenderer>().material.color = Color.red;
             break;
-         default:
+         case BuildingsEnum.Factory:
+                GetComponent<MeshRenderer>().material.color = Color.white;
+                break;
+         case BuildingsEnum.Forge:
+                GetComponent<MeshRenderer>().material.color = Color.grey;
+                break;
+            default:
             break;
       }
       formatB = false;

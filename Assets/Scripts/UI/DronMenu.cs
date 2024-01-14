@@ -38,8 +38,6 @@ public class DronMenu : MonoBehaviour
         {
             if(dron.dronRef.origin == player.selectedGO) AddRow(dron.dronRef);
         }
-
-        
         AddRowBtnStatus();
     }
 
@@ -64,6 +62,14 @@ public class DronMenu : MonoBehaviour
         if (!selectedGODron) return;
         if (selectedGODron == player.selectedGO) return;
         if(selectedGODron.GetComponent<Building>().data.buildingType == BuildingsEnum.Storage){
+            addBtn.GetComponent<Button>().interactable = true;
+        }
+        if (selectedGODron.GetComponent<Building>().data.buildingType == BuildingsEnum.Factory)
+        {
+            addBtn.GetComponent<Button>().interactable = true;
+        }
+        if (selectedGODron.GetComponent<Building>().data.buildingType == BuildingsEnum.Forge)
+        {
             addBtn.GetComponent<Button>().interactable = true;
         }
     }

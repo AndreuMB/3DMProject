@@ -140,7 +140,10 @@ MonoBehaviour:
     buildingType: 1
     quantity: 0
     rate: 0
+    storageBool: 0
     storage: []
     maxStorage: 0
     parentName: 
     parentPosition: {x: 0, y: 0, z: 0}
+    setDrons: []
+    id: 0

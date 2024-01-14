@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resource: 0
   data:
-    buildingType: 0
+    buildingType: 3
     quantity: 0
     rate: 0
     storageBool: 0

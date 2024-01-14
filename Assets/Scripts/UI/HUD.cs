@@ -43,6 +43,7 @@ public class HUD : MonoBehaviour
         if (selectedBuilding)
         {
             if (selectedBuilding.data.storageBool) DMBtn.SetActive(true);
+            if (selectedBuilding.data.storageBool) DMMenu.SetActive(true);
             if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
             ShowResourcesBuilding(selectedGO.GetComponent<Building>());
         }
