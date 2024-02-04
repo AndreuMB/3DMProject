@@ -346,6 +346,7 @@ GameObject:
   - component: {fileID: 2145329916}
   - component: {fileID: 2145329920}
   - component: {fileID: 2145329919}
+  - component: {fileID: 2145329921}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -480,6 +481,29 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!114 &2145329921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2145329915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8021a884a24b7141b2a27a629212c8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  optionsMenu: {fileID: 0}
+  rmGO: {fileID: 0}
+  HUDR: {fileID: 0}
+  drons: 0
+  dronStorage: 0
+  dronSpeed: 0
+  selectedGO: {fileID: 0}
+  selectedGOev:
+    m_PersistentCalls:
+      m_Calls: []
+  canvasCPS: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
