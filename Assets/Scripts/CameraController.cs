@@ -23,6 +23,8 @@ public class CameraController : MonoBehaviour
     Vector3 newPosition;
     Quaternion newRotation;
     Vector3 newZoom;
+    [SerializeField] float minZoom;
+    [SerializeField] float maxZoom;
 
     // Start is called before the first frame update
     void Start()
@@ -65,12 +67,12 @@ public class CameraController : MonoBehaviour
             newPosition -= transform.forward * movementSpeed;
         }
 
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             newPosition += transform.right * movementSpeed;
         }
 
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             newPosition -= transform.right * movementSpeed;
         }
@@ -155,17 +157,16 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseZoom(){
-        // Input.mouseScrollDelta.y
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f ) // forward
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f && maxZoom < newZoom.y) // forward
         {
             newZoom += zoomAmount*4;
         }
         
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f ) // backward
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f && minZoom > newZoom.y) // backward
         {
             newZoom -= zoomAmount*4;
         }
-
+        
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
     }
 }
