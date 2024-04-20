@@ -46,11 +46,17 @@ public class GameState : IBuildingtState
         return !(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one));
     }
 
-    public void UpdateState(Vector3Int gridPosition)
+    public void UpdateState(Vector3Int gridPosition, Vector3 gridPositionFloat)
     {
         if (GameObject.FindObjectOfType<RadialMenu>()) return;
+
         bool validity = CheckIfSelectedIsValid(gridPosition);
-        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), validity);
+        Vector3 positionWorld = grid.CellToWorld(gridPosition);
+        // Debug.Log(gridPositionFloat);
+        // Debug.Log(positionWorld);
+        // Debug.Log(gridPosition);
+        // positionWorld.y = gridPositionFloat.y;
+        previewSystem.UndatePosition(gridPositionFloat, validity);
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true);
     }
 
@@ -60,17 +66,31 @@ public class GameState : IBuildingtState
         return selectedData.CanPlaceObjectAt(gridPosition, selectedObject.Size);
     }
 
-    public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType){
+    public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType, Vector3 gridPositionFloat){
         ObjectData buildingData = database.objectsData.Find(x => x.Type == bType);
         bool placementValidity = CheckPlacementValidity(gridPosition, buildingData);
         if (!placementValidity) { return null; }
         // int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
-        (int,GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, grid.CellToWorld(gridPosition),bType);
+        Vector3 positionWorld = grid.CellToWorld(gridPosition);
+
+        // Ray ray = new Ray(new Vector3(positionWorld.x, positionWorld.y + 10 ,positionWorld.z), Vector3.down);
+        // RaycastHit hit;
+        // if (Physics.Raycast(ray, out hit,100, GameObject.FindObjectOfType<InputManager>().GetPlacementLayer()))
+        // {
+        //     Debug.Log(hit.collider.gameObject.name);
+        //     Debug.Log(hit.point);
+        //     // lastPosition = hit.point;
+        //     // print("lastPosition = " + lastPosition);
+        //     positionWorld.y = hit.point.y;
+        // }
+
+        (int,GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat,bType);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
         selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, dataB.Item1);
         dataB.Item2.GetComponent<Building>().data.id = dataB.Item1;
-        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
+        SelectCell(gridPosition,gridPositionFloat);
+        // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
         return dataB.Item2;
     }
 
@@ -97,7 +117,7 @@ public class GameState : IBuildingtState
         }
     }
 
-    public void SelectCell(Vector3Int gridPosition){
-        previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true,true);
+    public void SelectCell(Vector3Int gridPosition, Vector3 gridPositionFloat){
+        previewSystem.UndatePosition(gridPositionFloat, true,true);
     }
 }

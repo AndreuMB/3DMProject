@@ -26,8 +26,21 @@ public class InputManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit,100, placementLayermask))
         {
             lastPosition = hit.point;
+            // print("lastPosition = " + lastPosition);
         }
+
+        // RaycastHit[] hits = Physics.RaycastAll(ray, 100f, placementLayermask);
+        
+        // foreach (RaycastHit hit in hits)
+        // {
+        //     lastPosition = hit.point;
+        // }
+
         return lastPosition;
+    }
+
+    public LayerMask GetPlacementLayer() {
+        return placementLayermask;
     }
 
 }

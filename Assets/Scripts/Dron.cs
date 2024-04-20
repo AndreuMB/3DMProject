@@ -36,6 +36,7 @@ public class Dron : MonoBehaviour
 
     void Update(){
         float step = speed * Time.deltaTime;
+        if (!destination) return;
         if (destination.transform.position == transform.position) {
             dronGoal.Invoke();
             movingTo = origin.transform.position;

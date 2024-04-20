@@ -60,7 +60,7 @@ public class PlacementState : IBuildingtState
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
 
-    public void UpdateState(Vector3Int gridPosition)
+    public void UpdateState(Vector3Int gridPosition, Vector3 gridPositionFloat)
     {
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
         previewSystem.UndatePosition(grid.CellToWorld(gridPosition), placementValidity);
