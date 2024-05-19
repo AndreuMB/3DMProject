@@ -79,7 +79,7 @@ public class DronMenu : MonoBehaviour
         Dron dron = dronGO.GetComponent<Dron>();
         dron.SetData(player.selectedGO,selectedGODron, dronR, selectedGODron.transform.position);
         dron.CreateData();
-        dron.transform.position = dron.origin.transform.position;
+        dron.transform.position = dron.originV;
         player.selectedGO.GetComponent<Building>().StartDronV2(dron);
 
         AddRow(dron);

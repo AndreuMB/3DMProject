@@ -143,7 +143,7 @@ public class PlacementSystem : MonoBehaviour
         gridPosition = grid.WorldToCell(position);
         // buildingtState.SelectCell(gridPosition);
         if (buildingtState == null) BuildingtStateGS();
-        GameObject building = buildingtState.Build(gridPosition, bType, gridPositionFloat);
+        GameObject building = buildingtState.Build(gridPosition, bType, position);
         return building;
     }
 

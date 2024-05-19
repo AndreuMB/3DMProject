@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,12 +19,21 @@ public class Dron : MonoBehaviour
     public UnityEvent dronGoal = new UnityEvent();
     public GameObject row;
     public bool detele;
+    Vector3 destinationV;
+    public Vector3 originV;
     
     public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
         this.origin = origin;
         this.destination = destination;
         this.resource = resource;
         this.movingTo = movingTo;
+        this.speed = FindObjectOfType<Player>().dronSpeed;
+
+
+        // destinationV = new(destination.transform.position.x,MathF.Floor(destination.transform.position.y),destination.transform.position.z);
+        // originV = new(origin.transform.position.x,MathF.Floor(origin.transform.position.y),origin.transform.position.z);
+        destinationV = destination.transform.position;
+        originV = origin.transform.position;
     }
 
     public void CreateData(){
@@ -34,23 +44,37 @@ public class Dron : MonoBehaviour
         return Vector2.Distance(transform.position,movingTo);
     }
 
-    void Update(){
+    void FixedUpdate(){
         float step = speed * Time.deltaTime;
         if (!destination) return;
-        if (destination.transform.position == transform.position) {
+        // print("origin = " + originV);
+        // print("destination = " + destinationV);
+        // print("dron = " + transform.position);
+        // print("movingto = " + movingTo);
+
+        float distanceX = destinationV.x - transform.position.x;
+        float distanceZ = destinationV.z - transform.position.z;
+        const float RANGE = 0.5f;
+        
+        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == destinationV) {
             dronGoal.Invoke();
-            movingTo = origin.transform.position;
-            dronData.movingTo = origin.transform.position;
+            movingTo = originV;
+            dronData.movingTo = originV;
             transform.LookAt(movingTo);
         }
-        if (origin.transform.position == transform.position){
+        
+        // if (originV == transform.position){
+        distanceX = originV.x - transform.position.x;
+        distanceZ = originV.z - transform.position.z;
+        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE  && movingTo == originV){
             dronGoal.Invoke();
-            movingTo = destination.transform.position;
-            dronData.movingTo = destination.transform.position;
+            movingTo = destinationV;
+            dronData.movingTo = destinationV;
             transform.LookAt(movingTo);
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
+        GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, movingTo, step));
+        // transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
         dronData.dronPosition = transform.position;
     }
 }

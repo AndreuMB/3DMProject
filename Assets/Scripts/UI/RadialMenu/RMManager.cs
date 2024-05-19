@@ -11,6 +11,7 @@ public class RMManager : MonoBehaviour
     public RadialElementSO backRESO;
     
     public GameObject NewRM(RadialMenuSO rmSO, Vector2 mcPosition){
+        print("enter NEW RM");
         // RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
 
         // Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
