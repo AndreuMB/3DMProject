@@ -1,5 +1,5 @@
 {
-    "drons": 8,
+    "drons": 7,
     "dronStorage": 16,
     "dronSpeed": 8.0,
     "buildings": [
@@ -51,12 +51,33 @@
                         "z": -9.5
                     },
                     "dronPosition": {
-                        "x": 1.9254236221313477,
-                        "y": 7.646943092346191,
-                        "z": -9.495125770568848
+                        "x": 2.777028799057007,
+                        "y": 8.319673538208008,
+                        "z": -9.499998092651368
                     },
                     "dronRef": {
-                        "instanceID": -4131208
+                        "instanceID": -133486
+                    }
+                },
+                {
+                    "origin": "Extractor0",
+                    "destination": "Storage2",
+                    "resource": {
+                        "name": 4,
+                        "quantity": 16.0
+                    },
+                    "movingTo": {
+                        "x": -1.5,
+                        "y": 8.161144256591797,
+                        "z": -9.5
+                    },
+                    "dronPosition": {
+                        "x": -1.4077622890472413,
+                        "y": 9.01874828338623,
+                        "z": -6.548398971557617
+                    },
+                    "dronRef": {
+                        "instanceID": -170812
                     }
                 }
             ],
@@ -70,7 +91,7 @@
             "storage": [
                 {
                     "name": 4,
-                    "quantity": 64.0
+                    "quantity": 80.0
                 }
             ],
             "maxStorage": 100.0,
@@ -88,7 +109,12 @@
             "quantity": 2.0,
             "rate": 2.0,
             "storageBool": true,
-            "storage": [],
+            "storage": [
+                {
+                    "name": 4,
+                    "quantity": 16.0
+                }
+            ],
             "maxStorage": 100.0,
             "parentName": "Storage2",
             "parentPosition": {

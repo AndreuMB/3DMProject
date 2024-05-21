@@ -112,6 +112,10 @@ public class Player : MonoBehaviour
         selectedGOev.Invoke(selectedGO);
     }
 
+    public bool OptionsStatus() {
+        return optionsMenu.activeInHierarchy;
+    }
+
 }
 
 public enum ResourcesEnum

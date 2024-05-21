@@ -8,19 +8,21 @@ using UnityEngine.Events;
 [System.Serializable]
 public class Dron : MonoBehaviour
 {
-    public GameObject origin;
-    public GameObject destination;
-    public Resource resource;
-    public Resource newResource;
+    [NonSerialized] public GameObject origin;
+    [NonSerialized] public GameObject destination;
+    [NonSerialized] public Resource resource;
+    [NonSerialized] public Resource newResource;
     // public Coroutine coroutine;
-    public Vector3 movingTo;
-    public float speed;
-    public DronData dronData;
-    public UnityEvent dronGoal = new UnityEvent();
-    public GameObject row;
-    public bool detele;
+    [NonSerialized] public Vector3 movingTo;
+    [NonSerialized] public float speed;
+    [NonSerialized] public DronData dronData;
+    [NonSerialized] public UnityEvent dronGoal = new UnityEvent();
+    [NonSerialized] public GameObject row;
+    [NonSerialized] public bool detele;
     Vector3 destinationV;
-    public Vector3 originV;
+    [NonSerialized] public Vector3 originV;
+    Terrain terrain;
+    [SerializeField] float dronHeight = 1;
     
     public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
         this.origin = origin;
@@ -34,6 +36,7 @@ public class Dron : MonoBehaviour
         // originV = new(origin.transform.position.x,MathF.Floor(origin.transform.position.y),origin.transform.position.z);
         destinationV = destination.transform.position;
         originV = origin.transform.position;
+        terrain = Terrain.activeTerrain;
     }
 
     public void CreateData(){
@@ -73,8 +76,19 @@ public class Dron : MonoBehaviour
             transform.LookAt(movingTo);
         }
 
-        GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, movingTo, step));
+        // GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, movingTo, step));
         // transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
+        Vector3 direction = (movingTo - transform.position).normalized;
+        Vector3 newPosition = transform.position + direction * speed * Time.deltaTime;
+
+        newPosition.y = GetTerrainHeight(newPosition) + dronHeight;
+
+        transform.position = newPosition;
         dronData.dronPosition = transform.position;
+    }
+
+    float GetTerrainHeight(Vector3 position)
+    {
+        return terrain.SampleHeight(position) + terrain.transform.position.y;
     }
 }
