@@ -63,7 +63,7 @@ public class RemovingState : IBuildingtState
     //     return !(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one));
     // }
 
-    public void UpdateState(Vector3Int gridPosition)
+    public void UpdateState(Vector3Int gridPosition, Vector3 gridPositionFloat)
     {
         // bool validity = CheckIfSelectedIsValid(gridPosition);
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), validity);

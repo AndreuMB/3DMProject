@@ -19,6 +19,7 @@ public class InputManager : MonoBehaviour
     public bool IsPointerOverUI() => EventSystem.current.IsPointerOverGameObject();
     public Vector3 GetSelectedMapPosition() 
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return lastPosition; 
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = sceneCamera.nearClipPlane;
         Ray ray = sceneCamera.ScreenPointToRay(mousePos);
@@ -27,7 +28,12 @@ public class InputManager : MonoBehaviour
         {
             lastPosition = hit.point;
         }
+
         return lastPosition;
+    }
+
+    public LayerMask GetPlacementLayer() {
+        return placementLayermask;
     }
 
 }

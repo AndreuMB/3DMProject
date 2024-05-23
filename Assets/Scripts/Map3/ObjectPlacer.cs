@@ -35,7 +35,9 @@ public class ObjectPlacer : MonoBehaviour
         GameObject newParent = new GameObject();
         newObject.transform.parent = newParent.transform;
         newParent.transform.position = position;
-        newObject.transform.localPosition = new Vector3(0.5f,0,0.5f);
+        // print("1 = " + position);
+        // const float Y_OFFSET = 0;
+        // newObject.transform.localPosition = new Vector3(0.5f,Y_OFFSET,0.5f);
         building.SetBuildType(bType);
         placedGameObject.Add(newObject);
         if (player) player.SetActiveGO(newObject);

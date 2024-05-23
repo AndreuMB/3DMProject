@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
 {
@@ -26,12 +27,16 @@ public class CameraController : MonoBehaviour
     [SerializeField] float minZoom;
     [SerializeField] float maxZoom;
 
+    Terrain terrain; // Reference to the terrain
+    float terrainHeight;
+
     // Start is called before the first frame update
     void Start()
     {
         newPosition = transform.position;
         newRotation = transform.rotation;
         newZoom = cameraTransform.localPosition;
+        terrain = Terrain.activeTerrain;
     }
 
     // Update is called once per frame
@@ -46,7 +51,6 @@ public class CameraController : MonoBehaviour
     void HandleKeyboardInput(){
         HandleMovement();
         HandleRotation();
-        // HandleZoom();
     }
 
     void HandleMovement(){
@@ -94,19 +98,6 @@ public class CameraController : MonoBehaviour
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
     }
 
-    void HandleZoom(){
-        if (Input.GetKey(KeyCode.R))
-        {
-            newZoom += zoomAmount;
-        }
-        if (Input.GetKey(KeyCode.F))
-        {
-            newZoom -= zoomAmount;
-        }
-
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
-    }
-
     void HandleMouseInput(){
         HandleMouseMovement();
         HandleMouseRotation();
@@ -114,6 +105,7 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseMovement(){
+        if (FindObjectOfType<Player>().OptionsStatus()) return;
         if (Input.GetMouseButtonDown(0)){
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
@@ -157,16 +149,36 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseZoom(){
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f && maxZoom < newZoom.y) // forward
+        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
         {
             newZoom += zoomAmount*4;
+            CheckTerrainHeight();
         }
         
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f && minZoom > newZoom.y) // backward
+        if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backward
         {
             newZoom -= zoomAmount*4;
+            CheckTerrainHeight();
         }
+
         
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+    }
+
+    void CheckTerrainHeight() {
+        terrainHeight = terrain.SampleHeight(new Vector3(cameraTransform.position.x, 0, cameraTransform.position.z)) + terrain.transform.position.y;
+
+        // Vector3 position = transform.position;
+
+        // Ensure the camera stays above the terrain plus the minimum height
+        newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+        
+
+        // Apply the new position to the camera
+        // cameraTransform.localPosition = cameraTransform.InverseTransformPoint(newZoom);
+        // cameraTransform.localPosition = newZoom;
+        
+        // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, position, Time.deltaTime * movementTime);
+
     }
 }
