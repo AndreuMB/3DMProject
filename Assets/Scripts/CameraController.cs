@@ -26,6 +26,7 @@ public class CameraController : MonoBehaviour
     Vector3 newZoom;
     [SerializeField] float minZoom;
     [SerializeField] float maxZoom;
+    // bool smoothZoomFix;
 
     Terrain terrain; // Reference to the terrain
     float terrainHeight;
@@ -79,9 +80,16 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             newPosition -= transform.right * movementSpeed;
+            
         }
 
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        
+        if (Vector3.Distance(transform.position, newPosition) > 0.01f)
+        {
+            CheckTerrainHeight();
+            cameraTransform.localPosition = newZoom;
+        }
     }
 
     void HandleRotation(){
@@ -161,7 +169,6 @@ public class CameraController : MonoBehaviour
             CheckTerrainHeight();
         }
 
-        
         cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
     }
 
@@ -172,7 +179,23 @@ public class CameraController : MonoBehaviour
 
         // Ensure the camera stays above the terrain plus the minimum height
         newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+
+        // if (smoothZoomFix) {
+        //     // smooth movement
+        //     cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+        // } else {
+        //     //  instant movement
+        //     cameraTransform.localPosition = newZoom;
+        // }
+
+        // float newZoomFix = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
         
+        // if (newZoom.y != newZoomFix) {
+        //     print("fixed");
+        //     newZoom.y = newZoomFix;
+        // } else {
+        //     print("right");
+        // }
 
         // Apply the new position to the camera
         // cameraTransform.localPosition = cameraTransform.InverseTransformPoint(newZoom);
