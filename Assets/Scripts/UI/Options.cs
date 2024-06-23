@@ -8,10 +8,23 @@ using UnityEngine.SceneManagement;
 public class Options : MonoBehaviour
 {
     [SerializeField] GameObject buildingPrefab;
+    PlacementSystem ps;
+    HUD hud;
     
     void Start(){
-        if (!DataSystem.newgame) LoadData();
-        gameObject.SetActive(false);
+        ps = FindObjectOfType<PlacementSystem>();
+        hud = FindObjectOfType<HUD>();
+
+        if (!DataSystem.newgame) {
+            LoadData();
+        } else {
+            MainBaseSpawn();
+            // hud.IniHUD();
+        }
+
+        hud.IniHUD();
+
+
     }
 
     public void SaveGame(){
@@ -40,25 +53,21 @@ public class Options : MonoBehaviour
 
     public void LoadData(){
         CleanMap();
-        Player player = FindObjectOfType<Player>();
-        if (!player) return;
-        // PlayerData data = DataSystem.LoadFromJson();
+        
         GameData data = DataSystem.LoadFromJson2();
         if(data == null) return;
 
-        // dron upgrades
-        player.drons = data.drons;
-        player.dronStorage = data.dronStorage;
-        player.dronSpeed = data.dronSpeed;
+        
 
         // map grid placement
         PlacementSystem ps = FindObjectOfType<PlacementSystem>();
-        HUD hud = FindObjectOfType<HUD>();
-        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
 
         foreach (BuildingData building in data.buildings)
         {
-            if (building.buildingType == BuildingsEnum.MainBase) continue;
+            // if (building.buildingType == BuildingsEnum.MainBase) {
+                // MainBaseSpawn(building.parentPosition);
+                // continue;
+            // }
             // if (buildingGO)
             // {
             //     buildingGO.GetComponent<Building>().data = building;
@@ -68,10 +77,25 @@ public class Options : MonoBehaviour
             // newBuilding.name = building.parentName;
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
             if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+            if (building.buildingType == BuildingsEnum.MainBase) {
+                print("enter mainBase");
+                buildingGO.AddComponent<Player>();
+            } 
             // print("dm = " + dm);
             // dm.LoadDrons(building.setDrons,buildingGO);
             // }
         }
+
+        Player player = FindObjectOfType<Player>();
+        if (!player) return;
+        // PlayerData data = DataSystem.LoadFromJson();
+
+        // dron upgrades
+        player.drons = data.drons;
+        player.dronStorage = data.dronStorage;
+        player.dronSpeed = data.dronSpeed;
+
+        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
 
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
@@ -87,7 +111,28 @@ public class Options : MonoBehaviour
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
         foreach (var building in buildings)
         {
-            if (building.GetComponent<Building>().data.buildingType != BuildingsEnum.MainBase) Destroy(building);
+            // if (building.GetComponent<Building>().data.buildingType != BuildingsEnum.MainBase) Destroy(building);
+            Destroy(building);
         }
+    }
+
+    void MainBaseSpawn(Vector3? position = null) {
+        GameObject mainBase;
+        mainBase = position == null ? ps.LoadBuildings(RandomCell(), BuildingsEnum.MainBase)
+            : ps.LoadBuildings(position.Value, BuildingsEnum.MainBase);
+        mainBase.AddComponent<Player>();
+        FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
+        // if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+    }
+
+    Vector3 RandomCell() {
+        
+        Ray ray = new Ray(new(Random.Range(-50, 50)+0.5f,50,Random.Range(-50, 50)+0.5f), Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit,100, FindObjectOfType<InputManager>().GetPlacementLayer()))
+        {
+            return hit.point;
+        }
+        return new(0,0,0);
     }
 }

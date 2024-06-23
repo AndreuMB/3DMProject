@@ -6,27 +6,35 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] GameObject optionsMenu;
+    GameObject optionsMenu;
     // RadialMenu mainRadialMenu;
     RMManager rMManager;
     public GameObject rmGO;
-    [SerializeField] HUD HUDR;
+    HUD HUDR;
     [Header("Dron Settings")]
     public int drons;
     public int dronStorage;
     public float dronSpeed;
     public GameObject selectedGO;
-    public UnityEvent<GameObject> selectedGOev;
+    public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
     PlacementSystem ps;
+
+    void Awake() {
+        ps = FindObjectOfType<PlacementSystem>();
+        rMManager = FindAnyObjectByType<RMManager>();
+        HUDR = FindAnyObjectByType<HUD>();
+        optionsMenu = FindAnyObjectByType<Options>().gameObject;
+        canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
+    }
 
     void Start(){
 
         // mainRadialMenu = FindAnyObjectByType<RadialMenu>();
         // mainRadialMenu.gameObject.SetActive(false);
 
-        ps = FindObjectOfType<PlacementSystem>();
-        rMManager = FindAnyObjectByType<RMManager>();
+        
+        optionsMenu.SetActive(false);
     }
 
     void Update(){

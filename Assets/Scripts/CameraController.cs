@@ -121,6 +121,7 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseMovement(){
+        if (!FindObjectOfType<Player>()) return;
         if (FindObjectOfType<Player>().OptionsStatus()) return;
         if (Input.GetMouseButtonDown(0)){
             Plane plane = new Plane(Vector3.up, Vector3.zero);
@@ -238,5 +239,9 @@ public class CameraController : MonoBehaviour
         
         // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, position, Time.deltaTime * movementTime);
 
+    }
+
+    public void FocusBuilding(Vector3 position) {
+        transform.position = position;
     }
 }

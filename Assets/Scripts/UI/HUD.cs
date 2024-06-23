@@ -16,15 +16,30 @@ public class HUD : MonoBehaviour
     public GameObject DMMenu;
     [SerializeField] GameObject DronUpgradeBtn;
 
-    void Start(){
+    // void Start(){
+    //     if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+    //     // if (!FindObjectOfType<Player>()) return;
+    //     player = FindObjectOfType<Player>();
+        
+    //     player.selectedGOev.AddListener(ShowGOHUD);
+    //     DMBtn.SetActive(false);
+    //     DMMenu.SetActive(false);
+    //     DronUpgradeBtn.SetActive(false);
+    //     UpdateDronsHUD();
+    // }
+    
+    public void IniHUD(){
+        if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+        // if (!FindObjectOfType<Player>()) return;
         player = FindObjectOfType<Player>();
-        if (!player) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+        print("starrt iniHUd");
         
         player.selectedGOev.AddListener(ShowGOHUD);
         DMBtn.SetActive(false);
         DMMenu.SetActive(false);
         DronUpgradeBtn.SetActive(false);
         UpdateDronsHUD();
+        print("end iniHUd");
     }
 
     void Update(){
