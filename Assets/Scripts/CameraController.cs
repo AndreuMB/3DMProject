@@ -47,11 +47,22 @@ public class CameraController : MonoBehaviour
         HandleKeyboardInput();
         HandleMouseInput();
 
+        // update rotation
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+
+        // update zoom
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+
+        // update movement
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+
+        CheckTerrainHeight();
+
     }
 
     void HandleKeyboardInput(){
         HandleMovement();
-        HandleRotation();
+        HandleKeyRotation();
     }
 
     void HandleMovement(){
@@ -83,16 +94,15 @@ public class CameraController : MonoBehaviour
             
         }
 
-        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
         
-        if (Vector3.Distance(transform.position, newPosition) > 0.01f)
-        {
-            CheckTerrainHeight();
-            cameraTransform.localPosition = newZoom;
-        }
+        // if (Vector3.Distance(transform.position, newPosition) > 0.01f)
+        // {
+        //     CheckTerrainHeight();
+        //     transform.position = newZoom;
+        // }
     }
 
-    void HandleRotation(){
+    void HandleKeyRotation(){
         if (Input.GetKey(KeyCode.Q))
         {
             newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
@@ -102,8 +112,6 @@ public class CameraController : MonoBehaviour
         {
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
     }
 
     void HandleMouseInput(){
@@ -157,28 +165,55 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseZoom(){
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
+        // float zoomAmount2 = 1f;
+        // if (Input.GetAxis("Mouse ScrollWheel") > 0f && newZoom.y > maxZoom) // forward
+        // {
+        //     // newZoom += zoomAmount*4;
+        //     newZoom += cameraTransform.forward * zoomAmount2;
+        //     // CheckTerrainHeight();
+        // }
+        
+        // if (Input.GetAxis("Mouse ScrollWheel") < 0f && newZoom.y < minZoom) // backward
+        // {
+        //     newZoom -= cameraTransform.forward * zoomAmount2;
+        //     // newZoom -= zoomAmount*4;
+        //     // CheckTerrainHeight();
+        // }
+
+        // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scroll > 0f && newZoom.y > maxZoom) // forward
         {
-            newZoom += zoomAmount*4;
-            CheckTerrainHeight();
+            newZoom += scroll * zoomAmount;
         }
         
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backward
+        if (scroll < 0f && newZoom.y < minZoom) // backward
         {
-            newZoom -= zoomAmount*4;
-            CheckTerrainHeight();
+            newZoom += scroll * zoomAmount;
         }
-
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+        // if (scroll != 0f)
+        // {
+        //     print(scroll);
+        //     newZoom += scroll * zoomAmount;
+        //     newZoom.y = Mathf.Clamp(newZoom.y, maxZoom, minZoom);
+        // }
     }
 
     void CheckTerrainHeight() {
-        terrainHeight = terrain.SampleHeight(new Vector3(cameraTransform.position.x, 0, cameraTransform.position.z)) + terrain.transform.position.y;
+        terrainHeight = terrain.SampleHeight(new Vector3(transform.position.x, 0,transform.position.z)) + terrain.transform.position.y;
 
         // Vector3 position = transform.position;
 
+        // print("newZoom.y = " + newZoom.y);
+        // print("terrainHeight + maxZoom, max y = " + terrainHeight + maxZoom);
+        // print("minZoom = " + minZoom);
+
         // Ensure the camera stays above the terrain plus the minimum height
-        newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+        // newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+        float newYCameraPosition = Mathf.Clamp(0, terrainHeight + 1, 30);
+        transform.position = new(transform.position.x, newYCameraPosition, transform.position.z);
 
         // if (smoothZoomFix) {
         //     // smooth movement
