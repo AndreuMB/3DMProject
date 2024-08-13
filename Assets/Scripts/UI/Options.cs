@@ -19,6 +19,7 @@ public class Options : MonoBehaviour
             LoadData();
         } else {
             MainBaseSpawn();
+            ResourceCellsSpawn();
             // hud.IniHUD();
         }
 
@@ -112,7 +113,15 @@ public class Options : MonoBehaviour
             : ps.LoadBuildings(position.Value, BuildingsEnum.MainBase);
         mainBase.AddComponent<Player>();
         FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
-        // if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+    }
+
+    void ResourceCellsSpawn() {
+        ResourceManager rm = FindObjectOfType<ResourceManager>();
+        for (int i = 0; i < 20; i++)
+        {
+            GameObject resourceGO = rm.GetRandomResourceGO();
+            Instantiate(resourceGO,RandomCell(),Quaternion.identity);
+        }
     }
 
     Vector3 RandomCell() {
