@@ -54,7 +54,7 @@ public class Options : MonoBehaviour
     public void LoadData(){
         CleanMap();
         
-        GameData data = DataSystem.LoadFromJson2();
+        GameData data = DataSystem.LoadFromJson();
         if(data == null) return;
 
         
@@ -64,36 +64,26 @@ public class Options : MonoBehaviour
 
         foreach (BuildingData building in data.buildings)
         {
-            // if (building.buildingType == BuildingsEnum.MainBase) {
-                // MainBaseSpawn(building.parentPosition);
-                // continue;
-            // }
-            // if (buildingGO)
-            // {
-            //     buildingGO.GetComponent<Building>().data = building;
-            // }else{
-            // GameObject newBuilding = Instantiate(buildingPrefab);
-            // newBuilding.transform.position = building.parentPosition;
-            // newBuilding.name = building.parentName;
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
             if (buildingGO) buildingGO.GetComponent<Building>().data = building;
-            if (building.buildingType == BuildingsEnum.MainBase) {
-                print("enter mainBase");
-                buildingGO.AddComponent<Player>();
-            } 
-            // print("dm = " + dm);
-            // dm.LoadDrons(building.setDrons,buildingGO);
-            // }
+            if (building.buildingType == BuildingsEnum.MainBase) buildingGO.AddComponent<Player>();
         }
 
         Player player = FindObjectOfType<Player>();
         if (!player) return;
-        // PlayerData data = DataSystem.LoadFromJson();
 
         // dron upgrades
         player.drons = data.drons;
         player.dronStorage = data.dronStorage;
         player.dronSpeed = data.dronSpeed;
+
+        // set camera position
+        if (data.cameraPosition != Vector3.zero) {
+            Camera.main.transform.parent.position = data.cameraPosition;
+            Camera.main.transform.parent.rotation = data.cameraRotation;
+            Camera.main.transform.localPosition = data.zoom;
+        }
+
 
         DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
 

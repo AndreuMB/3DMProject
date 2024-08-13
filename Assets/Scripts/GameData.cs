@@ -11,15 +11,22 @@ public class GameData
     public float dronSpeed;
     // public List<Extractor> extractors;
     public List<BuildingData> buildings;
+    public Vector3 cameraPosition; 
+    public Quaternion cameraRotation;
+    public Vector3 zoom;
     // public Building building;
 
-    public GameData(Player player,List<BuildingData> buildings){
+    public GameData(Player player,List<BuildingData> buildings, Transform cameraTransform){
         drons = player.drons;
         dronStorage = player.dronStorage;
         dronSpeed = player.dronSpeed;
         // building = extractor.data;
         // this.extractors = extractors;
         this.buildings = buildings;
+        cameraPosition = cameraTransform.position;
+        cameraRotation = cameraTransform.rotation;
+        zoom = cameraTransform.GetChild(0).transform.localPosition;
+        Debug.Log("zoom" + zoom);
         
         // buildings.Add(extractors[0].data);
         // foreach (Extractor extractor in extractors)

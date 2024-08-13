@@ -8,13 +8,13 @@ public class DataSystem : MonoBehaviour
     public static bool newgame;
     public static void SaveToJson(Player player,List<BuildingData> buildings){
         // PlayerData data = new PlayerData(player);
-        GameData data = new GameData(player,buildings);
+        GameData data = new GameData(player,buildings, Camera.main.transform.parent);
         
         string json = JsonUtility.ToJson(data,true);
         File.WriteAllText(Application.dataPath + "/GameDataFile.json", json);
     }
 
-    public static GameData LoadFromJson2(){
+    public static GameData LoadFromJson(){
         if (!File.Exists(Application.dataPath + "/GameDataFile.json")) return null;
         string json = File.ReadAllText(Application.dataPath + "/GameDataFile.json");
         GameData data = JsonUtility.FromJson<GameData>(json);
