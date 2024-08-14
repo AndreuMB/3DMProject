@@ -8,12 +8,15 @@ using UnityEngine.SceneManagement;
 public class Options : MonoBehaviour
 {
     [SerializeField] GameObject buildingPrefab;
+    public List<OreData> resourceDataList;
     PlacementSystem ps;
     HUD hud;
+    ResourceManager rm;
     
     void Start(){
         ps = FindObjectOfType<PlacementSystem>();
         hud = FindObjectOfType<HUD>();
+        rm = FindObjectOfType<ResourceManager>();
 
         if (!DataSystem.newgame) {
             LoadData();
@@ -40,7 +43,7 @@ public class Options : MonoBehaviour
             extractorComp.data.parentPosition = extractor.transform.position;
             buildings.Add(extractorComp.data);
         }
-        DataSystem.SaveToJson(player, buildings);
+        DataSystem.SaveToJson(player, buildings, resourceDataList);
     }
 
     public void LoadGame(){
@@ -85,13 +88,18 @@ public class Options : MonoBehaviour
             Camera.main.transform.localPosition = data.zoom;
         }
 
-
+        // set drons in buildings
         DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
-
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
             Building building = buildingGO.GetComponent<Building>();
             if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
+        }
+
+        // generate and set materials in map
+        foreach (OreData oreData in data.ores)
+        {
+            rm.GenerateOre(oreData);
         }
 
         // hud.UpdateDronsHUD();
@@ -116,11 +124,12 @@ public class Options : MonoBehaviour
     }
 
     void ResourceCellsSpawn() {
-        ResourceManager rm = FindObjectOfType<ResourceManager>();
         for (int i = 0; i < 20; i++)
         {
-            GameObject resourceGO = rm.GetRandomResourceGO();
-            Instantiate(resourceGO,RandomCell(),Quaternion.identity);
+            (GameObject resourceGO, OreData resourceData) = rm.GetRandomResourceGO();
+            resourceData.position = RandomCell();
+            resourceGO.transform.position = resourceData.position;
+            resourceDataList.Add(resourceData);
         }
     }
 

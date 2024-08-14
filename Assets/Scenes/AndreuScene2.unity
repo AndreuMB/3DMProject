@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 7818300422196003943, guid: 862bc10c1cd8d2d4fa3ab343f5eaef2c, type: 3}
+  resourceDataList: []
 --- !u!1 &61033296
 GameObject:
   m_ObjectHideFlags: 0
@@ -1826,9 +1827,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98f08f4263078b44b6c7a17a3c472d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  r1: {fileID: 3104926894237930545, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
-  r2: {fileID: 7646094871917563865, guid: 1553b0c543b6d1c47bd0bac0aef6bf22, type: 3}
-  r3: {fileID: 8100899476518817162, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
+  rockFormation1: {fileID: 3104926894237930545, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+  rockFormation2: {fileID: 7646094871917563865, guid: 1553b0c543b6d1c47bd0bac0aef6bf22, type: 3}
+  rockFormation3: {fileID: 8100899476518817162, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
   copper: {fileID: 2100000, guid: ccde515a1ac9fe74392244bdff8b728b, type: 2}
   silver: {fileID: 2100000, guid: 438343f4a8abdc146afa75cf0ea5ff48, type: 2}
   gold: {fileID: 2100000, guid: d2225d605fe6a714190464879c9cd3f1, type: 2}

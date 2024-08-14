@@ -6,9 +6,9 @@ using UnityEngine;
 public class DataSystem : MonoBehaviour
 {
     public static bool newgame;
-    public static void SaveToJson(Player player,List<BuildingData> buildings){
+    public static void SaveToJson(Player player,List<BuildingData> buildings, List<OreData> resources){
         // PlayerData data = new PlayerData(player);
-        GameData data = new GameData(player,buildings, Camera.main.transform.parent);
+        GameData data = new GameData(player, buildings, Camera.main.transform.parent, resources);
         
         string json = JsonUtility.ToJson(data,true);
         File.WriteAllText(Application.dataPath + "/GameDataFile.json", json);
