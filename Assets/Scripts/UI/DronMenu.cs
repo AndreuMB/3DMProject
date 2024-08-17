@@ -48,7 +48,7 @@ public class DronMenu : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)) // left click
         {
-            if (player.GetClickedGO())
+            if (player.GetClickedGO() && player.GetClickedGO().CompareTag("Building"))
             {
                 selectedGODron = player.GetClickedGO();
                 AddRowBtnStatus();
@@ -72,7 +72,7 @@ public class DronMenu : MonoBehaviour
         if(player.drons <= 0) return;
         player.SetDrons(player.drons-1);
 
-        Resource dronR = new Resource(dataSGO.storage[0].name, player.dronStorage);
+        Resource dronR = new Resource(dataSGO.storage[0].resourceEnum, player.dronStorage);
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
@@ -98,10 +98,10 @@ public class DronMenu : MonoBehaviour
 
         foreach (Resource resource in dataSGO.storage)
         {
-            dropdown.options.Add(new TMP_Dropdown.OptionData(resource.name.ToString()));
+            dropdown.options.Add(new TMP_Dropdown.OptionData(resource.resourceEnum.ToString()));
         }
 
-        int selected = dropdown.options.FindIndex(o => o.text == dron.resource.name.ToString());
+        int selected = dropdown.options.FindIndex(o => o.text == dron.resource.resourceEnum.ToString());
         dropdown.value = selected;
 
         dropdown.onValueChanged.AddListener((int selected) => ChangeResource(dron,dropdown));

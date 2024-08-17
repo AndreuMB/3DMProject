@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
-  m_Name: Building
+  m_Name: BuildingOre
   m_EditorClassIdentifier: 
   elementName: Building
   customFunctionName: Build
   buildId: 0
   buildingType: 0
-  parent: {fileID: 11400000, guid: fff4115cdf215ea45a92bae7109ce920, type: 2}
+  parent: {fileID: 11400000, guid: 400737b5af33c744eb818ac37c7271fe, type: 2}

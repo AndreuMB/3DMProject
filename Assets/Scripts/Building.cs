@@ -35,80 +35,6 @@ public class Building : MonoBehaviour
       yield break;
    }
 
-   // public IEnumerator StartDronCoroutine(Dron dron) {
-      
-   //    if (!player) player = FindObjectOfType<Player>();
-   //    float distance = dron.GetDistance();
-      
-   //    while (isActiveAndEnabled)
-   //    {
-   //       dron.speed = player.dronSpeed;
-   //       Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
-   //       if (storageResource == null) yield return null;
-
-
-   //       if (dron.movingTo == dron.destination.transform.position) {
-   //          // check storage quantity and choose dron storage quantity
-   //          dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
-
-   //          storageResource.quantity += -dron.resource.quantity;
-   //       }else{
-   //          List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
-   //          Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
-   //          if (addressR != null)
-   //          {
-   //             addressR.quantity += dron.resource.quantity;
-   //          }else{
-   //             addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
-   //             // hud.ShowGOHUD(player.selectedGO);
-   //          }
-   //       }
-
-         
-
-   //       yield return new WaitForSeconds(distance/dron.speed);
-         
-   //       distance = dron.GetDistance();
-   //       if (distance <= 1)
-   //       {
-   //          yield return new WaitForSeconds(.5f);
-   //          distance = dron.GetDistance();
-   //       }
-
-   //       if (dron.movingTo == dron.destination.transform.position) {
-   //          // check storage quantity and choose dron storage quantity
-   //          dron.resource.quantity = storageResource.quantity > player.dronStorage ? player.dronStorage : storageResource.quantity;
-
-   //          storageResource.quantity += -dron.resource.quantity;
-   //       }else{
-   //          List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
-   //          Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
-   //          if (addressR != null)
-   //          {
-   //             addressR.quantity += dron.resource.quantity;
-   //          }else{
-   //             addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
-   //             // hud.ShowGOHUD(player.selectedGO);
-   //          }
-   //       }
-         
-   //       yield return new WaitForSeconds(distance/dron.speed);
-         
-   //       distance = dron.GetDistance();
-   //       if (distance <= 1)
-   //       {
-   //          yield return new WaitForSeconds(.5f);
-   //          distance = dron.GetDistance();
-   //       }
-         
-   //    }
-   // }
-
-   // public Coroutine StartDron(Dron dron){
-   //    Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dron));
-   //    return coroutineInstance;
-   // }
-
    public void StopDron(Coroutine dronCoroutine){
       StopCoroutine(dronCoroutine);
    }
@@ -125,27 +51,29 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Extractor:
             data.storageBool = true;
             
-            ResourceCells rCells = FindObjectOfType<ResourceCells>();
+            // ResourceCells rCells = FindObjectOfType<ResourceCells>();
             
-            foreach (ResourceCell rc in rCells.resourceCells)
-            {
-               if (transform.parent == null) break;
-               if (transform.parent.position == rc.cellPosition) {
-                  resource = rc.resource;
-                  break;
-               }
-            }
+            // foreach (ResourceCell rc in rCells.resourceCells)
+            // {
+            //    if (transform.parent == null) break;
+            //    if (transform.parent.position == rc.cellPosition) {
+            //       resource = rc.resource;
+            //       break;
+            //    }
+            // }
 
-            data.storage.Add(new Resource(resource,0));
+            PlacementSystem placementSystem  = FindObjectOfType<PlacementSystem>();
+            ResourcesEnum resourceEnum = placementSystem.buildingtState.GetOreResource(transform.parent.position);
+            data.storage.Add(new Resource(resourceEnum,0));
+            resource = resourceEnum;
             StartCoroutine(nameof(ExtractResource));
-            // GetComponent<MeshRenderer>().material.color = Color.green;
             break;
          case BuildingsEnum.Storage:
-            GetComponent<MeshRenderer>().material.color = Color.blue;
+            // GetComponent<MeshRenderer>().material.color = Color.blue;
             data.storageBool = true;
             break;
          case BuildingsEnum.MainBase:
-            GetComponent<MeshRenderer>().material.color = Color.red;
+            // GetComponent<MeshRenderer>().material.color = Color.red;
             break;
          default:
             break;
@@ -170,10 +98,9 @@ public class Building : MonoBehaviour
       
       if (dron.movingTo == dron.destination.transform.position) {
          
-         // print("enter dron");
          if (dron.newResource != null) dron.resource = dron.newResource;
 
-         Resource storageResource = data.storage.Find(x => x.name == dron.resource.name);
+         Resource storageResource = data.storage.Find(x => x.resourceEnum == dron.resource.resourceEnum);
          if (storageResource == null) yield return null;
 
          // check storage quantity and choose dron storage quantity
@@ -190,12 +117,12 @@ public class Building : MonoBehaviour
             yield return null;
          }
          List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
-         Resource addressR = addressStorage.Find(x => x.name == dron.resource.name);
+         Resource addressR = addressStorage.Find(x => x.resourceEnum == dron.resource.resourceEnum);
          if (addressR != null)
          {
             addressR.quantity += dron.resource.quantity;
          }else{
-            addressStorage.Add(new Resource(dron.resource.name,dron.resource.quantity));
+            addressStorage.Add(new Resource(dron.resource.resourceEnum,dron.resource.quantity));
          }
       }
       

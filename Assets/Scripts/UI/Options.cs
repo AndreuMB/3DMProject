@@ -64,8 +64,6 @@ public class Options : MonoBehaviour
         
 
         // map grid placement
-        PlacementSystem ps = FindObjectOfType<PlacementSystem>();
-
         foreach (BuildingData building in data.buildings)
         {
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
@@ -96,10 +94,13 @@ public class Options : MonoBehaviour
             if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
         }
 
+        // restore ore manage var
+        resourceDataList = data.ores;
         // generate and set materials in map
         foreach (OreData oreData in data.ores)
         {
-            rm.GenerateOre(oreData);
+            GameObject oreGO = rm.GenerateOre(oreData);
+            ps.PlaceOre(oreGO, oreData.position);
         }
 
         // hud.UpdateDronsHUD();
@@ -126,10 +127,11 @@ public class Options : MonoBehaviour
     void ResourceCellsSpawn() {
         for (int i = 0; i < 20; i++)
         {
-            (GameObject resourceGO, OreData resourceData) = rm.GetRandomResourceGO();
-            resourceData.position = RandomCell();
-            resourceGO.transform.position = resourceData.position;
-            resourceDataList.Add(resourceData);
+            (GameObject oreGO, OreData oreData) = rm.GetRandomResourceGO();
+            oreData.position = RandomCell();
+            ps.PlaceOre(oreGO, oreData.position);
+            // resourceGO.transform.position = resourceData.position;
+            resourceDataList.Add(oreData);
         }
     }
 

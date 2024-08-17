@@ -557,6 +557,7 @@ MonoBehaviour:
   RMSOs:
   - {fileID: 11400000, guid: 9673707de51c4ea4cbd7b5d4bc394a58, type: 2}
   - {fileID: 11400000, guid: 1789f271f7f74c0459ebc20381106017, type: 2}
+  - {fileID: 11400000, guid: e9e6f8e9c0e9e31448dcf3c921ab2111, type: 2}
   rmPrefab: {fileID: 9190915602208657328, guid: fcb94d86fedc17c41840212054f2500f, type: 3}
   rePrefab: {fileID: 3831022693738628878, guid: 293160e0f0d1aa741b35ff80ca57e0a0, type: 3}
   backRESO: {fileID: 11400000, guid: 2120c7d90048f314f84b7feaae366a37, type: 2}
@@ -680,6 +681,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256017452}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &310922428 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+  m_PrefabInstance: {fileID: 1509400721}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &330517772
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1590,6 +1596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FormacionRocas1
       objectReference: {fileID: 0}
+    - target: {fileID: 3104926894237930545, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1783,6 +1793,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
   m_PrefabInstance: {fileID: 182042482}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1160683020
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1160683022}
+  - component: {fileID: 1160683021}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: ResourceCell
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!64 &1160683021
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160683020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1160683022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160683020}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 11.39, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 310922428}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1236243210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1919,6 +1984,10 @@ PrefabInstance:
     - target: {fileID: 8100899476518817162, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
       propertyPath: m_Name
       value: FormacionRocas3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8100899476518817162, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8874340367717963568, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2562,6 +2631,76 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
   m_PrefabInstance: {fileID: 1508213766}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1509400721
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1160683022}
+    m_Modifications:
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332084107572121227, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3104926894237930545, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+      propertyPath: m_Name
+      value: FormacionRocas1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -8767591393415507539, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
 --- !u!1001 &1511737055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3176,6 +3315,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placedGameObject: []
+  cubeMesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   buildingPrefab: {fileID: 7818300422196003943, guid: 862bc10c1cd8d2d4fa3ab343f5eaef2c, type: 3}
 --- !u!1 &1836740401
 GameObject:
@@ -3315,6 +3455,10 @@ PrefabInstance:
     - target: {fileID: 7646094871917563865, guid: 1553b0c543b6d1c47bd0bac0aef6bf22, type: 3}
       propertyPath: m_Name
       value: FormacionRocas2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7646094871917563865, guid: 1553b0c543b6d1c47bd0bac0aef6bf22, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6807,3 +6951,4 @@ SceneRoots:
   - {fileID: 1952512736}
   - {fileID: 925044157}
   - {fileID: 1236243211}
+  - {fileID: 1160683022}

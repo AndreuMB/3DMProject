@@ -12,210 +12,273 @@
             "maxStorage": 100.0,
             "parentName": "MainBase0",
             "parentPosition": {
-                "x": 31.5,
-                "y": 4.894340515136719,
-                "z": 12.5
+                "x": -11.5,
+                "y": 9.586523056030274,
+                "z": 0.5
             },
             "setDrons": [],
             "id": 0
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "resourceEnum": 2,
+                    "quantity": 22.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor21",
+            "parentPosition": {
+                "x": 18.5,
+                "y": 5.164621353149414,
+                "z": 36.5
+            },
+            "setDrons": [],
+            "id": 21
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "resourceEnum": 0,
+                    "quantity": 12.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor22",
+            "parentPosition": {
+                "x": -31.5,
+                "y": 13.393884658813477,
+                "z": 44.5
+            },
+            "setDrons": [],
+            "id": 22
+        },
+        {
+            "buildingType": 0,
+            "quantity": 2.0,
+            "rate": 2.0,
+            "storageBool": true,
+            "storage": [
+                {
+                    "resourceEnum": 1,
+                    "quantity": 2.0
+                }
+            ],
+            "maxStorage": 100.0,
+            "parentName": "Extractor23",
+            "parentPosition": {
+                "x": -42.5,
+                "y": 12.888479232788086,
+                "z": 33.5
+            },
+            "setDrons": [],
+            "id": 23
         }
     ],
     "ores": [
         {
             "position": {
-                "x": -41.500003814697269,
-                "y": 8.141365051269532,
-                "z": -0.5
+                "x": -17.5,
+                "y": 6.841238021850586,
+                "z": -37.5
             },
             "rockFormationEnum": 0,
             "resourceEnum": 0
         },
         {
             "position": {
-                "x": 25.5,
-                "y": 6.102178573608398,
-                "z": -29.5
+                "x": -31.5,
+                "y": 13.393884658813477,
+                "z": 44.5
+            },
+            "rockFormationEnum": 1,
+            "resourceEnum": 0
+        },
+        {
+            "position": {
+                "x": 35.5,
+                "y": 7.141550064086914,
+                "z": -22.5
+            },
+            "rockFormationEnum": 0,
+            "resourceEnum": 2
+        },
+        {
+            "position": {
+                "x": 45.5,
+                "y": 7.164255142211914,
+                "z": 14.5
             },
             "rockFormationEnum": 1,
             "resourceEnum": 2
+        },
+        {
+            "position": {
+                "x": 45.5,
+                "y": 6.86174201965332,
+                "z": 3.5
+            },
+            "rockFormationEnum": 0,
+            "resourceEnum": 0
+        },
+        {
+            "position": {
+                "x": -42.5,
+                "y": 12.888479232788086,
+                "z": 33.49998474121094
+            },
+            "rockFormationEnum": 0,
+            "resourceEnum": 1
         },
         {
             "position": {
                 "x": -12.5,
-                "y": 9.305986404418946,
-                "z": 22.5
-            },
-            "rockFormationEnum": 0,
-            "resourceEnum": 1
-        },
-        {
-            "position": {
-                "x": -37.5,
-                "y": 18.395164489746095,
-                "z": 13.5
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 1
-        },
-        {
-            "position": {
-                "x": -1.5000076293945313,
-                "y": 5.441495895385742,
-                "z": 27.5
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 2
-        },
-        {
-            "position": {
-                "x": 29.5,
-                "y": 4.7280731201171879,
-                "z": 33.49998474121094
-            },
-            "rockFormationEnum": 0,
-            "resourceEnum": 2
-        },
-        {
-            "position": {
-                "x": -30.5,
-                "y": 9.77916145324707,
-                "z": -42.5
+                "y": 6.76725959777832,
+                "z": -36.5
             },
             "rockFormationEnum": 2,
             "resourceEnum": 0
-        },
-        {
-            "position": {
-                "x": -47.500003814697269,
-                "y": 10.078006744384766,
-                "z": -45.5
-            },
-            "rockFormationEnum": 0,
-            "resourceEnum": 0
-        },
-        {
-            "position": {
-                "x": -7.500007629394531,
-                "y": 7.2770538330078129,
-                "z": 49.5
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 2
-        },
-        {
-            "position": {
-                "x": 21.49999237060547,
-                "y": 5.665630340576172,
-                "z": -14.500007629394532
-            },
-            "rockFormationEnum": 2,
-            "resourceEnum": 1
         },
         {
             "position": {
                 "x": 42.5,
-                "y": 6.440578460693359,
-                "z": 41.5
+                "y": 8.689983367919922,
+                "z": -40.500003814697269
+            },
+            "rockFormationEnum": 1,
+            "resourceEnum": 1
+        },
+        {
+            "position": {
+                "x": -20.50000762939453,
+                "y": 5.844350814819336,
+                "z": -9.5
+            },
+            "rockFormationEnum": 0,
+            "resourceEnum": 1
+        },
+        {
+            "position": {
+                "x": -0.5,
+                "y": 7.484344482421875,
+                "z": 49.5
+            },
+            "rockFormationEnum": 2,
+            "resourceEnum": 2
+        },
+        {
+            "position": {
+                "x": -7.500007629394531,
+                "y": 16.05640411376953,
+                "z": 11.5
             },
             "rockFormationEnum": 1,
             "resourceEnum": 0
         },
         {
             "position": {
-                "x": -24.5,
-                "y": 11.46969223022461,
+                "x": 15.5,
+                "y": 6.454496383666992,
+                "z": -22.5
+            },
+            "rockFormationEnum": 1,
+            "resourceEnum": 2
+        },
+        {
+            "position": {
+                "x": -49.5,
+                "y": 9.019594192504883,
+                "z": -33.5
+            },
+            "rockFormationEnum": 1,
+            "resourceEnum": 1
+        },
+        {
+            "position": {
+                "x": -16.5,
+                "y": 9.702251434326172,
+                "z": 24.5
+            },
+            "rockFormationEnum": 1,
+            "resourceEnum": 0
+        },
+        {
+            "position": {
+                "x": 24.5,
+                "y": 6.535066604614258,
+                "z": -34.5
+            },
+            "rockFormationEnum": 2,
+            "resourceEnum": 2
+        },
+        {
+            "position": {
+                "x": 47.5,
+                "y": 6.056764602661133,
                 "z": 35.5
             },
             "rockFormationEnum": 1,
-            "resourceEnum": 1
+            "resourceEnum": 2
         },
         {
             "position": {
-                "x": 21.49999237060547,
-                "y": 5.637063980102539,
-                "z": 4.499992370605469
+                "x": 37.5,
+                "y": 6.76286506652832,
+                "z": -11.5
             },
             "rockFormationEnum": 1,
-            "resourceEnum": 1
+            "resourceEnum": 2
         },
         {
             "position": {
-                "x": -5.5,
-                "y": 6.870536804199219,
-                "z": -43.5
+                "x": -43.5,
+                "y": 15.775862693786621,
+                "z": 22.5
             },
             "rockFormationEnum": 0,
-            "resourceEnum": 0
+            "resourceEnum": 2
         },
         {
             "position": {
-                "x": -33.5,
-                "y": 18.375389099121095,
-                "z": 14.5
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 1
-        },
-        {
-            "position": {
-                "x": -13.5,
-                "y": 6.403955459594727,
-                "z": -46.500003814697269
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 1
-        },
-        {
-            "position": {
-                "x": 33.49998474121094,
-                "y": 6.2655181884765629,
-                "z": 49.5
-            },
-            "rockFormationEnum": 1,
-            "resourceEnum": 0
-        },
-        {
-            "position": {
-                "x": 36.5,
-                "y": 5.9461669921875,
-                "z": -7.500007629394531
+                "x": 18.49999237060547,
+                "y": 5.164621353149414,
+                "z": 36.5
             },
             "rockFormationEnum": 2,
-            "resourceEnum": 1
-        },
-        {
-            "position": {
-                "x": -11.5,
-                "y": 17.627540588378908,
-                "z": 13.5
-            },
-            "rockFormationEnum": 0,
             "resourceEnum": 2
         },
         {
             "position": {
-                "x": 36.5,
-                "y": 7.503389358520508,
-                "z": -24.5
+                "x": -42.5,
+                "y": 6.2354888916015629,
+                "z": -23.5
             },
             "rockFormationEnum": 1,
-            "resourceEnum": 2
+            "resourceEnum": 0
         }
     ],
     "cameraPosition": {
-        "x": 8.359026908874512,
-        "y": 8.025535583496094,
-        "z": 13.92814826965332
+        "x": -35.228492736816409,
+        "y": 17.530986785888673,
+        "z": 39.98603820800781
     },
     "cameraRotation": {
         "x": 0.0,
-        "y": 0.15641087293624879,
+        "y": -0.9563047289848328,
         "z": 0.0,
-        "w": 0.98769211769104
+        "w": -0.292371928691864
     },
     "zoom": {
         "x": 0.0,
-        "y": 17.999980926513673,
-        "z": -17.999980926513673
+        "y": 12.005023956298829,
+        "z": -12.005023956298829
     }
 }

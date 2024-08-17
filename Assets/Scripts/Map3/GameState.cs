@@ -60,29 +60,18 @@ public class GameState : IBuildingtState
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true);
     }
 
-    private bool CheckPlacementValidity(Vector3Int gridPosition, ObjectData selectedObject)
+    private bool CheckPlacementValidity(Vector3Int gridPosition, Vector2Int size)
     {
         GridData selectedData = floorData;
-        return selectedData.CanPlaceObjectAt(gridPosition, selectedObject.Size);
+        return selectedData.CanPlaceObjectAt(gridPosition, size);
     }
 
     public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType, Vector3 gridPositionFloat){
         ObjectData buildingData = database.objectsData.Find(x => x.Type == bType);
-        bool placementValidity = CheckPlacementValidity(gridPosition, buildingData);
-        if (!placementValidity) { return null; }
+        bool placementValidity = CheckPlacementValidity(gridPosition, buildingData.Size);
+        if (!placementValidity && bType != BuildingsEnum.Extractor) { return null; }
         // int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
         Vector3 positionWorld = grid.CellToWorld(gridPosition);
-
-        // Ray ray = new Ray(new Vector3(positionWorld.x, positionWorld.y + 10 ,positionWorld.z), Vector3.down);
-        // RaycastHit hit;
-        // if (Physics.Raycast(ray, out hit,100, GameObject.FindObjectOfType<InputManager>().GetPlacementLayer()))
-        // {
-        //     Debug.Log(hit.collider.gameObject.name);
-        //     Debug.Log(hit.point);
-        //     // lastPosition = hit.point;
-        //     // print("lastPosition = " + lastPosition);
-        //     positionWorld.y = hit.point.y;
-        // }
 
         (int,GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat,bType);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
@@ -92,6 +81,14 @@ public class GameState : IBuildingtState
         SelectCell(gridPosition,gridPositionFloat);
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
         return dataB.Item2;
+    }
+
+    public ResourcesEnum GetOreResource(Vector3 position){
+        Vector3Int gridPosition = grid.WorldToCell(position);
+        GameObject oreGO = GetGOFromCell(gridPosition);
+        ResourcesEnum resource = oreGO.GetComponent<Ore>().oreData.resourceEnum;
+        Remove(gridPosition);
+        return resource;
     }
 
     public void Remove(Vector3Int gridPosition){
@@ -117,7 +114,38 @@ public class GameState : IBuildingtState
         }
     }
 
+    public GameObject GetGOFromCell(Vector3Int gridPosition){
+        GridData selectedData = null;
+        if (buildData.CanPlaceObjectAt(gridPosition,Vector2Int.one) == false) 
+        {
+            selectedData = buildData;
+        }
+        else if (floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one)== false)
+        {
+            selectedData = floorData;
+        }
+        if (selectedData == null)
+        {
+            //sound
+        }
+        else
+        {
+            selectedObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+            if (selectedObjectIndex == -1) { return null; }
+            return objectPlacer.GetGObjectAt(selectedObjectIndex);
+        }
+        return null;
+    }
+
     public void SelectCell(Vector3Int gridPosition, Vector3 gridPositionFloat){
         previewSystem.UndatePosition(gridPositionFloat, true,true);
+    }
+
+    public void BuildOre(Vector3Int gridPosition, GameObject oreGO, Vector3 position){
+        bool placementValidity = CheckPlacementValidity(gridPosition, new Vector2Int(1,1));
+        if (!placementValidity) return;
+        (int,GameObject) data = objectPlacer.PlaceOre(oreGO, position);
+        GridData selectedData = floorData;
+        selectedData.AddObjectAt(gridPosition, new Vector2Int(1,1), 0, data.Item1);
     }
 }

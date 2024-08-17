@@ -47,6 +47,7 @@ public class PlacementState : IBuildingtState
     }
     public void OnAction(Vector3Int gridPosition)
     {
+        Debug.Log("enter on Action");
         bool placementValidity = CheckPlacementValidity(gridPosition, selectedObjectIndex);
         if (!placementValidity) { return; }
         int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));

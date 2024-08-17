@@ -42,51 +42,46 @@ public class ResourceManager : MonoBehaviour
     }
 
     public (GameObject, OreData) GetRandomResourceGO() {
-
         // Random rock formation
         int randomIndexRF = Random.Range(0, rockFormationDictionary.Count);
-
         KeyValuePair<RockFormationsEnum, GameObject> rockFormationEntry = rockFormationDictionary.ElementAt(randomIndexRF);
-        GameObject rockFormation = rockFormationEntry.Value;
 
         // Random resource
         int randomIndexR  = Random.Range(0, resourceDictionary.Count);
         KeyValuePair<ResourcesEnum, Material> resourceEntry = resourceDictionary.ElementAt(randomIndexR);
-        Material resource = resourceEntry.Value;
 
-        print("rockFormation.name = " + rockFormation.name);
-        print("resource.name = " + resource.name);
-        
-        foreach (Transform child in rockFormation.transform)
+        // Save given properties
+        OreData oreData = new()
+        {
+            rockFormationEnum = rockFormationEntry.Key,
+            resourceEnum = resourceEntry.Key
+        };
+
+        GameObject oreGO = GenerateOre(oreData);
+        return (oreGO, oreData);
+    }
+
+    public GameObject GenerateOre(OreData oreData){
+        GameObject oreGO = Instantiate(rockFormationDictionary[oreData.rockFormationEnum]);
+        oreGO = SetMaterial(oreGO,oreData.resourceEnum);
+        oreGO.AddComponent<Ore>().oreData = oreData;
+        return oreGO;
+    }
+
+    private GameObject SetMaterial(GameObject oreGO, ResourcesEnum resource) {
+         foreach (Transform child in oreGO.transform)
         {
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             if (meshRenderer != null)
             {
-                meshRenderer.material = resource;
+                meshRenderer.material = resourceDictionary[resource];
             }
             else
             {
                 Debug.LogWarning($"MeshRenderer not found on {child.name}");
             }
         }
-
-        GameObject resourceGO = Instantiate(rockFormation);
-        OreData resourceData = new()
-        {
-            rockFormationEnum = rockFormationEntry.Key,
-            resourceEnum = resourceEntry.Key
-        };
-
-
-        return (resourceGO, resourceData);
-    }
-
-    public void GenerateOre(OreData oreData){
-        GameObject oreGO = Instantiate(rockFormationDictionary[oreData.rockFormationEnum],oreData.position,Quaternion.identity);
-        foreach (Transform child in oreGO.transform)
-        {
-            child.GetComponent<MeshRenderer>().material = resourceDictionary[oreData.resourceEnum];
-        }
+        return oreGO;
     }
 
     

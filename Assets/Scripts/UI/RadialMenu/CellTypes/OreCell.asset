@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
-  m_Name: Building
+  m_Script: {fileID: 11500000, guid: b1c45f753a2e29a4b9d8abbca45d16f8, type: 3}
+  m_Name: OreCell
   m_EditorClassIdentifier: 
-  elementName: Building
-  customFunctionName: Build
-  buildId: 0
-  buildingType: 0
-  parent: {fileID: 11400000, guid: fff4115cdf215ea45a92bae7109ce920, type: 2}
+  elements:
+  - {fileID: 11400000, guid: 7c63b0f95cb97b14c9ad2f50301de8b9, type: 2}
