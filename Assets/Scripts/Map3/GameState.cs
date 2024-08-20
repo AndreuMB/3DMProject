@@ -86,6 +86,7 @@ public class GameState : IBuildingtState
     public ResourcesEnum GetOreResource(Vector3 position){
         Vector3Int gridPosition = grid.WorldToCell(position);
         GameObject oreGO = GetGOFromCell(gridPosition);
+        if (!oreGO || !oreGO.GetComponent<Ore>()) return ResourcesEnum.cooper;
         ResourcesEnum resource = oreGO.GetComponent<Ore>().oreData.resourceEnum;
         Remove(gridPosition);
         return resource;
@@ -101,17 +102,13 @@ public class GameState : IBuildingtState
         {
             selectedData = floorData;
         }
-        if (selectedData == null)
-        {
-            //sound
-        }
-        else
-        {
-            selectedObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
-            if (selectedObjectIndex == -1) { return; }
-            selectedData.RemoveObjectAt(gridPosition);
-            objectPlacer.RemoveObjectAt(selectedObjectIndex);
-        }
+        
+        if (selectedData == null) return;
+        
+        selectedObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+        if (selectedObjectIndex == -1) { return; }
+        selectedData.RemoveObjectAt(gridPosition);
+        objectPlacer.RemoveObjectAt(selectedObjectIndex);
     }
 
     public GameObject GetGOFromCell(Vector3Int gridPosition){
