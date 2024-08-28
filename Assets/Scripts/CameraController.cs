@@ -30,6 +30,7 @@ public class CameraController : MonoBehaviour
 
     Terrain terrain; // Reference to the terrain
     float terrainHeight;
+    GameObject optionsMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -38,11 +39,14 @@ public class CameraController : MonoBehaviour
         newRotation = transform.rotation;
         newZoom = cameraTransform.localPosition;
         terrain = Terrain.activeTerrain;
+        optionsMenu = FindObjectOfType<Options>().gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (optionsMenu.activeSelf) return;
 
         HandleKeyboardInput();
         HandleMouseInput();

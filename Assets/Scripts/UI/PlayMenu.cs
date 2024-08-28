@@ -16,4 +16,6 @@ public class PlayMenu : MonoBehaviour
         DataSystem.newgame = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
+
+    
 }

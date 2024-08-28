@@ -50,18 +50,6 @@ public class Building : MonoBehaviour
       {
          case BuildingsEnum.Extractor:
             data.storageBool = true;
-            
-            // ResourceCells rCells = FindObjectOfType<ResourceCells>();
-            
-            // foreach (ResourceCell rc in rCells.resourceCells)
-            // {
-            //    if (transform.parent == null) break;
-            //    if (transform.parent.position == rc.cellPosition) {
-            //       resource = rc.resource;
-            //       break;
-            //    }
-            // }
-
             PlacementSystem placementSystem  = FindObjectOfType<PlacementSystem>();
             ResourcesEnum resourceEnum = placementSystem.buildingtState.GetOreResource(transform.parent.position);
             data.storage.Add(new Resource(resourceEnum,0));

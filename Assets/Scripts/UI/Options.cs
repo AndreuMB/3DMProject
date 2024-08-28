@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
@@ -12,6 +13,7 @@ public class Options : MonoBehaviour
     PlacementSystem ps;
     HUD hud;
     ResourceManager rm;
+    [SerializeField] SavesMenu savesMenu;
     
     void Start(){
         ps = FindObjectOfType<PlacementSystem>();
@@ -31,23 +33,24 @@ public class Options : MonoBehaviour
 
     }
 
-    public void SaveGame(){
+    public FileInfo SaveGame(string savefileName){
         Player player = FindObjectOfType<Player>();
         GameObject[] buildingsGO = GameObject.FindGameObjectsWithTag("Building");
 
         List<BuildingData> buildings = new();
-        foreach (GameObject extractor in buildingsGO)
+        foreach (GameObject buildingGO in buildingsGO)
         {
-            Building extractorComp = extractor.GetComponent<Building>();
-            extractorComp.data.parentName = extractor.name;
-            extractorComp.data.parentPosition = extractor.transform.position;
-            buildings.Add(extractorComp.data);
+            Building building = buildingGO.GetComponent<Building>();
+            building.data.parentName = buildingGO.name;
+            building.data.parentPosition = buildingGO.transform.position;
+            buildings.Add(building.data);
         }
-        DataSystem.SaveToJson(player, buildings, resourceDataList);
+        return DataSystem.SaveToJson(player, buildings, resourceDataList, savefileName);
     }
 
-    public void LoadGame(){
+    public void LoadGame(string savefileName){
         DataSystem.newgame = false;
+        DataSystem.savefileName = savefileName;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -58,7 +61,7 @@ public class Options : MonoBehaviour
     public void LoadData(){
         CleanMap();
         
-        GameData data = DataSystem.LoadFromJson();
+        GameData data = DataSystem.LoadFromJson(DataSystem.savefileName);
         if(data == null) return;
 
         
@@ -144,5 +147,10 @@ public class Options : MonoBehaviour
             return hit.point;
         }
         return new(0,0,0);
+    }
+
+    void OnDisable()
+    {
+        savesMenu.ClosePanel();
     }
 }

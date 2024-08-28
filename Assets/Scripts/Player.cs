@@ -42,6 +42,7 @@ public class Player : MonoBehaviour
         {
             optionsMenu.SetActive(!optionsMenu.activeInHierarchy);
         }
+        if (optionsMenu.activeSelf) return;
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {

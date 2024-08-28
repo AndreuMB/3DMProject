@@ -28,15 +28,5 @@ public class GameData
         cameraRotation = cameraTransform.rotation;
         zoom = cameraTransform.GetChild(0).transform.localPosition;
         ores = resources;
-        
-        
-        // buildings.Add(extractors[0].data);
-        // foreach (Extractor extractor in extractors)
-        // {
-        //     Debug.Log("extractor.name = " + extractor.name);
-        //     Debug.Log("extractor.data = " + extractor.data);
-        //     buildings.Add(extractor.data);
-        // }
-        // resources = player.resources;
     }
 }
