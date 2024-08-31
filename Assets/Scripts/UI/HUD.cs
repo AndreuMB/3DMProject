@@ -15,6 +15,8 @@ public class HUD : MonoBehaviour
     [SerializeField] GameObject DMBtn;
     public GameObject DMMenu;
     [SerializeField] GameObject DronUpgradeBtn;
+    public GameObject buttonPrefab;
+    public Transform buildingButtpnsPanel;
 
     // void Start(){
     //     if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
@@ -57,6 +59,7 @@ public class HUD : MonoBehaviour
         {
             if (selectedBuilding.data.storageBool) DMBtn.SetActive(true);
             if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
+            if (selectedBuilding.buildingType != null) selectedBuilding.GetComponent<IBuilding>().ShowHUD();
             ShowResourcesBuilding(selectedGO.GetComponent<Building>());
         }
     }

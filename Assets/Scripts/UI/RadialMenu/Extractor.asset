@@ -15,5 +15,5 @@ MonoBehaviour:
   elementName: Extractor
   customFunctionName: BuildBuilding
   buildId: 0
-  buildingType: 0
+  buildingType: 1
   parent: {fileID: 0}

@@ -9,6 +9,7 @@ public class Building : MonoBehaviour
    public BuildingData data;
    Player player;
    HUD hud;
+   public IBuilding buildingType;
    bool formatB = true;
    
    // Start is called before the first frame update
@@ -48,6 +49,8 @@ public class Building : MonoBehaviour
       if (!formatB) return;
       switch (data.buildingType)
       {
+         case BuildingsEnum.MainBase:
+            break;
          case BuildingsEnum.Extractor:
             data.storageBool = true;
             PlacementSystem placementSystem  = FindObjectOfType<PlacementSystem>();
@@ -57,13 +60,11 @@ public class Building : MonoBehaviour
             StartCoroutine(nameof(ExtractResource));
             break;
          case BuildingsEnum.Storage:
-            // GetComponent<MeshRenderer>().material.color = Color.blue;
             data.storageBool = true;
             break;
-         case BuildingsEnum.MainBase:
-            // GetComponent<MeshRenderer>().material.color = Color.red;
-            break;
-         default:
+         case BuildingsEnum.Foundry:
+            Foundry foundry = gameObject.AddComponent<Foundry>();
+            buildingType = foundry;
             break;
       }
       formatB = false;
@@ -124,7 +125,8 @@ public class Building : MonoBehaviour
 }
 
 public enum BuildingsEnum{
+   MainBase,
    Extractor,
    Storage,
-   MainBase
+   Foundry,
 }
