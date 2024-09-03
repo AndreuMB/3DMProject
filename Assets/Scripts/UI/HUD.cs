@@ -12,33 +12,21 @@ public class HUD : MonoBehaviour
     [SerializeField] GameObject resourceContainer;
     [SerializeField] GameObject resourcePrefab;
     List<Resource> resourcesSE;
-    [SerializeField] GameObject DMBtn;
-    public GameObject DMMenu;
-    [SerializeField] GameObject DronUpgradeBtn;
+    [SerializeField] GameObject dronMenuBtn;
+    // public GameObject DMMenu;
+    // [SerializeField] GameObject DronUpgradeBtn;
     public GameObject buttonPrefab;
+    // [SerializeField] GameObject dronManagerPrefab;
     public Transform buildingButtpnsPanel;
-
-    // void Start(){
-    //     if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
-    //     // if (!FindObjectOfType<Player>()) return;
-    //     player = FindObjectOfType<Player>();
-        
-    //     player.selectedGOev.AddListener(ShowGOHUD);
-    //     DMBtn.SetActive(false);
-    //     DMMenu.SetActive(false);
-    //     DronUpgradeBtn.SetActive(false);
-    //     UpdateDronsHUD();
-    // }
     
     public void IniHUD(){
         if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
-        // if (!FindObjectOfType<Player>()) return;
         player = FindObjectOfType<Player>();
         
         player.selectedGOev.AddListener(ShowGOHUD);
-        DMBtn.SetActive(false);
-        DMMenu.SetActive(false);
-        DronUpgradeBtn.SetActive(false);
+        // DMBtn.SetActive(false);
+        // DMMenu.SetActive(false);
+        // DronUpgradeBtn.SetActive(false);
         UpdateDronsHUD();
     }
 
@@ -53,14 +41,17 @@ public class HUD : MonoBehaviour
     }
     
     public void ShowGOHUD(GameObject selectedGO){
+        if (!player.GetMouseSelectorStatus()) return;
         CleanHUDContainer();
         Building selectedBuilding = selectedGO.GetComponent<Building>();
         if (selectedBuilding)
         {
-            if (selectedBuilding.data.storageBool) DMBtn.SetActive(true);
-            if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
+            // if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
             if (selectedBuilding.buildingType != null) selectedBuilding.GetComponent<IBuilding>().ShowHUD();
-            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
+            if (selectedBuilding.data.storageBool) {
+                SetDronManagerButton();
+                ShowResourcesBuilding(selectedGO.GetComponent<Building>());
+            }
         }
     }
 
@@ -95,18 +86,14 @@ public class HUD : MonoBehaviour
     }
 
     void CleanHUDContainer(){
-        DMBtn.SetActive(false);
-        DronUpgradeBtn.SetActive(false);
+        // DMBtn.SetActive(false);
+        // DronUpgradeBtn.SetActive(false);
+        CleanButtonsPanel();
         resourcesSE = null;
         foreach (Transform child in resourceContainer.transform) {
             Destroy(child.gameObject);
         }
     }
-
-    public void ManageDrons(){
-        DMMenu.SetActive(!DMMenu.activeInHierarchy);
-    }
-
     public void UpdateDronsHUD(){
         drons.text = "DRONS " + player.drons.ToString();
     }
@@ -117,4 +104,31 @@ public class HUD : MonoBehaviour
         player.dronStorage += 2;
         UpdateDronsHUD();
     }
+
+    public void GenerateButtons(List<string> buttonsList){
+        foreach (string buttonName in buttonsList)
+        {
+            GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
+            buttonGO.GetComponentInChildren<TMP_Text>().text = buttonName;
+        }
+    }
+
+    void CleanButtonsPanel(){
+        foreach (Transform child in buildingButtpnsPanel.transform) {
+            Destroy(child.gameObject);
+        }
+    }
+
+    void SetDronManagerButton() {
+        Instantiate(dronMenuBtn, buildingButtpnsPanel);
+        // GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
+        // buttonGO.GetComponentInChildren<TMP_Text>().text = "Manage Drons";
+        // SetDronManagerMenu(buttonGO.GetComponent<Button>());
+
+    }
+
+    // void SetDronManagerMenu(Button button) {
+    //     GameObject dronManagerGO = Instantiate(dronManagerPrefab, buildingButtpnsPanel);
+    //     button.onClick.AddListener(() => dronManagerGO.SetActive(!dronManagerGO.activeSelf));
+    // }
 }

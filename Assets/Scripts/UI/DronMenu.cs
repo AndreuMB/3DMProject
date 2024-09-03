@@ -22,6 +22,7 @@ public class DronMenu : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         addBtn.GetComponent<Button>().interactable = false;
+        ToggleMenu();
     }
 
     void OnEnable(){
@@ -39,8 +40,13 @@ public class DronMenu : MonoBehaviour
             if(dron.dronRef.origin == player.selectedGO) AddRow(dron.dronRef);
         }
 
-        
+        player.SetMouseSelectorStatus(false);
         AddRowBtnStatus();
+    }
+
+    void OnDisable()
+    {
+        player.SetMouseSelectorStatus(true);
     }
 
     // Update is called once per frame
@@ -140,6 +146,10 @@ public class DronMenu : MonoBehaviour
             dron.dronGoal.Invoke();
         }
         
+    }
+
+    public void ToggleMenu(){
+        gameObject.SetActive(!gameObject.activeSelf);
     }
 
     

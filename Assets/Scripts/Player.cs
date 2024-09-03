@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class Player : MonoBehaviour
 {
@@ -12,13 +13,14 @@ public class Player : MonoBehaviour
     public GameObject rmGO;
     HUD HUDR;
     [Header("Dron Settings")]
-    public int drons;
-    public int dronStorage;
-    public float dronSpeed;
+    public int drons = 2;
+    public int dronStorage = 1;
+    public float dronSpeed = 2;
     public GameObject selectedGO;
     public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
     PlacementSystem ps;
+    bool mouseSelector = true;
 
     void Awake() {
         ps = FindObjectOfType<PlacementSystem>();
@@ -84,11 +86,16 @@ public class Player : MonoBehaviour
 
         }
 
-        if(HUDR.DMMenu.activeInHierarchy) return;
+        // if mouse selector false not left click interaction
+        if(!mouseSelector) return;
 
-        if(Input.GetMouseButtonDown(0) && !rmGO) // left click
+        if(Input.GetMouseButtonDown(0)) // left click
         {
-            // selectedGO = GetClickedGO();
+            // if button click not select cell
+            if (EventSystem.current.IsPointerOverGameObject()) return;
+            // if radial menu open not select cell
+            if (rmGO) return;
+
             SetClickedGO();
             ps.SelectCell();
         }
@@ -128,6 +135,14 @@ public class Player : MonoBehaviour
 
     public bool OptionsStatus() {
         return optionsMenu.activeInHierarchy;
+    }
+
+    public void SetMouseSelectorStatus(bool status) {
+        mouseSelector = status;
+    }
+
+    public bool GetMouseSelectorStatus() {
+        return mouseSelector;
     }
 
 }

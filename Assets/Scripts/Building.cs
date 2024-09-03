@@ -50,6 +50,8 @@ public class Building : MonoBehaviour
       switch (data.buildingType)
       {
          case BuildingsEnum.MainBase:
+            MainBase mainBase = gameObject.AddComponent<MainBase>();
+            buildingType = mainBase;
             break;
          case BuildingsEnum.Extractor:
             data.storageBool = true;

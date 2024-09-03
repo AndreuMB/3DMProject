@@ -90,12 +90,12 @@ public class Options : MonoBehaviour
         }
 
         // set drons in buildings
-        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
-        foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
-        {
-            Building building = buildingGO.GetComponent<Building>();
-            if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
-        }
+        // DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
+        // foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
+        // {
+        //     Building building = buildingGO.GetComponent<Building>();
+        //     if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
+        // }
 
         // restore ore manage var
         resourceDataList = data.ores;

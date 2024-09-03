@@ -38,7 +38,7 @@ public class ObjectPlacer : MonoBehaviour
         newParent.transform.position = position;
         building.SetBuildType(bType);
         placedGameObject.Add(newObject);
-        if (player) player.SetActiveGO(newObject);
+        // if (player) player.SetActiveGO(newObject);
         return (placedGameObject.Count - 1, newObject);
         // return newObject;
     }
