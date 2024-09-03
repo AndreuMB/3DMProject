@@ -13,16 +13,21 @@ public class Options : MonoBehaviour
     PlacementSystem ps;
     HUD hud;
     ResourceManager rm;
+    [SerializeField] GameObject dronPrefab;
     [SerializeField] SavesMenu savesMenu;
-    
-    void Start(){
+
+    void Start()
+    {
         ps = FindObjectOfType<PlacementSystem>();
         hud = FindObjectOfType<HUD>();
         rm = FindObjectOfType<ResourceManager>();
 
-        if (!DataSystem.newgame) {
+        if (!DataSystem.newgame)
+        {
             LoadData();
-        } else {
+        }
+        else
+        {
             MainBaseSpawn();
             ResourceCellsSpawn();
             // hud.IniHUD();
@@ -33,8 +38,9 @@ public class Options : MonoBehaviour
 
     }
 
-    public FileInfo SaveGame(string savefileName){
-        Player player = FindObjectOfType<Player>();
+    public FileInfo SaveGame(string savefileName)
+    {
+        MainBase mainBase = FindObjectOfType<MainBase>();
         GameObject[] buildingsGO = GameObject.FindGameObjectsWithTag("Building");
 
         List<BuildingData> buildings = new();
@@ -45,45 +51,51 @@ public class Options : MonoBehaviour
             building.data.parentPosition = buildingGO.transform.position;
             buildings.Add(building.data);
         }
-        return DataSystem.SaveToJson(player, buildings, resourceDataList, savefileName);
+        return DataSystem.SaveToJson(mainBase, buildings, resourceDataList, savefileName);
     }
 
-    public void LoadGame(string savefileName){
+    public void LoadGame(string savefileName)
+    {
         DataSystem.newgame = false;
         DataSystem.savefileName = savefileName;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void ExitGame(){
+    public void ExitGame()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
     }
 
-    public void LoadData(){
+    public void LoadData()
+    {
         CleanMap();
-        
-        GameData data = DataSystem.LoadFromJson(DataSystem.savefileName);
-        if(data == null) return;
 
-        
+        GameData data = DataSystem.LoadFromJson(DataSystem.savefileName);
+        if (data == null) return;
+
+
 
         // map grid placement
         foreach (BuildingData building in data.buildings)
         {
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
-            if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+            if (!buildingGO) continue;
+            buildingGO.GetComponent<Building>().data = building;
             if (building.buildingType == BuildingsEnum.MainBase) buildingGO.AddComponent<Player>();
+            buildingGO.name = building.parentName;
         }
 
-        Player player = FindObjectOfType<Player>();
-        if (!player) return;
+        MainBase mainBase = FindObjectOfType<MainBase>();
+        if (!mainBase) return;
 
         // dron upgrades
-        player.drons = data.drons;
-        player.dronStorage = data.dronStorage;
-        player.dronSpeed = data.dronSpeed;
+        mainBase.drons = data.drons;
+        mainBase.dronStorage = data.dronStorage;
+        mainBase.dronSpeed = data.dronSpeed;
 
         // set camera position
-        if (data.cameraPosition != Vector3.zero) {
+        if (data.cameraPosition != Vector3.zero)
+        {
             Camera.main.transform.parent.position = data.cameraPosition;
             Camera.main.transform.parent.rotation = data.cameraRotation;
             Camera.main.transform.localPosition = data.zoom;
@@ -91,11 +103,11 @@ public class Options : MonoBehaviour
 
         // set drons in buildings
         // DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
-        // foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
-        // {
-        //     Building building = buildingGO.GetComponent<Building>();
-        //     if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
-        // }
+        foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
+        {
+            Building building = buildingGO.GetComponent<Building>();
+            if (building) LoadDrons(building.data.setDrons, buildingGO);
+        }
 
         // restore ore manage var
         resourceDataList = data.ores;
@@ -105,12 +117,10 @@ public class Options : MonoBehaviour
             GameObject oreGO = rm.GenerateOre(oreData);
             ps.PlaceOre(oreGO, oreData.position);
         }
-
-        // hud.UpdateDronsHUD();
-        // player.resources = data.resources;
     }
-    
-    void CleanMap(){
+
+    void CleanMap()
+    {
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
         foreach (var building in buildings)
         {
@@ -119,7 +129,8 @@ public class Options : MonoBehaviour
         }
     }
 
-    void MainBaseSpawn(Vector3? position = null) {
+    void MainBaseSpawn(Vector3? position = null)
+    {
         GameObject mainBase;
         mainBase = position == null ? ps.LoadBuildings(RandomCell(), BuildingsEnum.MainBase)
             : ps.LoadBuildings(position.Value, BuildingsEnum.MainBase);
@@ -127,7 +138,8 @@ public class Options : MonoBehaviour
         FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
     }
 
-    void ResourceCellsSpawn() {
+    void ResourceCellsSpawn()
+    {
         for (int i = 0; i < 20; i++)
         {
             (GameObject oreGO, OreData oreData) = rm.GetRandomResourceGO();
@@ -138,19 +150,36 @@ public class Options : MonoBehaviour
         }
     }
 
-    Vector3 RandomCell() {
-        
-        Ray ray = new Ray(new(Random.Range(-50, 50)+0.5f,50,Random.Range(-50, 50)+0.5f), Vector3.down);
+    Vector3 RandomCell()
+    {
+
+        Ray ray = new Ray(new(Random.Range(-50, 50) + 0.5f, 50, Random.Range(-50, 50) + 0.5f), Vector3.down);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit,100, FindObjectOfType<InputManager>().GetPlacementLayer()))
+        if (Physics.Raycast(ray, out hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
         {
             return hit.point;
         }
-        return new(0,0,0);
+        return new(0, 0, 0);
     }
 
     void OnDisable()
     {
         savesMenu.ClosePanel();
+    }
+
+    public void LoadDrons(List<DronData> dronDataList, GameObject origin)
+    {
+        foreach (DronData dronData in dronDataList)
+        {
+            GameObject dronGO = Instantiate(dronPrefab, dronData.dronPosition, Quaternion.identity);
+            dronGO.AddComponent<Dron>();
+            Dron dron = dronGO.GetComponent<Dron>();
+            dron.dronData = dronData;
+            dron.dronData.dronRef = dron;
+            dron.SetData(origin, GameObject.Find(dronData.destination), dronData.resource, dronData.movingTo);
+            origin.GetComponent<Building>().StartDronV2(dron);
+            dron.dronGoal.Invoke();
+        }
+
     }
 }

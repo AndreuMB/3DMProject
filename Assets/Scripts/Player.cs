@@ -8,14 +8,8 @@ using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
     GameObject optionsMenu;
-    // RadialMenu mainRadialMenu;
     RMManager rMManager;
     public GameObject rmGO;
-    HUD HUDR;
-    [Header("Dron Settings")]
-    public int drons = 2;
-    public int dronStorage = 1;
-    public float dronSpeed = 2;
     public GameObject selectedGO;
     public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
@@ -25,17 +19,11 @@ public class Player : MonoBehaviour
     void Awake() {
         ps = FindObjectOfType<PlacementSystem>();
         rMManager = FindAnyObjectByType<RMManager>();
-        HUDR = FindAnyObjectByType<HUD>();
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
         canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
     }
 
     void Start(){
-
-        // mainRadialMenu = FindAnyObjectByType<RadialMenu>();
-        // mainRadialMenu.gameObject.SetActive(false);
-
-        
         optionsMenu.SetActive(false);
     }
 
@@ -110,11 +98,6 @@ public class Player : MonoBehaviour
             return hit.transform.gameObject;
         }
         return null;
-    }
-
-    public void SetDrons(int dronsNew){
-        drons = dronsNew;
-        HUDR.UpdateDronsHUD();
     }
 
     void SetClickedGO(){

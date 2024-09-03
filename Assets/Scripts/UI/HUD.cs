@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,7 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] TMP_Text drons;
     Player player;
+    MainBase mainBase;
     [SerializeField] GameObject resourceContainer;
     [SerializeField] GameObject resourcePrefab;
     List<Resource> resourcesSE;
@@ -22,6 +24,7 @@ public class HUD : MonoBehaviour
     public void IniHUD(){
         if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
         player = FindObjectOfType<Player>();
+        mainBase = FindObjectOfType<MainBase>();
         
         player.selectedGOev.AddListener(ShowGOHUD);
         // DMBtn.SetActive(false);
@@ -95,21 +98,15 @@ public class HUD : MonoBehaviour
         }
     }
     public void UpdateDronsHUD(){
-        drons.text = "DRONS " + player.drons.ToString();
+        drons.text = "DRONS " + mainBase.drons.ToString();
     }
 
-    public void UpgradeDrons(){
-        player.drons += 1;
-        player.dronSpeed += 1;
-        player.dronStorage += 2;
-        UpdateDronsHUD();
-    }
-
-    public void GenerateButtons(List<string> buttonsList){
-        foreach (string buttonName in buttonsList)
+    public void GenerateButtons(List<ButtonData> buttonsList){
+        foreach (ButtonData buttonData in buttonsList)
         {
             GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
-            buttonGO.GetComponentInChildren<TMP_Text>().text = buttonName;
+            buttonGO.GetComponent<Button>().onClick.AddListener(() => buttonData.buttonAction());
+            buttonGO.GetComponentInChildren<TMP_Text>().text = buttonData.buttonName;
         }
     }
 
@@ -121,14 +118,5 @@ public class HUD : MonoBehaviour
 
     void SetDronManagerButton() {
         Instantiate(dronMenuBtn, buildingButtpnsPanel);
-        // GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
-        // buttonGO.GetComponentInChildren<TMP_Text>().text = "Manage Drons";
-        // SetDronManagerMenu(buttonGO.GetComponent<Button>());
-
     }
-
-    // void SetDronManagerMenu(Button button) {
-    //     GameObject dronManagerGO = Instantiate(dronManagerPrefab, buildingButtpnsPanel);
-    //     button.onClick.AddListener(() => dronManagerGO.SetActive(!dronManagerGO.activeSelf));
-    // }
 }

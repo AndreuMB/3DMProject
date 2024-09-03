@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class Foundry : MonoBehaviour, IBuilding
 {
     // [SerializeField] GameObject hud;
-    List<string> buttonsList = new();
+    readonly List<ButtonData> buttonsList = new();
     HUD hud;
     void Start()
     {
         hud = FindObjectOfType<HUD>();
-        buttonsList.Add("Craft");
+        buttonsList.Add(new ButtonData("Craft", ShowFoundryMenu));
         hud.GenerateButtons(buttonsList);
     }
 
@@ -24,5 +24,9 @@ public class Foundry : MonoBehaviour, IBuilding
 
     public void ShowHUD(){
         hud.GenerateButtons(buttonsList);
+    }
+
+    void ShowFoundryMenu(){
+        print("show foundry");
     }
 }

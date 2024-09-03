@@ -23,31 +23,32 @@ public class Dron : MonoBehaviour
     [NonSerialized] public Vector3 originV;
     Terrain terrain;
     [SerializeField] float dronHeight = 1;
-    
-    public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo){
+
+    public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo)
+    {
         this.origin = origin;
         this.destination = destination;
         this.resource = resource;
         this.movingTo = movingTo;
-        this.speed = FindObjectOfType<Player>().dronSpeed;
+        speed = FindObjectOfType<MainBase>().dronSpeed;
 
-
-        // destinationV = new(destination.transform.position.x,MathF.Floor(destination.transform.position.y),destination.transform.position.z);
-        // originV = new(origin.transform.position.x,MathF.Floor(origin.transform.position.y),origin.transform.position.z);
         destinationV = destination.transform.position;
         originV = origin.transform.position;
         terrain = Terrain.activeTerrain;
     }
 
-    public void CreateData(){
-        dronData = new(origin.name,destination.name,resource,this,movingTo);
+    public void CreateData()
+    {
+        dronData = new(origin.name, destination.name, resource, this, movingTo);
     }
 
-    public float GetDistance(){
-        return Vector2.Distance(transform.position,movingTo);
+    public float GetDistance()
+    {
+        return Vector2.Distance(transform.position, movingTo);
     }
 
-    void FixedUpdate(){
+    void FixedUpdate()
+    {
         float step = speed * Time.deltaTime;
         if (!destination) return;
         // print("origin = " + originV);
@@ -58,18 +59,20 @@ public class Dron : MonoBehaviour
         float distanceX = destinationV.x - transform.position.x;
         float distanceZ = destinationV.z - transform.position.z;
         const float RANGE = 0.5f;
-        
-        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == destinationV) {
+
+        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == destinationV)
+        {
             dronGoal.Invoke();
             movingTo = originV;
             dronData.movingTo = originV;
             transform.LookAt(movingTo);
         }
-        
+
         // if (originV == transform.position){
         distanceX = originV.x - transform.position.x;
         distanceZ = originV.z - transform.position.z;
-        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE  && movingTo == originV){
+        if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == originV)
+        {
             dronGoal.Invoke();
             movingTo = destinationV;
             dronData.movingTo = destinationV;

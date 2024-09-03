@@ -17,12 +17,11 @@ public class GameData
     public Vector3 zoom;
     // public Building building;
 
-    public GameData(Player player,List<BuildingData> buildings, Transform cameraTransform, List<OreData> resources){
-        drons = player.drons;
-        dronStorage = player.dronStorage;
-        dronSpeed = player.dronSpeed;
-        // building = extractor.data;
-        // this.extractors = extractors;
+    public GameData(MainBase mainBase,List<BuildingData> buildings, Transform cameraTransform, List<OreData> resources){
+        drons = mainBase.drons;
+        dronStorage = mainBase.dronStorage;
+        dronSpeed = mainBase.dronSpeed;
+
         this.buildings = buildings;
         cameraPosition = cameraTransform.position;
         cameraRotation = cameraTransform.rotation;

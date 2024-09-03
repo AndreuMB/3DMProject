@@ -8,9 +8,9 @@ public class DataSystem : MonoBehaviour
 {
     public static bool newgame = true;
     public static string savefileName;
-    public static FileInfo SaveToJson(Player player,List<BuildingData> buildings, List<OreData> resources, string savefileName){
+    public static FileInfo SaveToJson(MainBase mainBase,List<BuildingData> buildings, List<OreData> resources, string savefileName){
         // PlayerData data = new PlayerData(player);
-        GameData data = new GameData(player, buildings, Camera.main.transform.parent, resources);
+        GameData data = new GameData(mainBase, buildings, Camera.main.transform.parent, resources);
         
         string json = JsonUtility.ToJson(data,true);
         // string filePath = Path.Combine(Application.dataPath, EnvReader.GetEnvVariable("SAVES_PATH"), savefileName);

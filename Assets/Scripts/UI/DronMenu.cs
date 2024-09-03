@@ -13,6 +13,7 @@ public class DronMenu : MonoBehaviour
     [SerializeField] GameObject addBtn;
     [SerializeField] GameObject rowPrefab;
     Player player;
+    MainBase mainBase;
     GameObject selectedGODron;
     BuildingData dataSGO;
     [SerializeField] GameObject dronPrefab;
@@ -21,6 +22,7 @@ public class DronMenu : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player>();
+        mainBase = FindObjectOfType<MainBase>();
         addBtn.GetComponent<Button>().interactable = false;
         ToggleMenu();
     }
@@ -75,10 +77,10 @@ public class DronMenu : MonoBehaviour
     }
 
     public void AddDron(){
-        if(player.drons <= 0) return;
-        player.SetDrons(player.drons-1);
+        if(mainBase.drons <= 0) return;
+        mainBase.SetDrons(mainBase.drons-1);
 
-        Resource dronR = new Resource(dataSGO.storage[0].resourceEnum, player.dronStorage);
+        Resource dronR = new Resource(dataSGO.storage[0].resourceEnum, mainBase.dronStorage);
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
@@ -124,28 +126,6 @@ public class DronMenu : MonoBehaviour
     void ChangeResource(Dron dron, TMP_Dropdown rowDropdown){
         ResourcesEnum parsed_enum = (ResourcesEnum)Enum.Parse( typeof(ResourcesEnum), rowDropdown.options[rowDropdown.value].text );
         dron.newResource = new Resource (parsed_enum,0);
-        // player.selectedGO.GetComponent<Building>().StopDron(dron.coroutine);
-        // dron.coroutine = player.selectedGO.GetComponent<Building>().StartDron(dron);
-        
-        // Resource dronR = new Resource(ResourcesEnum.rowDropdown.options[rowDropdown.value].text, player.dronStorage);
-        // Resource r = dataSGO.storage.Find(r => r.name.ToString() == rowDropdown.options[rowDropdown.value].text);
-
-    }
-
-    public void LoadDrons(List<DronData> dronDataList, GameObject origin){
-        foreach (DronData dronData in dronDataList)
-        {
-            // player.SetDrons(player.drons-1);
-            GameObject dronGO = Instantiate(dronPrefab,dronData.dronPosition,Quaternion.identity);
-            dronGO.AddComponent<Dron>();
-            Dron dron = dronGO.GetComponent<Dron>();
-            dron.dronData = dronData;
-            dron.dronData.dronRef = dron;
-            dron.SetData(origin,GameObject.Find(dronData.destination), dronData.resource, dronData.movingTo);
-            origin.GetComponent<Building>().StartDronV2(dron);
-            dron.dronGoal.Invoke();
-        }
-        
     }
 
     public void ToggleMenu(){

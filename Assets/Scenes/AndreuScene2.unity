@@ -346,6 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingPrefab: {fileID: 7818300422196003943, guid: 862bc10c1cd8d2d4fa3ab343f5eaef2c, type: 3}
   resourceDataList: []
+  dronPrefab: {fileID: 8720792688561788689, guid: 9a9da80afca820c4f84a71a6cc582d5e, type: 3}
   savesMenu: {fileID: 507696450}
 --- !u!1 &61033296
 GameObject:
