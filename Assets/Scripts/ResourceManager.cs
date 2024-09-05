@@ -17,6 +17,13 @@ public enum ResourcesEnum
     gold
 }
 
+public enum ElementsEnum
+{
+    rubedo,
+    argon,
+    nickel
+}
+
 public class ResourceManager : MonoBehaviour
 {
     public Dictionary<RockFormationsEnum, GameObject> rockFormationDictionary = new();
@@ -34,20 +41,21 @@ public class ResourceManager : MonoBehaviour
         rockFormationDictionary.Add(RockFormationsEnum.rockFormation1, rockFormation1);
         rockFormationDictionary.Add(RockFormationsEnum.rockFormation2, rockFormation2);
         rockFormationDictionary.Add(RockFormationsEnum.rockFormation3, rockFormation3);
-        
+
         // Resources Dictionary Fill
         resourceDictionary.Add(ResourcesEnum.cooper, copper);
         resourceDictionary.Add(ResourcesEnum.silver, silver);
         resourceDictionary.Add(ResourcesEnum.gold, gold);
     }
 
-    public (GameObject, OreData) GetRandomResourceGO() {
+    public (GameObject, OreData) GetRandomResourceGO()
+    {
         // Random rock formation
         int randomIndexRF = Random.Range(0, rockFormationDictionary.Count);
         KeyValuePair<RockFormationsEnum, GameObject> rockFormationEntry = rockFormationDictionary.ElementAt(randomIndexRF);
 
         // Random resource
-        int randomIndexR  = Random.Range(0, resourceDictionary.Count);
+        int randomIndexR = Random.Range(0, resourceDictionary.Count);
         KeyValuePair<ResourcesEnum, Material> resourceEntry = resourceDictionary.ElementAt(randomIndexR);
 
         // Save given properties
@@ -61,15 +69,17 @@ public class ResourceManager : MonoBehaviour
         return (oreGO, oreData);
     }
 
-    public GameObject GenerateOre(OreData oreData){
+    public GameObject GenerateOre(OreData oreData)
+    {
         GameObject oreGO = Instantiate(rockFormationDictionary[oreData.rockFormationEnum]);
-        oreGO = SetMaterial(oreGO,oreData.resourceEnum);
+        oreGO = SetMaterial(oreGO, oreData.resourceEnum);
         oreGO.AddComponent<Ore>().oreData = oreData;
         return oreGO;
     }
 
-    private GameObject SetMaterial(GameObject oreGO, ResourcesEnum resource) {
-         foreach (Transform child in oreGO.transform)
+    private GameObject SetMaterial(GameObject oreGO, ResourcesEnum resource)
+    {
+        foreach (Transform child in oreGO.transform)
         {
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             if (meshRenderer != null)
@@ -84,5 +94,5 @@ public class ResourceManager : MonoBehaviour
         return oreGO;
     }
 
-    
+
 }

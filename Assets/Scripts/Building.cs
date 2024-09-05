@@ -12,6 +12,7 @@ public class Building : MonoBehaviour
    HUD hud;
    public IBuilding buildingType;
    bool formatB = true;
+   BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
 
    // Start is called before the first frame update
    void Start()
@@ -50,6 +51,7 @@ public class Building : MonoBehaviour
    public void SetBuildType(BuildingsEnum bType)
    {
       data.buildingType = bType;
+      buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
       Format();
    }
 
@@ -76,6 +78,8 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Foundry:
             Foundry foundry = gameObject.AddComponent<Foundry>();
             buildingType = foundry;
+            GameObject foundryPanelPrefab = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
+            foundry.SetFoundryPanelPrefab(foundryPanelPrefab);
             break;
       }
       formatB = false;

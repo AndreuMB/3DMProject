@@ -9,24 +9,34 @@ public class Foundry : MonoBehaviour, IBuilding
     // [SerializeField] GameObject hud;
     readonly List<ButtonData> buttonsList = new();
     HUD hud;
+    GameObject foundryPanelPrefab;
+    GameObject foundryPanel;
     void Start()
     {
         hud = FindObjectOfType<HUD>();
-        buttonsList.Add(new ButtonData("Craft", ShowFoundryMenu));
+        buttonsList.Add(new ButtonData("Craft", ToggleFoundryMenu));
         hud.GenerateButtons(buttonsList);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ShowHUD()
     {
-        
-    }
-
-    public void ShowHUD(){
         hud.GenerateButtons(buttonsList);
     }
 
-    void ShowFoundryMenu(){
-        print("show foundry");
+    void ToggleFoundryMenu()
+    {
+        if (!foundryPanel)
+        {
+            foundryPanel = Instantiate(foundryPanelPrefab, hud.transform);
+        }
+        else
+        {
+            foundryPanel.SetActive(!foundryPanel.activeInHierarchy);
+        }
+    }
+
+    public void SetFoundryPanelPrefab(GameObject foundryPP)
+    {
+        foundryPanelPrefab = foundryPP;
     }
 }
