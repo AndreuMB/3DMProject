@@ -15,7 +15,7 @@ public class Foundry : MonoBehaviour, IBuilding
     {
         hud = FindObjectOfType<HUD>();
         buttonsList.Add(new ButtonData("Craft", ToggleFoundryMenu));
-        hud.GenerateButtons(buttonsList);
+        hud.ShowGOHUD(gameObject);
     }
 
     public void ShowHUD()
@@ -33,6 +33,8 @@ public class Foundry : MonoBehaviour, IBuilding
         {
             foundryPanel.SetActive(!foundryPanel.activeInHierarchy);
         }
+        foundryPanel.GetComponent<FoundryPanel>().foundryParent = this;
+        foundryPanel.GetComponent<FoundryPanel>().hud = hud;
     }
 
     public void SetFoundryPanelPrefab(GameObject foundryPP)

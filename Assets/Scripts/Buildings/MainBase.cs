@@ -18,7 +18,7 @@ public class MainBase : MonoBehaviour, IBuilding
         buttonsList.Add(new ButtonData("Create Dron", CreateDron));
         buttonsList.Add(new ButtonData("Upgrade Drons Speed", UpgradeDronsSpeed));
         buttonsList.Add(new ButtonData("Upgrade Drons Storage", UpgradeDronsStorage));
-        hud.GenerateButtons(buttonsList);
+        hud.ShowGOHUD(gameObject);
     }
 
     public void ShowHUD()
@@ -26,22 +26,26 @@ public class MainBase : MonoBehaviour, IBuilding
         hud.GenerateButtons(buttonsList);
     }
 
-    public void CreateDron(){
+    public void CreateDron()
+    {
         drons += 1;
         hud.UpdateDronsHUD();
     }
 
-    public void UpgradeDronsSpeed(){
+    public void UpgradeDronsSpeed()
+    {
         dronSpeed += 1;
         hud.UpdateDronsHUD();
     }
-    
-    public void UpgradeDronsStorage(){
+
+    public void UpgradeDronsStorage()
+    {
         dronStorage += 2;
         hud.UpdateDronsHUD();
     }
 
-    public void SetDrons(int dronsNew){
+    public void SetDrons(int dronsNew)
+    {
         drons = dronsNew;
         hud.UpdateDronsHUD();
     }

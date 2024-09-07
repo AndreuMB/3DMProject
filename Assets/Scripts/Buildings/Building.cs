@@ -1,10 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public class Building : MonoBehaviour
 {
-   // this will be in the grid
    public ResourcesEnum resource;
    public BuildingData data;
    Player player;
@@ -35,9 +35,9 @@ public class Building : MonoBehaviour
          }
          else
          {
-            data.storage.Add(new Resource(resource, data.quantity));
-            hud.ShowGOHUD(player.selectedGO);
+            data.storage.Add(new Resource(resource.ToString(), data.quantity));
          }
+         hud.ShowGOHUD(player.selectedGO);
 
       }
       yield break;
@@ -68,7 +68,7 @@ public class Building : MonoBehaviour
             data.storageBool = true;
             PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
             ResourcesEnum resourceEnum = placementSystem.buildingtState.GetOreResource(transform.parent.position);
-            data.storage.Add(new Resource(resourceEnum, 0));
+            data.storage.Add(new Resource(resourceEnum.ToString().FirstCharacterToUpper(), 0));
             resource = resourceEnum;
             StartCoroutine(nameof(ExtractResource));
             break;
@@ -76,6 +76,7 @@ public class Building : MonoBehaviour
             data.storageBool = true;
             break;
          case BuildingsEnum.Foundry:
+            data.storageBool = true;
             Foundry foundry = gameObject.AddComponent<Foundry>();
             buildingType = foundry;
             GameObject foundryPanelPrefab = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");

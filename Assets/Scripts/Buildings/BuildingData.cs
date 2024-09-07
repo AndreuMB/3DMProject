@@ -6,7 +6,7 @@ using UnityEngine;
 public class BuildingData
 {
    public BuildingsEnum buildingType;
-   public float quantity;
+   public int quantity;
    public float rate;
    public bool storageBool;
    public List<Resource> storage;

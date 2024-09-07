@@ -20,12 +20,13 @@ public class HUD : MonoBehaviour
     public GameObject buttonPrefab;
     // [SerializeField] GameObject dronManagerPrefab;
     public Transform buildingButtpnsPanel;
-    
-    public void IniHUD(){
+
+    public void IniHUD()
+    {
         if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
         player = FindObjectOfType<Player>();
         mainBase = FindObjectOfType<MainBase>();
-        
+
         player.selectedGOev.AddListener(ShowGOHUD);
         // DMBtn.SetActive(false);
         // DMMenu.SetActive(false);
@@ -33,7 +34,8 @@ public class HUD : MonoBehaviour
         UpdateDronsHUD();
     }
 
-    void Update(){
+    void Update()
+    {
         if (!player) return;
         if (resourcesSE == null) return;
         foreach (Resource resource in resourcesSE)
@@ -42,30 +44,37 @@ public class HUD : MonoBehaviour
             resource.HUDGO.GetComponent<TMP_Text>().text = resource.resourceEnum.ToString() + ": " + resource.quantity.ToString();
         }
     }
-    
-    public void ShowGOHUD(GameObject selectedGO){
+
+    public void ShowGOHUD(GameObject selectedGO)
+    {
         if (!player.GetMouseSelectorStatus()) return;
+        if (!selectedGO) return;
+        if (!selectedGO.GetComponent<Building>()) return;
         CleanHUDContainer();
         Building selectedBuilding = selectedGO.GetComponent<Building>();
         if (selectedBuilding)
         {
             // if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
             if (selectedBuilding.buildingType != null) selectedBuilding.GetComponent<IBuilding>().ShowHUD();
-            if (selectedBuilding.data.storageBool) {
+            if (selectedBuilding.data.storageBool)
+            {
                 SetDronManagerButton();
                 ShowResourcesBuilding(selectedGO.GetComponent<Building>());
             }
         }
     }
 
-    void ShowResourcesBuilding(Building selectedBuilding){
+    void ShowResourcesBuilding(Building selectedBuilding)
+    {
         resourcesSE = selectedBuilding.data.storage;
         foreach (Resource resource in resourcesSE)
         {
             bool validation = true;
-            if (resource.quantity <= 0) {
+            if (resource.quantity <= 0)
+            {
                 // check if extractor is mining this resource
-                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource == resource.resourceEnum){
+                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource.ToString() == resource.resourceEnum.ToLower())
+                {
                     validation = false;
                 }
 
@@ -88,20 +97,24 @@ public class HUD : MonoBehaviour
         }
     }
 
-    void CleanHUDContainer(){
+    void CleanHUDContainer()
+    {
         // DMBtn.SetActive(false);
         // DronUpgradeBtn.SetActive(false);
         CleanButtonsPanel();
         resourcesSE = null;
-        foreach (Transform child in resourceContainer.transform) {
+        foreach (Transform child in resourceContainer.transform)
+        {
             Destroy(child.gameObject);
         }
     }
-    public void UpdateDronsHUD(){
+    public void UpdateDronsHUD()
+    {
         drons.text = "DRONS " + mainBase.drons.ToString();
     }
 
-    public void GenerateButtons(List<ButtonData> buttonsList){
+    public void GenerateButtons(List<ButtonData> buttonsList)
+    {
         foreach (ButtonData buttonData in buttonsList)
         {
             GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
@@ -110,13 +123,16 @@ public class HUD : MonoBehaviour
         }
     }
 
-    void CleanButtonsPanel(){
-        foreach (Transform child in buildingButtpnsPanel.transform) {
+    void CleanButtonsPanel()
+    {
+        foreach (Transform child in buildingButtpnsPanel.transform)
+        {
             Destroy(child.gameObject);
         }
     }
 
-    void SetDronManagerButton() {
+    void SetDronManagerButton()
+    {
         Instantiate(dronMenuBtn, buildingButtpnsPanel);
     }
 }
