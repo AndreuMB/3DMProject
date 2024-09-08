@@ -28,15 +28,16 @@ public class Building : MonoBehaviour
       while (isActiveAndEnabled)
       {
          yield return new WaitForSeconds(data.rate);
-         if (data.storage.Count > 0)
-         {
-            // when storage full stop producing
-            if (data.storage[0].quantity < data.maxStorage) data.storage[0].quantity += data.quantity;
-         }
-         else
-         {
-            data.storage.Add(new Resource(resource.ToString(), data.quantity));
-         }
+         // if (data.storage.Count > 0)
+         // {
+         //    // when storage full stop producing
+         //    if (data.storage[0].quantity < data.maxStorage) data.storage[0].quantity += data.quantity;
+         // }
+         // else
+         // {
+         //    data.storage.Add(new Resource(resource.ToString(), data.quantity));
+         // }
+         AddResource(data.storage[0].resourceEnum, data.quantity);
          hud.ShowGOHUD(player.selectedGO);
 
       }
@@ -145,6 +146,24 @@ public class Building : MonoBehaviour
    {
       // Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dron));
       dron.dronGoal.AddListener(() => StartCoroutine(StartDronCoroutineV2(dron)));
+   }
+
+   public void AddResource(string resourceName, int quantity)
+   {
+      // if (data.storage.Count <= 0) return;
+
+      Resource storagedResource = data.storage.Find(
+         resource => resource.resourceEnum.ToString().ToLower() == resourceName.ToLower());
+      if (storagedResource != null)
+      {
+         // when storage full stop producing
+         if (storagedResource.quantity < data.maxStorage) storagedResource.quantity += quantity;
+      }
+      else
+      {
+         data.storage.Add(new Resource(resourceName, quantity));
+      }
+
    }
 
 }

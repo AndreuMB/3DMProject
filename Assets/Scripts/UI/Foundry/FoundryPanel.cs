@@ -28,11 +28,9 @@ public class FoundryPanel : MonoBehaviour
 
     void CraftElement(ResourceCombination elementCombination)
     {
-        // add to foundry elementCombination.result
-        // must accumulate
-        foundryParent.GetComponent<Building>().data.storage.Add(new Resource(elementCombination.result.ToString(), 1));
-        // showgohud should take autom the player selected object
+        // add to foundry storage elementCombination.result
+        foundryParent.GetComponent<Building>().AddResource(elementCombination.result.ToString(), 1);
+        // TODO showgohud should take autom the player selected object
         hud.ShowGOHUD(foundryParent.gameObject);
-
     }
 }
