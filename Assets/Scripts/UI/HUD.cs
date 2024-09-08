@@ -16,9 +16,22 @@ public class HUD : MonoBehaviour
     public GameObject DMMenu;
     [SerializeField] GameObject DronUpgradeBtn;
 
-    void Start(){
+    // void Start(){
+    //     if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+    //     // if (!FindObjectOfType<Player>()) return;
+    //     player = FindObjectOfType<Player>();
+        
+    //     player.selectedGOev.AddListener(ShowGOHUD);
+    //     DMBtn.SetActive(false);
+    //     DMMenu.SetActive(false);
+    //     DronUpgradeBtn.SetActive(false);
+    //     UpdateDronsHUD();
+    // }
+    
+    public void IniHUD(){
+        if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+        // if (!FindObjectOfType<Player>()) return;
         player = FindObjectOfType<Player>();
-        if (!player) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
         
         player.selectedGOev.AddListener(ShowGOHUD);
         DMBtn.SetActive(false);
@@ -33,7 +46,7 @@ public class HUD : MonoBehaviour
         foreach (Resource resource in resourcesSE)
         {
             if (!resource.HUDGO) return;
-            resource.HUDGO.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
+            resource.HUDGO.GetComponent<TMP_Text>().text = resource.resourceEnum.ToString() + ": " + resource.quantity.ToString();
         }
     }
     
@@ -55,14 +68,14 @@ public class HUD : MonoBehaviour
             bool validation = true;
             if (resource.quantity <= 0) {
                 // check if extractor is mining this resource
-                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource == resource.name){
+                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource == resource.resourceEnum){
                     validation = false;
                 }
 
                 // check if dron is delivering this resource
                 foreach (var dron in selectedBuilding.data.setDrons)
                 {
-                    if (dron.resource.name == resource.name) validation = false;
+                    if (dron.resource.resourceEnum == resource.resourceEnum) validation = false;
                 }
 
                 if (validation)
@@ -72,7 +85,7 @@ public class HUD : MonoBehaviour
                 }
             }
             GameObject newResource = Instantiate(resourcePrefab);
-            newResource.GetComponent<TMP_Text>().text = resource.name + ": " + resource.quantity.ToString();
+            newResource.GetComponent<TMP_Text>().text = resource.resourceEnum + ": " + resource.quantity.ToString();
             newResource.transform.SetParent(resourceContainer.transform, false);
             resource.HUDGO = newResource;
         }

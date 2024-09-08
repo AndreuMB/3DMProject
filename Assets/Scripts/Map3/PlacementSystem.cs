@@ -17,7 +17,6 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private ObjectPlacer objectPlacer;
 
     [SerializeField] private PreviewSystem preview;
-    [SerializeField] private PreviewSystem preview2;
     
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
@@ -33,52 +32,6 @@ public class PlacementSystem : MonoBehaviour
         // StopPlacement();
         if (buildingtState == null) BuildingtStateGS();
     }
-    // public void StartPlacement (int ID)
-    // {
-    //     StopPlacement();
-    //     // gridVisualization.SetActive(true);
-    //     buildingtState = new PlacementState (ID,grid,preview,database,floorData,buildData,objectPlacer);
-    //     inputManager.OnCliched += PlaceStructure;
-    //     inputManager.OnExit += StopPlacement;
-    // }
-    // public void StartRemoving()
-    // {
-    //     StopPlacement();
-    //     // gridVisualization.SetActive (true);
-    //     buildingtState = new RemovingState(grid,preview,floorData,buildData,objectPlacer);
-
-    //     inputManager.OnCliched += PlaceStructure;
-    //     inputManager.OnExit += StopPlacement;
-    // }
-    // private void PlaceStructure()
-    // {
-    //     if (inputManager.IsPointerOverUI())
-    //     {
-    //         Debug.Log("Vuelve :" + inputManager.IsPointerOverUI());
-    //         return;
-    //     }
-    //     Vector3 mousePosition = inputManager.GetSelectedMapPosition();
-    //     Vector3Int gridPosition = grid.WorldToCell(mousePosition);
-    //     buildingtState.OnAction(gridPosition);
-    // }
-
-    /*
-    private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
-    {
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
-        return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
-    }
-    */
-    // private void StopPlacement()
-    // {
-    //     if (buildingtState == null) { return; }
-    //     // gridVisualization.SetActive(false);
-    //     buildingtState.EndState();
-    //     inputManager.OnCliched -= PlaceStructure;
-    //     inputManager.OnExit -= StopPlacement;
-    //     lastDetectedPosition = Vector3Int.zero;
-    //     buildingtState = null;
-    // }
 
     private void Update()
     {
@@ -94,18 +47,7 @@ public class PlacementSystem : MonoBehaviour
             mousePositionCenter = new Vector3(mousePositionCenter.x,hit.point.y,mousePositionCenter.z);
         }
 
-        // Vector3Int gridPosition = grid.WorldToCell(hit.point);
-        // gridPositionFloat = grid.WorldToCell(hit.point);
-
         Vector3Int gridPosition = grid.WorldToCell(mousePositionCenter);
-        // gridPositionFloat = gridPosition;
-        // gridPositionFloat.y = hit.point.y;
-
-        // print("gridPosition = " + gridPosition);
-        // print("gridPositionFloat = " + gridPositionFloat);
-
-        // Vector3Int gridPosition = grid.WorldToCell(mousePositionCenter);
-
         if (lastDetectedPosition != gridPosition)
         {
             buildingtState.UpdateState(gridPosition,mousePositionCenter);
@@ -153,9 +95,9 @@ public class PlacementSystem : MonoBehaviour
         buildingtState = new GameState(grid,preview,floorData,buildData,objectPlacer,database);
     }
 
-    public Vector3Int GetCellFromPosition(Vector3 position){
-        gridPosition = grid.WorldToCell(position);
-        return gridPosition;
+    public void PlaceOre(GameObject oreGO, Vector3 orePosition) {
+        gridPosition = grid.WorldToCell(orePosition);
+        buildingtState.BuildOre(gridPosition, oreGO, orePosition);
     }
 
 }

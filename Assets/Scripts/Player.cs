@@ -6,27 +6,35 @@ using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] GameObject optionsMenu;
+    GameObject optionsMenu;
     // RadialMenu mainRadialMenu;
     RMManager rMManager;
     public GameObject rmGO;
-    [SerializeField] HUD HUDR;
+    HUD HUDR;
     [Header("Dron Settings")]
     public int drons;
     public int dronStorage;
     public float dronSpeed;
     public GameObject selectedGO;
-    public UnityEvent<GameObject> selectedGOev;
+    public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
     PlacementSystem ps;
+
+    void Awake() {
+        ps = FindObjectOfType<PlacementSystem>();
+        rMManager = FindAnyObjectByType<RMManager>();
+        HUDR = FindAnyObjectByType<HUD>();
+        optionsMenu = FindAnyObjectByType<Options>().gameObject;
+        canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
+    }
 
     void Start(){
 
         // mainRadialMenu = FindAnyObjectByType<RadialMenu>();
         // mainRadialMenu.gameObject.SetActive(false);
 
-        ps = FindObjectOfType<PlacementSystem>();
-        rMManager = FindAnyObjectByType<RMManager>();
+        
+        optionsMenu.SetActive(false);
     }
 
     void Update(){
@@ -34,17 +42,11 @@ public class Player : MonoBehaviour
         {
             optionsMenu.SetActive(!optionsMenu.activeInHierarchy);
         }
+        if (optionsMenu.activeSelf) return;
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            // if (mainRadialMenu.parent)
-            // {
-            //     Destroy(mainRadialMenu.parent.gameObject);
-            //     return;
-            // }
             if (rmGO) {
-                // if (rmGO.GetComponent<RadialMenu>().parent) 
-                    // Destroy(rmGO.GetComponent<RadialMenu>().parent.gameObject);
                 Destroy(rmGO);
                 return;
             }
@@ -54,19 +56,32 @@ public class Player : MonoBehaviour
             if(content){
                 RMSO = rMManager.RMSOs.Find(x => x.name == "VoidCell");
             }else{
-                RMSO = rMManager.RMSOs.Find(x => x.name == "BuildCell");
+                switch (GetClickedGO().tag)
+                {
+                    case "Building":
+                        RMSO = rMManager.RMSOs.Find(x => x.name == "BuildCell");
+                        break;
+                    case "Ore":
+                        RMSO = rMManager.RMSOs.Find(x => x.name == "OreCell");
+                        break;
+                    default:
+                        RMSO = rMManager.RMSOs.Find(x => x.name == "BuildCell");
+                        break;
+                }
             }
 
-            // GameObject mainRadialMenuGO = mainRadialMenu.gameObject;
-
-            // mainRadialMenuGO.SetActive(!mainRadialMenuGO.activeInHierarchy);
             RectTransform canvasRect = canvasCPS.GetComponent<RectTransform>();
 
             Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
-            // mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition - canvasRectHalf;
-            rmGO = rMManager.NewRM(RMSO, Input.mousePosition - canvasRectHalf);
+            try
+            {
+                rmGO = rMManager.NewRM(RMSO, Input.mousePosition - canvasRectHalf);
+            }
+            catch (Exception)
+            {
+                throw new Exception("RMSO not found");
+            }
 
-            // mainRadialMenu.GetComponent<RectTransform>().anchoredPosition = Input.mousePosition;
         }
 
         if(HUDR.DMMenu.activeInHierarchy) return;
@@ -85,7 +100,6 @@ public class Player : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (!hit.transform.gameObject.CompareTag("Building")) return null;
             return hit.transform.gameObject;
         }
         return null;
@@ -116,13 +130,4 @@ public class Player : MonoBehaviour
         return optionsMenu.activeInHierarchy;
     }
 
-}
-
-public enum ResourcesEnum
-{
-    R1,
-    R2,
-    R3,
-    R4,
-    R5,
 }

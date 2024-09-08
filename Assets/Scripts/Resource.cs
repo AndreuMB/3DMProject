@@ -5,14 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Resource
 {
-    public ResourcesEnum name;
+    public ResourcesEnum resourceEnum;
     public float quantity;
     [System.NonSerialized]
     public GameObject HUDGO;
 
-    public Resource(ResourcesEnum nameSet, float quantitySet)
+    public Resource(ResourcesEnum resource, float quantitySet)
    {
-      name = nameSet;
+      resourceEnum = resource;
       quantity = quantitySet;
    }
 }

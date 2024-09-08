@@ -14,4 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   elementName: Building
   customFunctionName: Build
+  buildId: 0
+  buildingType: 0
   parent: {fileID: 11400000, guid: fff4115cdf215ea45a92bae7109ce920, type: 2}

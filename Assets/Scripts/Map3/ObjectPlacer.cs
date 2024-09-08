@@ -8,6 +8,7 @@ public class ObjectPlacer : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> placedGameObject = new();
+    [SerializeField] Mesh cubeMesh;
     [SerializeField] GameObject buildingPrefab;
     Player player;
 
@@ -35,14 +36,32 @@ public class ObjectPlacer : MonoBehaviour
         GameObject newParent = new GameObject();
         newObject.transform.parent = newParent.transform;
         newParent.transform.position = position;
-        // print("1 = " + position);
-        // const float Y_OFFSET = 0;
-        // newObject.transform.localPosition = new Vector3(0.5f,Y_OFFSET,0.5f);
         building.SetBuildType(bType);
         placedGameObject.Add(newObject);
         if (player) player.SetActiveGO(newObject);
         return (placedGameObject.Count - 1, newObject);
         // return newObject;
+    }
+
+    public (int, GameObject) PlaceOre(GameObject oreGO, Vector3 position)
+    {
+        oreGO.transform.localScale = new Vector3(.2f,.2f,.2f);
+
+        GameObject newParent = new GameObject();
+        oreGO.transform.parent = newParent.transform;
+        newParent.transform.position = position;
+        newParent.tag = Tags.Ore.ToString();
+        newParent.AddComponent<MeshCollider>();
+        // put mesh collider to this parent or delete parent in code and create it already on the prefab with the mesh
+        newParent.GetComponent<MeshCollider>().sharedMesh = cubeMesh;
+
+
+
+
+
+        placedGameObject.Add(oreGO);
+
+        return (placedGameObject.Count - 1, oreGO);
     }
 
     internal void RemoveObjectAt(int gameObjectIndex)
@@ -54,4 +73,20 @@ public class ObjectPlacer : MonoBehaviour
         Destroy(placedGameObject[gameObjectIndex]);
         placedGameObject[gameObjectIndex] = null;
     }
+
+    internal GameObject GetGObjectAt(int gameObjectIndex)
+    {
+        if(placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
+        {
+            return null;
+        }
+        return placedGameObject[gameObjectIndex];
+    }
+}
+
+public enum Tags
+{
+    MainBase,
+    Building,
+    Ore,
 }

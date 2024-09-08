@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Unity.Burst.Intrinsics;
 using UnityEngine;
@@ -8,29 +9,48 @@ using UnityEngine.SceneManagement;
 public class Options : MonoBehaviour
 {
     [SerializeField] GameObject buildingPrefab;
+    public List<OreData> resourceDataList;
+    PlacementSystem ps;
+    HUD hud;
+    ResourceManager rm;
+    [SerializeField] SavesMenu savesMenu;
     
     void Start(){
-        if (!DataSystem.newgame) LoadData();
-        gameObject.SetActive(false);
+        ps = FindObjectOfType<PlacementSystem>();
+        hud = FindObjectOfType<HUD>();
+        rm = FindObjectOfType<ResourceManager>();
+
+        if (!DataSystem.newgame) {
+            LoadData();
+        } else {
+            MainBaseSpawn();
+            ResourceCellsSpawn();
+            // hud.IniHUD();
+        }
+
+        hud.IniHUD();
+
+
     }
 
-    public void SaveGame(){
+    public FileInfo SaveGame(string savefileName){
         Player player = FindObjectOfType<Player>();
         GameObject[] buildingsGO = GameObject.FindGameObjectsWithTag("Building");
 
         List<BuildingData> buildings = new();
-        foreach (GameObject extractor in buildingsGO)
+        foreach (GameObject buildingGO in buildingsGO)
         {
-            Building extractorComp = extractor.GetComponent<Building>();
-            extractorComp.data.parentName = extractor.name;
-            extractorComp.data.parentPosition = extractor.transform.position;
-            buildings.Add(extractorComp.data);
+            Building building = buildingGO.GetComponent<Building>();
+            building.data.parentName = buildingGO.name;
+            building.data.parentPosition = buildingGO.transform.position;
+            buildings.Add(building.data);
         }
-        DataSystem.SaveToJson(player, buildings);
+        return DataSystem.SaveToJson(player, buildings, resourceDataList, savefileName);
     }
 
-    public void LoadGame(){
+    public void LoadGame(string savefileName){
         DataSystem.newgame = false;
+        DataSystem.savefileName = savefileName;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -40,43 +60,50 @@ public class Options : MonoBehaviour
 
     public void LoadData(){
         CleanMap();
+        
+        GameData data = DataSystem.LoadFromJson(DataSystem.savefileName);
+        if(data == null) return;
+
+        
+
+        // map grid placement
+        foreach (BuildingData building in data.buildings)
+        {
+            GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
+            if (buildingGO) buildingGO.GetComponent<Building>().data = building;
+            if (building.buildingType == BuildingsEnum.MainBase) buildingGO.AddComponent<Player>();
+        }
+
         Player player = FindObjectOfType<Player>();
         if (!player) return;
-        // PlayerData data = DataSystem.LoadFromJson();
-        GameData data = DataSystem.LoadFromJson2();
-        if(data == null) return;
 
         // dron upgrades
         player.drons = data.drons;
         player.dronStorage = data.dronStorage;
         player.dronSpeed = data.dronSpeed;
 
-        // map grid placement
-        PlacementSystem ps = FindObjectOfType<PlacementSystem>();
-        HUD hud = FindObjectOfType<HUD>();
-        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
-
-        foreach (BuildingData building in data.buildings)
-        {
-            if (building.buildingType == BuildingsEnum.MainBase) continue;
-            // if (buildingGO)
-            // {
-            //     buildingGO.GetComponent<Building>().data = building;
-            // }else{
-            // GameObject newBuilding = Instantiate(buildingPrefab);
-            // newBuilding.transform.position = building.parentPosition;
-            // newBuilding.name = building.parentName;
-            GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
-            if (buildingGO) buildingGO.GetComponent<Building>().data = building;
-            // print("dm = " + dm);
-            // dm.LoadDrons(building.setDrons,buildingGO);
-            // }
+        // set camera position
+        if (data.cameraPosition != Vector3.zero) {
+            Camera.main.transform.parent.position = data.cameraPosition;
+            Camera.main.transform.parent.rotation = data.cameraRotation;
+            Camera.main.transform.localPosition = data.zoom;
         }
 
+        // set drons in buildings
+        DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
             Building building = buildingGO.GetComponent<Building>();
             if (building) dm.LoadDrons(building.data.setDrons,buildingGO);
+        }
+
+        // restore ore manage var
+        resourceDataList = data.ores;
+        // generate and set materials in map
+        foreach (OreData oreData in data.ores)
+        {
+            GameObject oreGO = rm.GenerateOre(oreData);
+            ps.PlaceOre(oreGO, oreData.position);
         }
 
         // hud.UpdateDronsHUD();
@@ -87,7 +114,43 @@ public class Options : MonoBehaviour
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
         foreach (var building in buildings)
         {
-            if (building.GetComponent<Building>().data.buildingType != BuildingsEnum.MainBase) Destroy(building);
+            // if (building.GetComponent<Building>().data.buildingType != BuildingsEnum.MainBase) Destroy(building);
+            Destroy(building);
         }
+    }
+
+    void MainBaseSpawn(Vector3? position = null) {
+        GameObject mainBase;
+        mainBase = position == null ? ps.LoadBuildings(RandomCell(), BuildingsEnum.MainBase)
+            : ps.LoadBuildings(position.Value, BuildingsEnum.MainBase);
+        mainBase.AddComponent<Player>();
+        FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
+    }
+
+    void ResourceCellsSpawn() {
+        for (int i = 0; i < 20; i++)
+        {
+            (GameObject oreGO, OreData oreData) = rm.GetRandomResourceGO();
+            oreData.position = RandomCell();
+            ps.PlaceOre(oreGO, oreData.position);
+            // resourceGO.transform.position = resourceData.position;
+            resourceDataList.Add(oreData);
+        }
+    }
+
+    Vector3 RandomCell() {
+        
+        Ray ray = new Ray(new(Random.Range(-50, 50)+0.5f,50,Random.Range(-50, 50)+0.5f), Vector3.down);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit,100, FindObjectOfType<InputManager>().GetPlacementLayer()))
+        {
+            return hit.point;
+        }
+        return new(0,0,0);
+    }
+
+    void OnDisable()
+    {
+        savesMenu.ClosePanel();
     }
 }

@@ -26,9 +26,11 @@ public class CameraController : MonoBehaviour
     Vector3 newZoom;
     [SerializeField] float minZoom;
     [SerializeField] float maxZoom;
+    // bool smoothZoomFix;
 
     Terrain terrain; // Reference to the terrain
     float terrainHeight;
+    GameObject optionsMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -37,20 +39,34 @@ public class CameraController : MonoBehaviour
         newRotation = transform.rotation;
         newZoom = cameraTransform.localPosition;
         terrain = Terrain.activeTerrain;
+        optionsMenu = FindObjectOfType<Options>().gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        if (optionsMenu.activeSelf) return;
+
         HandleKeyboardInput();
         HandleMouseInput();
+
+        // update rotation
+        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
+
+        // update zoom
+        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+
+        // update movement
+        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+
+        CheckTerrainHeight();
 
     }
 
     void HandleKeyboardInput(){
         HandleMovement();
-        HandleRotation();
+        HandleKeyRotation();
     }
 
     void HandleMovement(){
@@ -79,12 +95,18 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             newPosition -= transform.right * movementSpeed;
+            
         }
 
-        transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
+        
+        // if (Vector3.Distance(transform.position, newPosition) > 0.01f)
+        // {
+        //     CheckTerrainHeight();
+        //     transform.position = newZoom;
+        // }
     }
 
-    void HandleRotation(){
+    void HandleKeyRotation(){
         if (Input.GetKey(KeyCode.Q))
         {
             newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
@@ -94,8 +116,6 @@ public class CameraController : MonoBehaviour
         {
             newRotation *= Quaternion.Euler(Vector3.up * -rotationAmount);
         }
-
-        transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
     }
 
     void HandleMouseInput(){
@@ -105,6 +125,7 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseMovement(){
+        if (!FindObjectOfType<Player>()) return;
         if (FindObjectOfType<Player>().OptionsStatus()) return;
         if (Input.GetMouseButtonDown(0)){
             Plane plane = new Plane(Vector3.up, Vector3.zero);
@@ -149,30 +170,72 @@ public class CameraController : MonoBehaviour
     }
 
     void HandleMouseZoom(){
-        if (Input.GetAxis("Mouse ScrollWheel") > 0f) // forward
-        {
-            newZoom += zoomAmount*4;
-            CheckTerrainHeight();
-        }
+        // float zoomAmount2 = 1f;
+        // if (Input.GetAxis("Mouse ScrollWheel") > 0f && newZoom.y > maxZoom) // forward
+        // {
+        //     // newZoom += zoomAmount*4;
+        //     newZoom += cameraTransform.forward * zoomAmount2;
+        //     // CheckTerrainHeight();
+        // }
         
-        if (Input.GetAxis("Mouse ScrollWheel") < 0f) // backward
-        {
-            newZoom -= zoomAmount*4;
-            CheckTerrainHeight();
-        }
+        // if (Input.GetAxis("Mouse ScrollWheel") < 0f && newZoom.y < minZoom) // backward
+        // {
+        //     newZoom -= cameraTransform.forward * zoomAmount2;
+        //     // newZoom -= zoomAmount*4;
+        //     // CheckTerrainHeight();
+        // }
 
+        // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scroll > 0f && newZoom.y > maxZoom) // forward
+        {
+            newZoom += scroll * zoomAmount;
+        }
         
-        cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+        if (scroll < 0f && newZoom.y < minZoom) // backward
+        {
+            newZoom += scroll * zoomAmount;
+        }
+        // if (scroll != 0f)
+        // {
+        //     print(scroll);
+        //     newZoom += scroll * zoomAmount;
+        //     newZoom.y = Mathf.Clamp(newZoom.y, maxZoom, minZoom);
+        // }
     }
 
     void CheckTerrainHeight() {
-        terrainHeight = terrain.SampleHeight(new Vector3(cameraTransform.position.x, 0, cameraTransform.position.z)) + terrain.transform.position.y;
+        terrainHeight = terrain.SampleHeight(new Vector3(transform.position.x, 0,transform.position.z)) + terrain.transform.position.y;
 
         // Vector3 position = transform.position;
 
+        // print("newZoom.y = " + newZoom.y);
+        // print("terrainHeight + maxZoom, max y = " + terrainHeight + maxZoom);
+        // print("minZoom = " + minZoom);
+
         // Ensure the camera stays above the terrain plus the minimum height
-        newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+        // newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+        float newYCameraPosition = Mathf.Clamp(0, terrainHeight + 1, 30);
+        transform.position = new(transform.position.x, newYCameraPosition, transform.position.z);
+
+        // if (smoothZoomFix) {
+        //     // smooth movement
+        //     cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
+        // } else {
+        //     //  instant movement
+        //     cameraTransform.localPosition = newZoom;
+        // }
+
+        // float newZoomFix = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
         
+        // if (newZoom.y != newZoomFix) {
+        //     print("fixed");
+        //     newZoom.y = newZoomFix;
+        // } else {
+        //     print("right");
+        // }
 
         // Apply the new position to the camera
         // cameraTransform.localPosition = cameraTransform.InverseTransformPoint(newZoom);
@@ -180,5 +243,9 @@ public class CameraController : MonoBehaviour
         
         // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, position, Time.deltaTime * movementTime);
 
+    }
+
+    public void FocusBuilding(Vector3 position) {
+        transform.position = position;
     }
 }

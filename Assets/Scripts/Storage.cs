@@ -13,7 +13,7 @@ public class Storage : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player>();
-        Deposit(new Resource(ResourcesEnum.R2,10));
+        Deposit(new Resource(ResourcesEnum.silver,10));
     }
 
     void Deposit(Resource resource){
