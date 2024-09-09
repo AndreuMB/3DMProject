@@ -9,7 +9,7 @@ public class BuildingData
    public int quantity;
    public float rate;
    public bool storageBool;
-   public List<Resource> storage;
+   public List<GameMaterial> storage;
    // float inventory;
    public float maxStorage;
    public string parentName;

@@ -10,8 +10,8 @@ public class Dron : MonoBehaviour
 {
     [NonSerialized] public GameObject origin;
     [NonSerialized] public GameObject destination;
-    [NonSerialized] public Resource resource;
-    [NonSerialized] public Resource newResource;
+    [NonSerialized] public GameMaterial material;
+    [NonSerialized] public GameMaterial newMaterial;
     // public Coroutine coroutine;
     [NonSerialized] public Vector3 movingTo;
     [NonSerialized] public float speed;
@@ -24,11 +24,11 @@ public class Dron : MonoBehaviour
     Terrain terrain;
     [SerializeField] float dronHeight = 1;
 
-    public void SetData(GameObject origin, GameObject destination, Resource resource, Vector3 movingTo)
+    public void SetData(GameObject origin, GameObject destination, GameMaterial material, Vector3 movingTo)
     {
         this.origin = origin;
         this.destination = destination;
-        this.resource = resource;
+        this.material = material;
         this.movingTo = movingTo;
         speed = FindObjectOfType<MainBase>().dronSpeed;
 
@@ -39,7 +39,7 @@ public class Dron : MonoBehaviour
 
     public void CreateData()
     {
-        dronData = new(origin.name, destination.name, resource, this, movingTo);
+        dronData = new(origin.name, destination.name, material, this, movingTo);
     }
 
     public float GetDistance()

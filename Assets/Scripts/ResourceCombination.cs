@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewResourceCombination", menuName = "Combination")]
 public class ResourceCombination : ScriptableObject
 {
-    public ResourcesEnum resource1;
-    public ResourcesEnum resource2;
-    public ElementsEnum result;
+    public GameMaterial resource1;
+    public GameMaterial resource2;
+    public GameMaterial result;
 }

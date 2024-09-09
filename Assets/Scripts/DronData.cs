@@ -7,15 +7,16 @@ public class DronData
 {
     public string origin;
     public string destination;
-    public Resource resource;
+    public GameMaterial material;
     public Vector3 movingTo;
     public Vector3 dronPosition;
     public Dron dronRef;
 
-    public DronData(string origin, string destination, Resource resource, Dron dron, Vector3 movingTo){
+    public DronData(string origin, string destination, GameMaterial material, Dron dron, Vector3 movingTo)
+    {
         this.origin = origin;
         this.destination = destination;
-        this.resource = resource;
+        this.material = material;
         this.movingTo = movingTo;
         dronRef = dron;
     }

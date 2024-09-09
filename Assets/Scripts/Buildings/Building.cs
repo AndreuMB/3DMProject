@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class Building : MonoBehaviour
 {
-   public ResourcesEnum resource;
+   public GameMaterialSO resourceSO;
    public BuildingData data;
    Player player;
    MainBase mainBase;
@@ -37,7 +37,7 @@ public class Building : MonoBehaviour
          // {
          //    data.storage.Add(new Resource(resource.ToString(), data.quantity));
          // }
-         AddResource(data.storage[0].resourceEnum, data.quantity);
+         AddResource(data.storage[0].gameMaterialSO, data.quantity);
          hud.ShowGOHUD(player.selectedGO);
 
       }
@@ -68,9 +68,9 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Extractor:
             data.storageBool = true;
             PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
-            ResourcesEnum resourceEnum = placementSystem.buildingtState.GetOreResource(transform.parent.position);
-            data.storage.Add(new Resource(resourceEnum.ToString().FirstCharacterToUpper(), 0));
-            resource = resourceEnum;
+            GameMaterialSO gameMaterialSO = placementSystem.buildingtState.GetOreResource(transform.parent.position);
+            data.storage.Add(new GameMaterial(gameMaterialSO, 0));
+            resourceSO = gameMaterialSO;
             StartCoroutine(nameof(ExtractResource));
             break;
          case BuildingsEnum.Storage:
@@ -107,15 +107,15 @@ public class Building : MonoBehaviour
       if (dron.movingTo == dron.destination.transform.position)
       {
 
-         if (dron.newResource != null) dron.resource = dron.newResource;
+         if (dron.newMaterial != null) dron.material = dron.newMaterial;
 
-         Resource storageResource = data.storage.Find(x => x.resourceEnum == dron.resource.resourceEnum);
+         GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName);
          if (storageResource == null) yield return null;
 
          // check storage quantity and choose dron storage quantity
-         dron.resource.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
+         dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
 
-         storageResource.quantity += -dron.resource.quantity;
+         storageResource.quantity += -dron.material.quantity;
       }
       else
       {
@@ -128,18 +128,25 @@ public class Building : MonoBehaviour
             Destroy(dron.gameObject);
             yield return null;
          }
-         List<Resource> addressStorage = dron.destination.GetComponent<Building>().data.storage;
-         Resource addressR = addressStorage.Find(x => x.resourceEnum == dron.resource.resourceEnum);
+         List<GameMaterial> addressStorage = dron.destination.GetComponent<Building>().data.storage;
+         GameMaterialsEnum gameMaterialsEnum = dron.material.gameMaterialSO.materialName;
+         GameMaterial addressR = FindGameMaterialInStorage(gameMaterialsEnum, addressStorage);
          if (addressR != null)
          {
-            addressR.quantity += dron.resource.quantity;
+            addressR.quantity += dron.material.quantity;
          }
          else
          {
-            addressStorage.Add(new Resource(dron.resource.resourceEnum, dron.resource.quantity));
+            addressStorage.Add(new GameMaterial(dron.material.gameMaterialSO, dron.material.quantity));
          }
       }
 
+   }
+
+   GameMaterial FindGameMaterialInStorage(GameMaterialsEnum gameMaterialsEnum, List<GameMaterial> storage = null)
+   {
+      storage ??= data.storage;
+      return storage.Find(x => x.gameMaterialSO.materialName == gameMaterialsEnum);
    }
 
    public void StartDronV2(Dron dron)
@@ -148,12 +155,12 @@ public class Building : MonoBehaviour
       dron.dronGoal.AddListener(() => StartCoroutine(StartDronCoroutineV2(dron)));
    }
 
-   public void AddResource(string resourceName, int quantity)
+   public void AddResource(GameMaterialSO gameMaterialSO, int quantity)
    {
       // if (data.storage.Count <= 0) return;
 
-      Resource storagedResource = data.storage.Find(
-         resource => resource.resourceEnum.ToString().ToLower() == resourceName.ToLower());
+      GameMaterial storagedResource = data.storage.Find(
+         resource => resource.gameMaterialSO.materialName == gameMaterialSO.materialName);
       if (storagedResource != null)
       {
          // when storage full stop producing
@@ -161,9 +168,19 @@ public class Building : MonoBehaviour
       }
       else
       {
-         data.storage.Add(new Resource(resourceName, quantity));
+         data.storage.Add(new GameMaterial(gameMaterialSO, quantity));
       }
 
+   }
+
+   public bool CheckResources(ResourceCombination elementCombination)
+   {
+      GameMaterial storagedMaterial = data.storage.Find(
+         resource => resource.gameMaterialSO.materialName == elementCombination.resource1.gameMaterialSO.materialName);
+
+      if (storagedMaterial.quantity < elementCombination.resource1.quantity) return false;
+      print("enought resource1");
+      return false;
    }
 
 }

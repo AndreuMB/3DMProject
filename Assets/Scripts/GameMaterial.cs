@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Resource
+public class GameMaterial
 {
-   public string resourceEnum;
+   public GameMaterialSO gameMaterialSO;
    public int quantity;
    [System.NonSerialized]
    public GameObject HUDGO;
 
-   public Resource(string resource, int quantitySet)
+   public GameMaterial(GameMaterialSO gameMaterialSO, int quantitySet)
    {
-      resourceEnum = resource;
+      this.gameMaterialSO = gameMaterialSO;
       quantity = quantitySet;
    }
 }

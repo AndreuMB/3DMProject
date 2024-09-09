@@ -134,3 +134,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   foundryEntryPrefab: {fileID: 3232270304294117188, guid: 1caa35e40be8ba945bad01b2da07b97f, type: 3}
   listPanel: {fileID: 6062371217320850032}
+  foundryParent: {fileID: 0}
+  hud: {fileID: 0}

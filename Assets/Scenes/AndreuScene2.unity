@@ -2033,7 +2033,7 @@ GameObject:
   - component: {fileID: 1236243211}
   - component: {fileID: 1236243212}
   m_Layer: 0
-  m_Name: ResourceManager
+  m_Name: GameMaterialManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2069,8 +2069,8 @@ MonoBehaviour:
   rockFormation1: {fileID: 3104926894237930545, guid: 3ed23510d33f0a34380428333c5679cc, type: 3}
   rockFormation2: {fileID: 7646094871917563865, guid: 1553b0c543b6d1c47bd0bac0aef6bf22, type: 3}
   rockFormation3: {fileID: 8100899476518817162, guid: 4fce9ed9b63c02f45bbf29626b20971f, type: 3}
+  iron: {fileID: 2100000, guid: 438343f4a8abdc146afa75cf0ea5ff48, type: 2}
   copper: {fileID: 2100000, guid: ccde515a1ac9fe74392244bdff8b728b, type: 2}
-  silver: {fileID: 2100000, guid: 438343f4a8abdc146afa75cf0ea5ff48, type: 2}
   gold: {fileID: 2100000, guid: d2225d605fe6a714190464879c9cd3f1, type: 2}
 --- !u!1 &1243591202
 GameObject:
@@ -3403,7 +3403,7 @@ Transform:
   m_GameObject: {fileID: 1894758557}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -30.215204, y: 16.115019, z: 11.561069}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

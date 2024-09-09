@@ -12,7 +12,7 @@ public class Options : MonoBehaviour
     public List<OreData> resourceDataList;
     PlacementSystem ps;
     HUD hud;
-    ResourceManager rm;
+    MaterialManager rm;
     [SerializeField] GameObject dronPrefab;
     [SerializeField] SavesMenu savesMenu;
 
@@ -20,7 +20,7 @@ public class Options : MonoBehaviour
     {
         ps = FindObjectOfType<PlacementSystem>();
         hud = FindObjectOfType<HUD>();
-        rm = FindObjectOfType<ResourceManager>();
+        rm = FindObjectOfType<MaterialManager>();
 
         if (!DataSystem.newgame)
         {
@@ -176,7 +176,7 @@ public class Options : MonoBehaviour
             Dron dron = dronGO.GetComponent<Dron>();
             dron.dronData = dronData;
             dron.dronData.dronRef = dron;
-            dron.SetData(origin, GameObject.Find(dronData.destination), dronData.resource, dronData.movingTo);
+            dron.SetData(origin, GameObject.Find(dronData.destination), dronData.material, dronData.movingTo);
             origin.GetComponent<Building>().StartDronV2(dron);
             dron.dronGoal.Invoke();
         }

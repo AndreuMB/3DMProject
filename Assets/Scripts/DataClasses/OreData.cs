@@ -6,6 +6,6 @@ using UnityEngine;
 public class OreData
 {
   public Vector3 position;
-  public RockFormationsEnum rockFormationEnum;
-  public ResourcesEnum resourceEnum;
+  public RockFormationsEnum rockFormation;
+  public GameMaterialSO gameMaterialSO;
 }

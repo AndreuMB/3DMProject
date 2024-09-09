@@ -13,7 +13,7 @@ public class HUD : MonoBehaviour
     MainBase mainBase;
     [SerializeField] GameObject resourceContainer;
     [SerializeField] GameObject resourcePrefab;
-    List<Resource> resourcesSE;
+    List<GameMaterial> materialsSE;
     [SerializeField] GameObject dronMenuBtn;
     // public GameObject DMMenu;
     // [SerializeField] GameObject DronUpgradeBtn;
@@ -37,11 +37,11 @@ public class HUD : MonoBehaviour
     void Update()
     {
         if (!player) return;
-        if (resourcesSE == null) return;
-        foreach (Resource resource in resourcesSE)
+        if (materialsSE == null) return;
+        foreach (GameMaterial resource in materialsSE)
         {
             if (!resource.HUDGO) return;
-            resource.HUDGO.GetComponent<TMP_Text>().text = resource.resourceEnum.ToString() + ": " + resource.quantity.ToString();
+            resource.HUDGO.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName.ToString() + ": " + resource.quantity.ToString();
         }
     }
 
@@ -66,14 +66,14 @@ public class HUD : MonoBehaviour
 
     void ShowResourcesBuilding(Building selectedBuilding)
     {
-        resourcesSE = selectedBuilding.data.storage;
-        foreach (Resource resource in resourcesSE)
+        materialsSE = selectedBuilding.data.storage;
+        foreach (GameMaterial resource in materialsSE)
         {
             bool validation = true;
             if (resource.quantity <= 0)
             {
                 // check if extractor is mining this resource
-                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resource.ToString() == resource.resourceEnum.ToLower())
+                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor && selectedBuilding.resourceSO == resource.gameMaterialSO)
                 {
                     validation = false;
                 }
@@ -81,17 +81,17 @@ public class HUD : MonoBehaviour
                 // check if dron is delivering this resource
                 foreach (var dron in selectedBuilding.data.setDrons)
                 {
-                    if (dron.resource.resourceEnum == resource.resourceEnum) validation = false;
+                    if (dron.material.gameMaterialSO.materialName == resource.gameMaterialSO.materialName) validation = false;
                 }
 
                 if (validation)
                 {
-                    resourcesSE.Remove(resource);
+                    materialsSE.Remove(resource);
                     return;
                 }
             }
             GameObject newResource = Instantiate(resourcePrefab);
-            newResource.GetComponent<TMP_Text>().text = resource.resourceEnum + ": " + resource.quantity.ToString();
+            newResource.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName + ": " + resource.quantity.ToString();
             newResource.transform.SetParent(resourceContainer.transform, false);
             resource.HUDGO = newResource;
         }
@@ -102,7 +102,7 @@ public class HUD : MonoBehaviour
         // DMBtn.SetActive(false);
         // DronUpgradeBtn.SetActive(false);
         CleanButtonsPanel();
-        resourcesSE = null;
+        materialsSE = null;
         foreach (Transform child in resourceContainer.transform)
         {
             Destroy(child.gameObject);

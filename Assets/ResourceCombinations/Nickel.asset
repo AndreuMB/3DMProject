@@ -12,6 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5463b815a27701b4f819d877d7612b19, type: 3}
   m_Name: Nickel
   m_EditorClassIdentifier: 
-  resource1: 1
-  resource2: 1
-  result: 2
+  resource1:
+    materialName: 
+    gameMaterial: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+    quantity: 4
+  resource2:
+    materialName: 
+    gameMaterial: {fileID: 11400000, guid: d710ed0216a988b40812d0cb3a5853be, type: 2}
+    quantity: 2
+  result:
+    materialName: 
+    gameMaterial: {fileID: 11400000, guid: 44d002420986f494fa4854abd44a7b44, type: 2}
+    quantity: 1

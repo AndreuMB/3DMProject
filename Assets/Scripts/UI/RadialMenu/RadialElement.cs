@@ -22,11 +22,13 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public BuildingsEnum buildingType;
     public RadialMenuSO parent;
 
-    void Awake(){
+    void Awake()
+    {
         bgColor = background.color;
     }
 
-    void OnEnable(){
+    void OnEnable()
+    {
         background.color = bgColor;
     }
 
@@ -41,7 +43,8 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         background.color = bgColor;
     }
 
-    public void SetData(RadialElementSO data){
+    public void SetData(RadialElementSO data)
+    {
         label.text = data.elementName;
         // callback = data.callback;
         customFunctionName = data.customFunctionName;
@@ -50,7 +53,8 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         parent = data.parent;
     }
 
-    public void SetCallback(RadialElementDelegate sCallback){
+    public void SetCallback(RadialElementDelegate sCallback)
+    {
         callback = sCallback;
     }
 

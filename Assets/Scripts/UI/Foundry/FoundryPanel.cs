@@ -10,9 +10,11 @@ public class FoundryPanel : MonoBehaviour
     ResourceCombinationManager resourceCombinationM;
     public Foundry foundryParent;
     public HUD hud;
+    Building buildingRef;
 
     void Start()
     {
+        buildingRef = foundryParent.GetComponent<Building>();
         resourceCombinationM = GetComponent<ResourceCombinationManager>();
         foreach (ResourceCombination elementCombination in resourceCombinationM.elementCombinations)
         {
@@ -28,9 +30,12 @@ public class FoundryPanel : MonoBehaviour
 
     void CraftElement(ResourceCombination elementCombination)
     {
+        if (!buildingRef.CheckResources(elementCombination)) return;
         // add to foundry storage elementCombination.result
-        foundryParent.GetComponent<Building>().AddResource(elementCombination.result.ToString(), 1);
+        buildingRef.AddResource(elementCombination.result.gameMaterialSO, 1);
         // TODO showgohud should take autom the player selected object
         hud.ShowGOHUD(foundryParent.gameObject);
     }
+
+
 }

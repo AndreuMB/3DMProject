@@ -85,7 +85,7 @@ public class DronMenu : MonoBehaviour
         if (mainBase.drons <= 0) return;
         mainBase.SetDrons(mainBase.drons - 1);
 
-        Resource dronR = new Resource(dataSGO.storage[0].resourceEnum, mainBase.dronStorage);
+        GameMaterial dronR = new GameMaterial(dataSGO.storage[0].gameMaterialSO, mainBase.dronStorage);
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
@@ -110,12 +110,12 @@ public class DronMenu : MonoBehaviour
 
         dropdown.ClearOptions();
 
-        foreach (Resource resource in dataSGO.storage)
+        foreach (GameMaterial resource in dataSGO.storage)
         {
-            dropdown.options.Add(new TMP_Dropdown.OptionData(resource.resourceEnum.ToString()));
+            dropdown.options.Add(new TMP_Dropdown.OptionData(resource.gameMaterialSO.materialName.ToString()));
         }
 
-        int selected = dropdown.options.FindIndex(o => o.text == dron.resource.resourceEnum.ToString());
+        int selected = dropdown.options.FindIndex(o => o.text == dron.material.gameMaterialSO.materialName.ToString());
         dropdown.value = selected;
 
         dropdown.onValueChanged.AddListener((int selected) => ChangeResource(dron, dropdown));
@@ -132,8 +132,10 @@ public class DronMenu : MonoBehaviour
 
     void ChangeResource(Dron dron, TMP_Dropdown rowDropdown)
     {
-        ResourcesEnum parsed_enum = (ResourcesEnum)Enum.Parse(typeof(ResourcesEnum), rowDropdown.options[rowDropdown.value].text);
-        dron.newResource = new Resource(parsed_enum.ToString().FirstCharacterToUpper(), 0);
+        // string from dropdown to enum
+        GameMaterialsEnum parsed_enum = (GameMaterialsEnum)Enum.Parse(typeof(GameMaterialsEnum), rowDropdown.options[rowDropdown.value].text);
+        // enum to gamematerialSO
+        dron.newMaterial = new GameMaterial(MaterialManager.GetGameMaterialSO(parsed_enum), 0);
     }
 
     public void ToggleMenu()
