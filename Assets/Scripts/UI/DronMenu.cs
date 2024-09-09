@@ -74,7 +74,7 @@ public class DronMenu : MonoBehaviour
         if (player.selectedGO.GetComponent<Building>().data.storage.Count <= 0) return;
         if (!selectedGODron) return;
         if (selectedGODron == player.selectedGO) return;
-        if (selectedGODron.GetComponent<Building>().data.buildingType == BuildingsEnum.Storage)
+        if (selectedGODron.GetComponent<Building>().data.storageBool)
         {
             addBtn.GetComponent<Button>().interactable = true;
         }

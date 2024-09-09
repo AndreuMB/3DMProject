@@ -175,12 +175,28 @@ public class Building : MonoBehaviour
 
    public bool CheckResources(ResourceCombination elementCombination)
    {
-      GameMaterial storagedMaterial = data.storage.Find(
-         resource => resource.gameMaterialSO.materialName == elementCombination.resource1.gameMaterialSO.materialName);
+      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName);
+      if (storagedMaterial1 == null || storagedMaterial1.quantity < elementCombination.resource1.quantity) return false;
 
-      if (storagedMaterial.quantity < elementCombination.resource1.quantity) return false;
-      print("enought resource1");
-      return false;
+      // if only one element
+      if (elementCombination.resource2.gameMaterialSO == null) return true;
+
+      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName);
+      if (storagedMaterial2 == null || storagedMaterial2.quantity < elementCombination.resource2.quantity) return false;
+
+      return true;
+   }
+
+   public void RemoveResources(ResourceCombination elementCombination)
+   {
+      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName);
+      storagedMaterial1.quantity -= elementCombination.resource1.quantity;
+
+      // if only one element
+      if (elementCombination.resource2.gameMaterialSO == null) return;
+
+      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName);
+      storagedMaterial2.quantity -= elementCombination.resource2.quantity;
    }
 
 }

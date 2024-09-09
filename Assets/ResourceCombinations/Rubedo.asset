@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: Rubedo
   m_EditorClassIdentifier: 
   resource1:
-    materialName: 
-    gameMaterial: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
     quantity: 2
   resource2:
-    materialName: 
-    gameMaterial: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
     quantity: 2
   result:
-    materialName: 
-    gameMaterial: {fileID: 11400000, guid: d2699cacf41d4b04db1292ce44c9e257, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: d2699cacf41d4b04db1292ce44c9e257, type: 2}
     quantity: 1
