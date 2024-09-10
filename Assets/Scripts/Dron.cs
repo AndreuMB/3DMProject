@@ -47,10 +47,30 @@ public class Dron : MonoBehaviour
         return Vector2.Distance(transform.position, movingTo);
     }
 
-    void FixedUpdate()
+    void Update()
     {
-        float step = speed * Time.deltaTime;
         if (!destination) return;
+        RaycastHit hit;
+
+        // Raycast in the forward direction to detect obstacles
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 1, LayerMask.GetMask("Obstacles")))
+        {
+            if (hit.collider != null)
+            {
+                // If we hit an object, rotate around it
+                // Example: move to the left of the obstacle by adjusting the direction
+                Vector3 obstacleAvoidanceDirection = Vector3.Cross(transform.up, transform.forward).normalized;
+                Vector3 newPositionAroundObstacle = transform.position + obstacleAvoidanceDirection * speed * Time.deltaTime;
+
+                newPositionAroundObstacle.y = GetTerrainHeight(newPositionAroundObstacle) + dronHeight;
+                transform.position = newPositionAroundObstacle;
+
+                // Optionally, you can adjust the look direction to face where you are moving
+                transform.LookAt(newPositionAroundObstacle);
+
+                return;  // Return early to avoid continuing the normal movement logic
+            }
+        }
         // print("origin = " + originV);
         // print("destination = " + destinationV);
         // print("dron = " + transform.position);

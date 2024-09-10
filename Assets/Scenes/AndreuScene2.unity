@@ -175,6 +175,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: ac767dcb7ea7cd540a5bc26b099744d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: ac767dcb7ea7cd540a5bc26b099744d8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -247,6 +255,14 @@ PrefabInstance:
     - target: {fileID: 6925563247979421275, guid: ac767dcb7ea7cd540a5bc26b099744d8, type: 3}
       propertyPath: m_Name
       value: Roca1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: ac767dcb7ea7cd540a5bc26b099744d8, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: ac767dcb7ea7cd540a5bc26b099744d8, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1068,6 +1084,14 @@ PrefabInstance:
     - target: {fileID: 6925563247979421275, guid: e5ffdd2162dc67f4ca7726ab34ed4724, type: 3}
       propertyPath: m_Name
       value: Roca5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: e5ffdd2162dc67f4ca7726ab34ed4724, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: e5ffdd2162dc67f4ca7726ab34ed4724, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2521,6 +2545,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca5 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: e5ffdd2162dc67f4ca7726ab34ed4724, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: e5ffdd2162dc67f4ca7726ab34ed4724, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2670,6 +2702,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roca4
       objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: b12fdbc9eb37b414ca7aaac07c157511, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: b12fdbc9eb37b414ca7aaac07c157511, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2685,7 +2725,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2693,7 +2733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2726,7 +2766,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d817e816430de824594aee4abfc42d0a, type: 2}
+      objectReference: {fileID: 2100000, guid: 102373e956be7ac4a9899860f804116b, type: 2}
     - target: {fileID: 919132149155446097, guid: 65d7ae33b7f26ae409502f442f65bb7d, type: 3}
       propertyPath: m_Name
       value: Coursonindicator
@@ -2792,6 +2832,14 @@ PrefabInstance:
     - target: {fileID: 6925563247979421275, guid: b12fdbc9eb37b414ca7aaac07c157511, type: 3}
       propertyPath: m_Name
       value: Roca4 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: b12fdbc9eb37b414ca7aaac07c157511, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: b12fdbc9eb37b414ca7aaac07c157511, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3214,6 +3262,14 @@ PrefabInstance:
     - target: {fileID: 6925563247979421275, guid: 471a11a09cbb7ab46b34177c969e82f7, type: 3}
       propertyPath: m_Name
       value: Roca3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: 471a11a09cbb7ab46b34177c969e82f7, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6925563247979421275, guid: 471a11a09cbb7ab46b34177c969e82f7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

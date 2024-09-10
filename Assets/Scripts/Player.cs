@@ -14,38 +14,48 @@ public class Player : MonoBehaviour
     public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
     PlacementSystem ps;
+    CameraController cameraController;
     bool mouseSelector = true;
 
-    void Awake() {
+    void Awake()
+    {
         ps = FindObjectOfType<PlacementSystem>();
         rMManager = FindAnyObjectByType<RMManager>();
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
         canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
+        cameraController = FindAnyObjectByType<CameraController>();
     }
 
-    void Start(){
+    void Start()
+    {
         optionsMenu.SetActive(false);
     }
 
-    void Update(){
+    void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             optionsMenu.SetActive(!optionsMenu.activeInHierarchy);
         }
         if (optionsMenu.activeSelf) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse1))
+        // right click
+        if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            if (rmGO) {
+            if (rmGO)
+            {
                 Destroy(rmGO);
                 return;
             }
             Vector3Int selectedCell = ps.GetCell();
             bool content = ps.floorData.VoidCell(selectedCell);
             RadialMenuSO RMSO;
-            if(content){
+            if (content)
+            {
                 RMSO = rMManager.RMSOs.Find(x => x.name == "VoidCell");
-            }else{
+            }
+            else
+            {
                 switch (GetClickedGO().tag)
                 {
                     case "Building":
@@ -75,9 +85,8 @@ public class Player : MonoBehaviour
         }
 
         // if mouse selector false not left click interaction
-        if(!mouseSelector) return;
-
-        if(Input.GetMouseButtonDown(0)) // left click
+        if (!mouseSelector) return;
+        if (Input.GetMouseButtonUp(0) && !cameraController.GetHasCameraMove()) // left click
         {
             // if button click not select cell
             if (EventSystem.current.IsPointerOverGameObject()) return;
@@ -88,9 +97,11 @@ public class Player : MonoBehaviour
             ps.SelectCell();
         }
 
+
     }
 
-    public GameObject GetClickedGO(){
+    public GameObject GetClickedGO()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -100,7 +111,8 @@ public class Player : MonoBehaviour
         return null;
     }
 
-    void SetClickedGO(){
+    void SetClickedGO()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
@@ -108,23 +120,27 @@ public class Player : MonoBehaviour
             if (!hit.transform.gameObject.CompareTag("Building")) return;
             selectedGO = hit.transform.gameObject;
         }
-        if(selectedGO != null) selectedGOev.Invoke(selectedGO);
+        if (selectedGO != null) selectedGOev.Invoke(selectedGO);
     }
 
-    public void SetActiveGO(GameObject sGO){
+    public void SetActiveGO(GameObject sGO)
+    {
         selectedGO = sGO;
         selectedGOev.Invoke(selectedGO);
     }
 
-    public bool OptionsStatus() {
+    public bool OptionsStatus()
+    {
         return optionsMenu.activeInHierarchy;
     }
 
-    public void SetMouseSelectorStatus(bool status) {
+    public void SetMouseSelectorStatus(bool status)
+    {
         mouseSelector = status;
     }
 
-    public bool GetMouseSelectorStatus() {
+    public bool GetMouseSelectorStatus()
+    {
         return mouseSelector;
     }
 

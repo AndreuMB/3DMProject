@@ -1,4 +1,7 @@
+# dont upload savegames
 /[Aa]ssets/Saves/*
+# make sure dont upload .spp files from models, they are heavy and can cause problems in git
+*.spp
 
 # This .gitignore file should be placed at the root of your Unity project directory
 #

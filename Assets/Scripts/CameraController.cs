@@ -31,6 +31,8 @@ public class CameraController : MonoBehaviour
     Terrain terrain; // Reference to the terrain
     float terrainHeight;
     GameObject optionsMenu;
+    bool hasCameraMoved = false;
+    Vector3 cameraStartPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -64,16 +66,20 @@ public class CameraController : MonoBehaviour
 
     }
 
-    void HandleKeyboardInput(){
+    void HandleKeyboardInput()
+    {
         HandleMovement();
         HandleKeyRotation();
     }
 
-    void HandleMovement(){
+    void HandleMovement()
+    {
         if (Input.GetKey(KeyCode.LeftShift))
         {
             movementSpeed = fastSpeed;
-        }else{
+        }
+        else
+        {
             movementSpeed = normalSpeed;
         }
 
@@ -95,18 +101,12 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             newPosition -= transform.right * movementSpeed;
-            
-        }
 
-        
-        // if (Vector3.Distance(transform.position, newPosition) > 0.01f)
-        // {
-        //     CheckTerrainHeight();
-        //     transform.position = newZoom;
-        // }
+        }
     }
 
-    void HandleKeyRotation(){
+    void HandleKeyRotation()
+    {
         if (Input.GetKey(KeyCode.Q))
         {
             newRotation *= Quaternion.Euler(Vector3.up * rotationAmount);
@@ -118,50 +118,70 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void HandleMouseInput(){
+    void HandleMouseInput()
+    {
         HandleMouseMovement();
         HandleMouseRotation();
         HandleMouseZoom();
     }
 
-    void HandleMouseMovement(){
+    void HandleMouseMovement()
+    {
         if (!FindObjectOfType<Player>()) return;
         if (FindObjectOfType<Player>().OptionsStatus()) return;
-        if (Input.GetMouseButtonDown(0)){
+        if (Input.GetMouseButtonDown(0))
+        {
+            ResetHasCameraMove();
             Plane plane = new Plane(Vector3.up, Vector3.zero);
 
-            Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             float entry;
 
-            if (plane.Raycast(ray, out entry)){
-                dragStartPosition=ray.GetPoint(entry);
+            if (plane.Raycast(ray, out entry))
+            {
+                dragStartPosition = ray.GetPoint(entry);
+            }
+            cameraStartPosition = transform.position;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            float entry;
+
+            if (plane.Raycast(ray, out entry))
+            {
+
+                dragEndPosition = ray.GetPoint(entry);
+                newPosition = transform.position + dragStartPosition - dragEndPosition;
             }
         }
 
-        if (Input.GetMouseButton(0)){
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-
-            Ray ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            float entry;
-
-            if (plane.Raycast(ray, out entry)){
-
-                dragEndPosition=ray.GetPoint(entry);
-               
-                newPosition = transform.position + dragStartPosition - dragEndPosition;
+        if (Input.GetMouseButtonUp(0))
+        {
+            float distanceMoved = Vector3.Distance(cameraStartPosition, transform.position);
+            // Check if the distance moved exceeds the threshold
+            if (distanceMoved > 1)
+            {
+                hasCameraMoved = true;
             }
         }
     }
 
-    void HandleMouseRotation(){
-        if (Input.GetMouseButtonDown(2)){
-            rotateStartPosition=Input.mousePosition;
+    void HandleMouseRotation()
+    {
+        if (Input.GetMouseButtonDown(2))
+        {
+            rotateStartPosition = Input.mousePosition;
         }
 
-        if (Input.GetMouseButton(2)){
-            rotateEndPosition=Input.mousePosition;
+        if (Input.GetMouseButton(2))
+        {
+            rotateEndPosition = Input.mousePosition;
             Vector3 difference = rotateStartPosition - rotateEndPosition;
 
             rotateStartPosition = rotateEndPosition;
@@ -169,83 +189,40 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void HandleMouseZoom(){
-        // float zoomAmount2 = 1f;
-        // if (Input.GetAxis("Mouse ScrollWheel") > 0f && newZoom.y > maxZoom) // forward
-        // {
-        //     // newZoom += zoomAmount*4;
-        //     newZoom += cameraTransform.forward * zoomAmount2;
-        //     // CheckTerrainHeight();
-        // }
-        
-        // if (Input.GetAxis("Mouse ScrollWheel") < 0f && newZoom.y < minZoom) // backward
-        // {
-        //     newZoom -= cameraTransform.forward * zoomAmount2;
-        //     // newZoom -= zoomAmount*4;
-        //     // CheckTerrainHeight();
-        // }
-
-        // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
-
+    void HandleMouseZoom()
+    {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
 
         if (scroll > 0f && newZoom.y > maxZoom) // forward
         {
             newZoom += scroll * zoomAmount;
         }
-        
+
         if (scroll < 0f && newZoom.y < minZoom) // backward
         {
             newZoom += scroll * zoomAmount;
         }
-        // if (scroll != 0f)
-        // {
-        //     print(scroll);
-        //     newZoom += scroll * zoomAmount;
-        //     newZoom.y = Mathf.Clamp(newZoom.y, maxZoom, minZoom);
-        // }
     }
 
-    void CheckTerrainHeight() {
-        terrainHeight = terrain.SampleHeight(new Vector3(transform.position.x, 0,transform.position.z)) + terrain.transform.position.y;
-
-        // Vector3 position = transform.position;
-
-        // print("newZoom.y = " + newZoom.y);
-        // print("terrainHeight + maxZoom, max y = " + terrainHeight + maxZoom);
-        // print("minZoom = " + minZoom);
-
-        // Ensure the camera stays above the terrain plus the minimum height
-        // newZoom.y = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
+    void CheckTerrainHeight()
+    {
+        terrainHeight = terrain.SampleHeight(new Vector3(transform.position.x, 0, transform.position.z)) + terrain.transform.position.y;
         float newYCameraPosition = Mathf.Clamp(0, terrainHeight + 1, 30);
         transform.position = new(transform.position.x, newYCameraPosition, transform.position.z);
-
-        // if (smoothZoomFix) {
-        //     // smooth movement
-        //     cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, newZoom, Time.deltaTime * movementTime);
-        // } else {
-        //     //  instant movement
-        //     cameraTransform.localPosition = newZoom;
-        // }
-
-        // float newZoomFix = Mathf.Clamp(newZoom.y, terrainHeight + maxZoom, minZoom);
-        
-        // if (newZoom.y != newZoomFix) {
-        //     print("fixed");
-        //     newZoom.y = newZoomFix;
-        // } else {
-        //     print("right");
-        // }
-
-        // Apply the new position to the camera
-        // cameraTransform.localPosition = cameraTransform.InverseTransformPoint(newZoom);
-        // cameraTransform.localPosition = newZoom;
-        
-        // cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, position, Time.deltaTime * movementTime);
-
     }
 
-    public void FocusBuilding(Vector3 position) {
+    public void FocusBuilding(Vector3 position)
+    {
         transform.position = position;
+    }
+
+    public bool GetHasCameraMove()
+    {
+        return hasCameraMoved;
+    }
+
+    public void ResetHasCameraMove()
+    {
+        hasCameraMoved = false;
     }
 }

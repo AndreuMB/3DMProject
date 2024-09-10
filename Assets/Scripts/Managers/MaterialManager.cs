@@ -59,25 +59,13 @@ public class MaterialManager : MonoBehaviour
 
     public static void LoadGameMaterials()
     {
+        // Load all GameMaterialSO assets from the "Resources/GameMaterials" folder
+        GameMaterialSO[] materials = Resources.LoadAll<GameMaterialSO>("GameMaterials");
+
         // Initialize the list
-        gameMaterialsList = new List<GameMaterialSO>();
+        gameMaterialsList = new List<GameMaterialSO>(materials);
 
-        // Get all asset GUIDs from the folder "Assets/GameMaterials"
-        string[] guids = AssetDatabase.FindAssets("t:GameMaterialSO", new[] { "Assets/GameMaterials" });
-
-        // Loop through the GUIDs to load each asset
-        foreach (string guid in guids)
-        {
-            string path = AssetDatabase.GUIDToAssetPath(guid);
-            GameMaterialSO gameMaterial = AssetDatabase.LoadAssetAtPath<GameMaterialSO>(path);
-
-            if (gameMaterial != null)
-            {
-                gameMaterialsList.Add(gameMaterial);
-            }
-        }
-
-        Debug.Log("Loaded " + gameMaterialsList.Count + " game materials.");
+        Debug.Log($"Loaded {gameMaterialsList.Count} game materials at runtime.");
     }
 
     void Awake()
