@@ -1946,6 +1946,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previewYOffset: 0.06
   cellIndicator: {fileID: 2122863028}
+  cellIndicatorSecondary: {fileID: 1392533070}
   previewMaterialsPrefab: {fileID: 2100000, guid: 0aef9ec00fbfbf94ca90e4be4aa8ef78, type: 2}
 --- !u!4 &1012610170 stripped
 Transform:

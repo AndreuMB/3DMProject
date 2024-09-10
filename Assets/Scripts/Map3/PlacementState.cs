@@ -33,7 +33,7 @@ public class PlacementState : IBuildingtState
         if (selectedObjectIndex > -1)
         {
             // previewSystem.StartShowingPOlacementPreview(database.objectsData[selectedObjectIndex].Prefab, database.objectsData[selectedObjectIndex].Size);
-            
+
         }
         else
         {
@@ -41,9 +41,9 @@ public class PlacementState : IBuildingtState
         }
 
     }
-    public void EndState()
+    public void EndState(bool secondaryIndicator = false)
     {
-        previewSystem.StopShowingPreview();
+        previewSystem.StopShowingPreview(secondaryIndicator);
     }
     public void OnAction(Vector3Int gridPosition)
     {

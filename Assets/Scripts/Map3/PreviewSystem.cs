@@ -4,9 +4,10 @@ public class PreviewSystem : MonoBehaviour
 {
     [SerializeField]
     private float previewYOffset = 0.06f;
-    [SerializeField]
-    private GameObject cellIndicator;
+    [SerializeField] GameObject cellIndicator;
     private GameObject cellSelector;
+    [SerializeField] GameObject cellIndicatorSecondary;
+    private GameObject cellSelectorSecondary;
     private GameObject previewObject;
 
     [SerializeField]
@@ -18,9 +19,17 @@ public class PreviewSystem : MonoBehaviour
     private void Awake()
     {
         previewMaterialInstance = new Material(previewMaterialsPrefab);
+
+        // cellIndicator
         cellSelector = Instantiate(cellIndicator);
         cellIndicator.SetActive(false);
         cellSelector.SetActive(false);
+
+        // cellIndicatorSecondary
+        cellSelectorSecondary = Instantiate(cellIndicatorSecondary);
+        cellIndicatorSecondary.SetActive(false);
+        cellSelectorSecondary.SetActive(false);
+
         cellIndicatorRenderer = cellIndicator.GetComponentInChildren<Renderer>();
     }
     public void StartShowingPOlacementPreview(GameObject prefab, Vector2Int size)
@@ -33,9 +42,9 @@ public class PreviewSystem : MonoBehaviour
 
     private void PrepareCursor(Vector2Int size)
     {
-        if (size.x > 0 || size.y > 0) 
-        { 
-            cellIndicator.transform.localScale = new Vector3(size.x,1,size.y);
+        if (size.x > 0 || size.y > 0)
+        {
+            cellIndicator.transform.localScale = new Vector3(size.x, 1, size.y);
             cellIndicatorRenderer.material.mainTextureScale = size;
         }
     }
@@ -54,24 +63,40 @@ public class PreviewSystem : MonoBehaviour
         }
     }
 
-    public void StopShowingPreview()
+    public void StopShowingPreview(bool secondaryIndicator = false)
     {
-        cellIndicator.SetActive(false);
-        if( previewObject != null)
+        if (secondaryIndicator)
+        {
+            cellIndicatorSecondary.SetActive(false);
+        }
+        else
+        {
+            cellIndicator.SetActive(false);
+        }
+        if (previewObject != null)
         {
             Destroy(previewObject);
         }
     }
-    public void UndatePosition(Vector3 position, bool validity, bool selector = false)
+    public void UndatePosition(Vector3 position, bool validity, bool selector = false, bool secondaryIndicator = false)
     {
-        if(previewObject != null && !selector)
+        if (previewObject != null && !selector)
         {
             MovePreview(position);
             ApllyFeedbackToPreview(validity);
-        }else if(selector){
+        }
+        else if (selector && secondaryIndicator)
+        {
+            cellIndicatorSecondary.SetActive(true);
+            cellIndicatorSecondary.transform.position = position;
+        }
+        else if (selector)
+        {
             cellSelector.SetActive(true);
             cellSelector.transform.position = position;
-        }else{
+        }
+        else
+        {
             MoveCursor(position);
         }
         ApllyFeedbackToCursor(validity);

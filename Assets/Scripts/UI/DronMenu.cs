@@ -60,6 +60,7 @@ public class DronMenu : MonoBehaviour
         {
             if (player.GetClickedGO() && player.GetClickedGO().CompareTag("Building"))
             {
+                // if (!BasicDronCheck()) return;
                 selectedGODron = player.GetClickedGO();
                 AddRowBtnStatus();
             }
@@ -71,13 +72,16 @@ public class DronMenu : MonoBehaviour
     void AddRowBtnStatus()
     {
         addBtn.GetComponent<Button>().interactable = false;
-        if (player.selectedGO.GetComponent<Building>().data.storage.Count <= 0) return;
-        if (!selectedGODron) return;
-        if (selectedGODron == player.selectedGO) return;
-        if (selectedGODron.GetComponent<Building>().data.storageBool)
+        if (!BasicDronCheck())
         {
-            addBtn.GetComponent<Button>().interactable = true;
+            player.placementSystem.buildingtState.EndState(true);
+            return;
         }
+        // show placeholder if the building is capable of storage
+        player.placementSystem.SelectCell(true);
+        if (player.selectedGO.GetComponent<Building>().data.storage.Count <= 0) return;
+        // enable button if u can send materials to the building
+        addBtn.GetComponent<Button>().interactable = true;
     }
 
     public void AddDron()
@@ -140,7 +144,16 @@ public class DronMenu : MonoBehaviour
 
     public void ToggleMenu()
     {
+        player.placementSystem.buildingtState.EndState(true);
         gameObject.SetActive(!gameObject.activeSelf);
+    }
+
+    bool BasicDronCheck()
+    {
+        if (!selectedGODron) return false;
+        if (selectedGODron == player.selectedGO) return false;
+        if (!selectedGODron.GetComponent<Building>().data.storageBool) return false;
+        return true;
     }
 
 

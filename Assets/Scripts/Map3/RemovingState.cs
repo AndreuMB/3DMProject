@@ -27,7 +27,7 @@ public class RemovingState : IBuildingtState
         // previewSystem.StartShowingRemovePreview();
     }
 
-    public void EndState()
+    public void EndState(bool secondaryIndicator = false)
     {
         // previewSystem.StopShowingPreview();
     }
@@ -35,11 +35,11 @@ public class RemovingState : IBuildingtState
     public void OnAction(Vector3Int gridPosition)
     {
         GridData selectedData = null;
-        if (buildData.CanPlaceObjectAt(gridPosition,Vector2Int.one) == false) 
+        if (buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
         {
             selectedData = buildData;
         }
-        else if (floorData.CanPlaceObjectAt(gridPosition,Vector2Int.one)== false)
+        else if (floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
         {
             selectedData = floorData;
         }

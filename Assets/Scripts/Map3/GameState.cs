@@ -32,9 +32,9 @@ public class GameState : IBuildingtState
         previewSystem.StartShowingPreview();
     }
 
-    public void EndState()
+    public void EndState(bool secondaryIndicator = false)
     {
-        previewSystem.StopShowingPreview();
+        previewSystem.StopShowingPreview(secondaryIndicator);
     }
 
     public void OnAction(Vector3Int gridPosition)
@@ -140,9 +140,9 @@ public class GameState : IBuildingtState
         return null;
     }
 
-    public void SelectCell(Vector3Int gridPosition, Vector3 gridPositionFloat)
+    public void SelectCell(Vector3Int gridPosition, Vector3 gridPositionFloat, bool secondaryIndicator = false)
     {
-        previewSystem.UndatePosition(gridPositionFloat, true, true);
+        previewSystem.UndatePosition(gridPositionFloat, true, true, secondaryIndicator);
     }
 
     public void BuildOre(Vector3Int gridPosition, GameObject oreGO, Vector3 position)

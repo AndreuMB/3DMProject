@@ -13,13 +13,13 @@ public class Player : MonoBehaviour
     public GameObject selectedGO;
     public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
-    PlacementSystem ps;
+    public PlacementSystem placementSystem;
     CameraController cameraController;
     bool mouseSelector = true;
 
     void Awake()
     {
-        ps = FindObjectOfType<PlacementSystem>();
+        placementSystem = FindObjectOfType<PlacementSystem>();
         rMManager = FindAnyObjectByType<RMManager>();
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
         canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
@@ -47,8 +47,8 @@ public class Player : MonoBehaviour
                 Destroy(rmGO);
                 return;
             }
-            Vector3Int selectedCell = ps.GetCell();
-            bool content = ps.floorData.VoidCell(selectedCell);
+            Vector3Int selectedCell = placementSystem.GetCell();
+            bool content = placementSystem.floorData.VoidCell(selectedCell);
             RadialMenuSO RMSO;
             if (content)
             {
@@ -94,7 +94,7 @@ public class Player : MonoBehaviour
             if (rmGO) return;
 
             SetClickedGO();
-            ps.SelectCell();
+            placementSystem.SelectCell();
         }
 
 
