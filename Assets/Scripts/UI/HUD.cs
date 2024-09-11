@@ -21,17 +21,17 @@ public class HUD : MonoBehaviour
     // [SerializeField] GameObject dronManagerPrefab;
     public Transform buildingButtpnsPanel;
 
-    public void IniHUD()
+    public void Start()
     {
-        if (!FindObjectOfType<Player>()) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
+        // mainBase = FindObjectOfType<MainBase>();
+        // if (!mainBase) { Debug.LogError("Need MainBase gameobject in gamescene to work"); return; };
         player = FindObjectOfType<Player>();
-        mainBase = FindObjectOfType<MainBase>();
 
         player.selectedGOev.AddListener(ShowGOHUD);
         // DMBtn.SetActive(false);
         // DMMenu.SetActive(false);
         // DronUpgradeBtn.SetActive(false);
-        UpdateDronsHUD();
+        // UpdateDronsHUD();
     }
 
     void Update()
@@ -50,17 +50,17 @@ public class HUD : MonoBehaviour
         if (!player.GetMouseSelectorStatus()) return;
         if (!selectedGO) return;
         if (!selectedGO.GetComponent<Building>()) return;
+
         CleanHUDContainer();
         Building selectedBuilding = selectedGO.GetComponent<Building>();
-        if (selectedBuilding)
+        if (selectedBuilding.buildingType != null)
         {
-            // if (selectedBuilding.data.buildingType == BuildingsEnum.MainBase) DronUpgradeBtn.SetActive(true);
-            if (selectedBuilding.buildingType != null) selectedBuilding.GetComponent<IBuilding>().ShowHUD();
-            if (selectedBuilding.data.storageBool)
-            {
-                SetDronManagerButton();
-                ShowResourcesBuilding(selectedGO.GetComponent<Building>());
-            }
+            selectedBuilding.GetComponent<IBuilding>().ShowHUD();
+        }
+        if (selectedBuilding.data.storageBool)
+        {
+            SetDronManagerButton();
+            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
         }
     }
 
@@ -108,9 +108,9 @@ public class HUD : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    public void UpdateDronsHUD()
+    public void UpdateDronsHUD(int dronsNumber)
     {
-        drons.text = "DRONS " + mainBase.drons.ToString();
+        drons.text = "DRONS " + dronsNumber.ToString();
     }
 
     public void GenerateButtons(List<ButtonData> buttonsList)

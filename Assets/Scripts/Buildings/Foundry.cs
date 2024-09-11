@@ -10,16 +10,19 @@ public class Foundry : MonoBehaviour, IBuilding
     readonly List<ButtonData> buttonsList = new();
     HUD hud;
     GameObject foundryPanel;
+
+    void Awake()
+    {
+        buttonsList.Add(new ButtonData("Craft", ToggleFoundryMenu));
+    }
     void Start()
     {
         hud = FindObjectOfType<HUD>();
-        buttonsList.Add(new ButtonData("Craft", ToggleFoundryMenu));
-        hud.ShowGOHUD(gameObject);
     }
 
     public void ShowHUD()
     {
-        hud.GenerateButtons(buttonsList);
+        GetComponent<Building>().hud.GenerateButtons(buttonsList);
     }
 
     void ToggleFoundryMenu()

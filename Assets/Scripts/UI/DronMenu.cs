@@ -50,6 +50,7 @@ public class DronMenu : MonoBehaviour
 
     void OnDisable()
     {
+        if (player == null) return;
         player.placementSystem.buildingtState.EndState(true);
         player.SetMouseSelectorStatus(true);
     }

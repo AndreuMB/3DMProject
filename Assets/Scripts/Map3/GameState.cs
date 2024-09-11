@@ -78,6 +78,7 @@ public class GameState : IBuildingtState
         (int, GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat, bType);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
+        if (bType == BuildingsEnum.Extractor) Remove(gridPosition);
         selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, dataB.Item1);
         dataB.Item2.GetComponent<Building>().data.id = dataB.Item1;
         SelectCell(gridPosition, gridPositionFloat);

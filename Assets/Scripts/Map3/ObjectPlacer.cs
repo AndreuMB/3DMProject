@@ -10,11 +10,8 @@ public class ObjectPlacer : MonoBehaviour
     private List<GameObject> placedGameObject = new();
     [SerializeField] Mesh cubeMesh;
     [SerializeField] GameObject buildingPrefab;
-    Player player;
-
-    void Start(){
-        player = FindObjectOfType<Player>();
-    }
+    [SerializeField] Transform buildingsContainer;
+    [SerializeField] Transform oresContainer;
 
     public int PlaceObject(GameObject prefab, Vector3 position)
     {
@@ -35,7 +32,11 @@ public class ObjectPlacer : MonoBehaviour
         // }
         GameObject newParent = new GameObject();
         newObject.transform.parent = newParent.transform;
-        newParent.transform.position = position;
+        newParent.transform.parent = buildingsContainer;
+
+        newParent.transform.position = transform.InverseTransformPoint(position);
+        FixYAxyGO(newParent.transform);
+
         building.SetBuildType(bType);
         placedGameObject.Add(newObject);
         // if (player) player.SetActiveGO(newObject);
@@ -45,19 +46,20 @@ public class ObjectPlacer : MonoBehaviour
 
     public (int, GameObject) PlaceOre(GameObject oreGO, Vector3 position)
     {
-        oreGO.transform.localScale = new Vector3(.2f,.2f,.2f);
+        oreGO.transform.localScale = new Vector3(.2f, .2f, .2f);
 
         GameObject newParent = new GameObject();
         oreGO.transform.parent = newParent.transform;
         newParent.transform.position = position;
+        newParent.transform.parent = oresContainer;
+
+        newParent.transform.position = transform.InverseTransformPoint(position);
+        FixYAxyGO(newParent.transform);
+
         newParent.tag = Tags.Ore.ToString();
         newParent.AddComponent<MeshCollider>();
         // put mesh collider to this parent or delete parent in code and create it already on the prefab with the mesh
         newParent.GetComponent<MeshCollider>().sharedMesh = cubeMesh;
-
-
-
-
 
         placedGameObject.Add(oreGO);
 
@@ -66,7 +68,7 @@ public class ObjectPlacer : MonoBehaviour
 
     internal void RemoveObjectAt(int gameObjectIndex)
     {
-        if(placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
+        if (placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
         {
             return;
         }
@@ -76,11 +78,20 @@ public class ObjectPlacer : MonoBehaviour
 
     internal GameObject GetGObjectAt(int gameObjectIndex)
     {
-        if(placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
+        if (placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
         {
             return null;
         }
         return placedGameObject[gameObjectIndex];
+    }
+
+    void FixYAxyGO(Transform GOtransform)
+    {
+        const float OFFSET_Y = 10f;
+        Vector3 positionFix = GOtransform.position;
+        positionFix.y = GOtransform.position.y - OFFSET_Y;
+        // Apply the corrected local position
+        GOtransform.position = positionFix;
     }
 }
 

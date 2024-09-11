@@ -9,7 +9,7 @@ public class Building : MonoBehaviour
    public BuildingData data;
    Player player;
    MainBase mainBase;
-   HUD hud;
+   public HUD hud;
    public IBuilding buildingType;
    bool formatB = true;
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
@@ -20,7 +20,12 @@ public class Building : MonoBehaviour
       player = FindObjectOfType<Player>();
       mainBase = FindObjectOfType<MainBase>();
       hud = FindObjectOfType<HUD>();
+      buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
       Format();
+      if (hud)
+      {
+         player.SetActiveGO(gameObject);
+      }
    }
 
    IEnumerator ExtractResource()
@@ -38,7 +43,7 @@ public class Building : MonoBehaviour
          //    data.storage.Add(new Resource(resource.ToString(), data.quantity));
          // }
          AddResource(data.storage[0].gameMaterialSO, data.quantity);
-         hud.ShowGOHUD(player.selectedGO);
+         // hud.ShowGOHUD(player.selectedGO);
 
       }
       yield break;
@@ -52,17 +57,17 @@ public class Building : MonoBehaviour
    public void SetBuildType(BuildingsEnum bType)
    {
       data.buildingType = bType;
-      buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
-      Format();
+      // buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
+      // Format();
    }
 
    void Format()
    {
-      if (!formatB) return;
       switch (data.buildingType)
       {
          case BuildingsEnum.MainBase:
             MainBase mainBase = gameObject.AddComponent<MainBase>();
+            mainBase.hud = hud;
             buildingType = mainBase;
             break;
          case BuildingsEnum.Extractor:
@@ -84,7 +89,6 @@ public class Building : MonoBehaviour
             foundry.SetFoundryPanel(foundryPanel);
             break;
       }
-      formatB = false;
    }
 
    public void SetModel(GameObject model)

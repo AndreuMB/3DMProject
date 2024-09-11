@@ -30,10 +30,9 @@ public class Options : MonoBehaviour
         {
             MainBaseSpawn();
             ResourceCellsSpawn();
-            // hud.IniHUD();
         }
 
-        hud.IniHUD();
+        // hud.IniHUD();
 
 
     }
@@ -102,7 +101,6 @@ public class Options : MonoBehaviour
         }
 
         // set drons in buildings
-        // DronMenu dm = hud.DMMenu.GetComponent<DronMenu>();
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
             Building building = buildingGO.GetComponent<Building>();

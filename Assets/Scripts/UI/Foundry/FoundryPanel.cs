@@ -40,6 +40,7 @@ public class FoundryPanel : MonoBehaviour
         // remove resources
         buildingRef.RemoveResources(elementCombination);
         // TODO showgohud should take autom the player selected object
+        // update resourcesHUD
         hud.ShowGOHUD(foundryParent.gameObject);
     }
 

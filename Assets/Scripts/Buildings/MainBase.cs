@@ -7,18 +7,23 @@ using UnityEngine;
 public class MainBase : MonoBehaviour, IBuilding
 {
     readonly List<ButtonData> buttonsList = new();
-    HUD hud;
+    public HUD hud;
     [Header("Dron Settings")]
     public int drons = 2;
     public int dronStorage = 1;
     public float dronSpeed = 2;
-    void Start()
+
+    void Awake()
     {
-        hud = FindObjectOfType<HUD>();
         buttonsList.Add(new ButtonData("Create Dron", CreateDron));
         buttonsList.Add(new ButtonData("Upgrade Drons Speed", UpgradeDronsSpeed));
         buttonsList.Add(new ButtonData("Upgrade Drons Storage", UpgradeDronsStorage));
-        hud.ShowGOHUD(gameObject);
+    }
+
+    void Start()
+    {
+        hud = FindObjectOfType<HUD>();
+        SetDrons(2);
     }
 
     public void ShowHUD()
@@ -29,24 +34,24 @@ public class MainBase : MonoBehaviour, IBuilding
     public void CreateDron()
     {
         drons += 1;
-        hud.UpdateDronsHUD();
+        hud.UpdateDronsHUD(drons);
     }
 
     public void UpgradeDronsSpeed()
     {
         dronSpeed += 1;
-        hud.UpdateDronsHUD();
+        hud.UpdateDronsHUD(drons);
     }
 
     public void UpgradeDronsStorage()
     {
         dronStorage += 2;
-        hud.UpdateDronsHUD();
+        hud.UpdateDronsHUD(drons);
     }
 
     public void SetDrons(int dronsNew)
     {
         drons = dronsNew;
-        hud.UpdateDronsHUD();
+        hud.UpdateDronsHUD(drons);
     }
 }
