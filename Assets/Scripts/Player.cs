@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     public PlacementSystem placementSystem;
     CameraController cameraController;
     bool mouseSelector = true;
+    float lastClickTime = 0f;
+    readonly float doubleClickThreshold = 0.3f; // Time in seconds within which two clicks are considered a double-click
 
     void Awake()
     {
@@ -99,8 +101,19 @@ public class Player : MonoBehaviour
             // if radial menu open not select cell
             if (rmGO) return;
 
-            SetClickedGO();
-            placementSystem.SelectCell();
+            // Check for double-click
+            if (Time.time - lastClickTime < doubleClickThreshold)
+            {
+                // Double-click detected
+                cameraController.FocusBuilding(selectedGO.transform.position, true);
+            }
+            else
+            {
+                // Single-click detected, reset lastClickTime
+                lastClickTime = Time.time;
+                SetClickedGO();
+                placementSystem.SelectCell();
+            }
         }
 
 
@@ -148,6 +161,14 @@ public class Player : MonoBehaviour
     public bool GetMouseSelectorStatus()
     {
         return mouseSelector;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.clickCount == 2)
+        {
+            Debug.Log("double click");
+        }
     }
 
 }

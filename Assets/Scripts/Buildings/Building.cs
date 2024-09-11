@@ -11,7 +11,6 @@ public class Building : MonoBehaviour
    MainBase mainBase;
    public HUD hud;
    public IBuilding buildingType;
-   bool formatB = true;
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
 
    // Start is called before the first frame update

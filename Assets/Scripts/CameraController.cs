@@ -211,9 +211,18 @@ public class CameraController : MonoBehaviour
         transform.position = new(transform.position.x, newYCameraPosition, transform.position.z);
     }
 
-    public void FocusBuilding(Vector3 position)
+    public void FocusBuilding(Vector3 buildingPosition, bool zoom = false)
     {
-        transform.position = position;
+        // buildingPosition.x -= 2;
+        buildingPosition -= transform.forward * 1.5f;
+        transform.position = buildingPosition;
+        newPosition = buildingPosition;
+
+        if (!zoom) return;
+        // Set camera zoom to maximum zoom level (closest to the target)
+        Vector3 maxZoomVector = new Vector3(0, 0.5f, .5f);
+        cameraTransform.localPosition = maxZoomVector;
+        newZoom = maxZoomVector;
     }
 
     public bool GetHasCameraMove()
