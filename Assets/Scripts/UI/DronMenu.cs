@@ -50,6 +50,7 @@ public class DronMenu : MonoBehaviour
 
     void OnDisable()
     {
+        player.placementSystem.buildingtState.EndState(true);
         player.SetMouseSelectorStatus(true);
     }
 
@@ -144,7 +145,6 @@ public class DronMenu : MonoBehaviour
 
     public void ToggleMenu()
     {
-        player.placementSystem.buildingtState.EndState(true);
         gameObject.SetActive(!gameObject.activeSelf);
     }
 

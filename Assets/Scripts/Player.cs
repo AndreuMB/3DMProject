@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            GameObject menuGO = GameObject.FindWithTag("Menu");
+            if (menuGO != null)
+            {
+                menuGO.SetActive(false);
+                return;
+            }
             optionsMenu.SetActive(!optionsMenu.activeInHierarchy);
         }
         if (optionsMenu.activeSelf) return;

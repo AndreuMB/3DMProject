@@ -9,7 +9,6 @@ public class Foundry : MonoBehaviour, IBuilding
     // [SerializeField] GameObject hud;
     readonly List<ButtonData> buttonsList = new();
     HUD hud;
-    GameObject foundryPanelPrefab;
     GameObject foundryPanel;
     void Start()
     {
@@ -25,20 +24,15 @@ public class Foundry : MonoBehaviour, IBuilding
 
     void ToggleFoundryMenu()
     {
-        if (!foundryPanel)
-        {
-            foundryPanel = Instantiate(foundryPanelPrefab, hud.transform);
-        }
-        else
-        {
-            foundryPanel.SetActive(!foundryPanel.activeInHierarchy);
-        }
+        if (!foundryPanel) return;
+
+        foundryPanel.SetActive(!foundryPanel.activeInHierarchy);
         foundryPanel.GetComponent<FoundryPanel>().foundryParent = this;
         foundryPanel.GetComponent<FoundryPanel>().hud = hud;
     }
 
-    public void SetFoundryPanelPrefab(GameObject foundryPP)
+    public void SetFoundryPanel(GameObject foundryPP)
     {
-        foundryPanelPrefab = foundryPP;
+        foundryPanel = foundryPP;
     }
 }

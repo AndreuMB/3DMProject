@@ -80,8 +80,8 @@ public class Building : MonoBehaviour
             data.storageBool = true;
             Foundry foundry = gameObject.AddComponent<Foundry>();
             buildingType = foundry;
-            GameObject foundryPanelPrefab = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
-            foundry.SetFoundryPanelPrefab(foundryPanelPrefab);
+            GameObject foundryPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
+            foundry.SetFoundryPanel(foundryPanel);
             break;
       }
       formatB = false;
