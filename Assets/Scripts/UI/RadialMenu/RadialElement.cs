@@ -9,7 +9,7 @@ using Unity.VisualScripting;
 using UnityEngine.Events;
 
 
-public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public delegate void RadialElementDelegate(RadialElement sElement);
     public TMP_Text label;
@@ -17,7 +17,7 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     float shadow = 0.1f;
     RadialElementDelegate callback;
     Color bgColor;
-    public string customFunctionName;
+    public RadialElementFunction customFunctionName;
     public int buildId;
     public BuildingsEnum buildingType;
     public RadialMenuSO parent;
@@ -48,18 +48,8 @@ public class RadialElement : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         label.text = data.elementName;
         // callback = data.callback;
         customFunctionName = data.customFunctionName;
-        buildId = data.buildId;
+        // buildId = data.buildId;
         buildingType = data.buildingType;
         parent = data.parent;
-    }
-
-    public void SetCallback(RadialElementDelegate sCallback)
-    {
-        callback = sCallback;
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (callback != null) callback.Invoke(this);
     }
 }

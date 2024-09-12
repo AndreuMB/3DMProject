@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Argon
   m_EditorClassIdentifier: 
   resource1:
-    gameMaterialSO: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: 619a7e3e1c2999246a8bb8cfec0bf435, type: 2}
     quantity: 2
   resource2:
-    gameMaterialSO: {fileID: 11400000, guid: d710ed0216a988b40812d0cb3a5853be, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: 55e8ffebf6df1c44597008e96db76c4f, type: 2}
     quantity: 4
   result:
     gameMaterialSO: {fileID: 11400000, guid: 989454e4a54fa414f8d53b4249472bb7, type: 2}

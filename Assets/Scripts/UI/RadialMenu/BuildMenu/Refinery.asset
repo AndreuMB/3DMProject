@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f7669ab19195c14a94b12a4e3f02d41, type: 3}
-  m_Name: Gold
+  m_Script: {fileID: 11500000, guid: d03cd6884b7ec00468c3c981dbf189e1, type: 3}
+  m_Name: Refinery
   m_EditorClassIdentifier: 
-  materialName: 2
-  type: 0
+  elementName: Refinery
+  customFunctionName: BuildBuilding
+  buildingType: 3
+  parent: {fileID: 0}

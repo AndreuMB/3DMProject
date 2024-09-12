@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7669ab19195c14a94b12a4e3f02d41, type: 3}
   m_Name: Copper
   m_EditorClassIdentifier: 
-  materialName: 2
+  materialName: 1
   type: 0

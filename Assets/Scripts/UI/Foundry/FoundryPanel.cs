@@ -15,20 +15,6 @@ public class FoundryPanel : MonoBehaviour
     void Start()
     {
         buildingRef = foundryParent.GetComponent<Building>();
-        resourceCombinationM = GetComponent<ResourceCombinationManager>();
-        foreach (ResourceCombination elementCombination in resourceCombinationM.elementCombinations)
-        {
-            GameObject entry = Instantiate(foundryEntryPrefab, listPanel);
-            FoundryEntry foundryEntry = entry.GetComponent<FoundryEntry>();
-            foundryEntry.resource1Text.text = elementCombination.resource1.gameMaterialSO.materialName.ToString();
-            if (elementCombination.resource2.gameMaterialSO)
-            {
-                foundryEntry.resource2Text.text = elementCombination.resource2.gameMaterialSO.materialName.ToString();
-            }
-            foundryEntry.elementText.text = elementCombination.result.gameMaterialSO.materialName.ToString();
-
-            entry.GetComponent<Button>().onClick.AddListener(() => CraftElement(elementCombination));
-        }
     }
 
     void CraftElement(ResourceCombination elementCombination)
@@ -42,6 +28,34 @@ public class FoundryPanel : MonoBehaviour
         // TODO showgohud should take autom the player selected object
         // update resourcesHUD
         hud.ShowGOHUD(foundryParent.gameObject);
+    }
+
+    public void GenerateListCombinations(GameMaterialTypesEnum combinationsResultType)
+    {
+        CleanListCombinations();
+        resourceCombinationM = GetComponent<ResourceCombinationManager>();
+        foreach (ResourceCombination elementCombination in resourceCombinationM.elementCombinations)
+        {
+            if (elementCombination.result.gameMaterialSO.type != combinationsResultType) continue;
+            GameObject entry = Instantiate(foundryEntryPrefab, listPanel);
+            FoundryEntry foundryEntry = entry.GetComponent<FoundryEntry>();
+            foundryEntry.resource1Text.text = elementCombination.resource1.gameMaterialSO.materialName.ToString();
+            if (elementCombination.resource2.gameMaterialSO)
+            {
+                foundryEntry.resource2Text.text = elementCombination.resource2.gameMaterialSO.materialName.ToString();
+            }
+            foundryEntry.elementText.text = elementCombination.result.gameMaterialSO.materialName.ToString();
+
+            entry.GetComponent<Button>().onClick.AddListener(() => CraftElement(elementCombination));
+        }
+    }
+
+    void CleanListCombinations()
+    {
+        foreach (Transform entry in transform)
+        {
+            Destroy(entry.gameObject);
+        }
     }
 
 

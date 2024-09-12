@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: DeleteBuilding
   m_EditorClassIdentifier: 
   elementName: Delete Building
-  customFunctionName: DestroyBuilding
+  customFunctionName: 1
+  buildingType: 0
+  parent: {fileID: 0}

@@ -9,7 +9,8 @@ public class Foundry : MonoBehaviour, IBuilding
     // [SerializeField] GameObject hud;
     readonly List<ButtonData> buttonsList = new();
     HUD hud;
-    GameObject foundryPanel;
+    FoundryPanel foundryPanel;
+    public GameMaterialTypesEnum buildCraftingType;
 
     void Awake()
     {
@@ -29,12 +30,17 @@ public class Foundry : MonoBehaviour, IBuilding
     {
         if (!foundryPanel) return;
 
-        foundryPanel.SetActive(!foundryPanel.activeInHierarchy);
+        foundryPanel.gameObject.SetActive(!foundryPanel.gameObject.activeInHierarchy);
+
+        // if (!foundryPanel.gameObject.activeInHierarchy) return;
+
+        foundryPanel.GenerateListCombinations(buildCraftingType);
+        // need for references of the building resource
         foundryPanel.GetComponent<FoundryPanel>().foundryParent = this;
         foundryPanel.GetComponent<FoundryPanel>().hud = hud;
     }
 
-    public void SetFoundryPanel(GameObject foundryPP)
+    public void SetFoundryPanel(FoundryPanel foundryPP)
     {
         foundryPanel = foundryPP;
     }

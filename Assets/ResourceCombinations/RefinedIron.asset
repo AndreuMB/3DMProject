@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5463b815a27701b4f819d877d7612b19, type: 3}
-  m_Name: Rubedo
+  m_Name: RefinedIron
   m_EditorClassIdentifier: 
   resource1:
-    gameMaterialSO: {fileID: 11400000, guid: 6869bf3f51aa7164e94785eee3cc54bc, type: 2}
-    quantity: 2
+    gameMaterialSO: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+    quantity: 5
   resource2:
-    gameMaterialSO: {fileID: 11400000, guid: 619a7e3e1c2999246a8bb8cfec0bf435, type: 2}
-    quantity: 2
+    gameMaterialSO: {fileID: 0}
+    quantity: 0
   result:
-    gameMaterialSO: {fileID: 11400000, guid: d2699cacf41d4b04db1292ce44c9e257, type: 2}
+    gameMaterialSO: {fileID: 11400000, guid: 6869bf3f51aa7164e94785eee3cc54bc, type: 2}
     quantity: 1

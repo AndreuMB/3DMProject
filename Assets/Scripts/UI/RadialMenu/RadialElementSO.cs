@@ -11,9 +11,15 @@ public class RadialElementSO : ScriptableObject
     // public RadialMenuSO subMenu;
     // public RadialElement.RadialElementDelegate callback;
     // public UnityEvent customFunction;
-    public string customFunctionName;
-    public int buildId;
+    public RadialElementFunction customFunctionName;
+    // public int buildId;
     public BuildingsEnum buildingType;
     public RadialMenuSO parent;
 
+}
+
+public enum RadialElementFunction
+{
+    BuildBuilding,
+    DestroyBuilding
 }

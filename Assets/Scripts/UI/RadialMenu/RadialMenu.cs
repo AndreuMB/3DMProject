@@ -24,9 +24,11 @@ public class RadialMenu : MonoBehaviour
         player = FindObjectOfType<Player>();
     }
 
-    public void BuildRM(){
+    public void BuildRM()
+    {
 
-        foreach (Transform child in transform) {
+        foreach (Transform child in transform)
+        {
             Destroy(child.gameObject);
         }
 
@@ -34,7 +36,8 @@ public class RadialMenu : MonoBehaviour
         RadialElementSO backRESO = FindObjectOfType<RMManager>().backRESO;
         bool existBBtn = data.elements.Find(x => x.elementName == backRESO.elementName);
 
-        if (parent || parent != null){
+        if (parent || parent != null)
+        {
             backRESO.parent = parent;
             if (!existBBtn) data.elements.Add(backRESO);
         }
@@ -52,50 +55,57 @@ public class RadialMenu : MonoBehaviour
             {
                 RadialElementSO dataRE = data.elements[i];
                 elementGO.GetComponent<Button>().onClick.AddListener(() => NewRM(radialElement.parent, dataRE));
-            }else{
+            }
+            else
+            {
                 elementGO.GetComponent<Button>().onClick.AddListener(() => FunctionInvoke(radialElement));
             }
-            Arrange(elementGO,elementRadian,i);
+            Arrange(elementGO, elementRadian, i);
         }
     }
 
-    void Arrange(GameObject element, float elementRadian, float order){
+    void Arrange(GameObject element, float elementRadian, float order)
+    {
         // size of the circle
         const float SEPARATION = 100f;
         // convert radian to coordinates, don't ask
         float x = Mathf.Cos(elementRadian * order) * SEPARATION;
         float y = Mathf.Sin(elementRadian * order) * SEPARATION;
 
-        element.GetComponent<RectTransform>().anchoredPosition = new Vector3(x,y,0);
+        element.GetComponent<RectTransform>().anchoredPosition = new Vector3(x, y, 0);
     }
 
-    private void FunctionInvoke(RadialElement radialElement){
+    private void FunctionInvoke(RadialElement radialElement)
+    {
         clickedRE = radialElement;
-        Invoke(radialElement.customFunctionName,0);
+        Invoke(radialElement.customFunctionName.ToString(), 0);
         Destroy(gameObject);
     }
 
-    public void BuildBuilding(){
+    public void BuildBuilding()
+    {
         ps.Placement(clickedRE.buildingType);
     }
 
-    public void DestroyBuilding(){
+    public void DestroyBuilding()
+    {
         ps.Remove();
     }
 
-    public void NewRM(RadialMenuSO rmSO, RadialElementSO reSO){
+    public void NewRM(RadialMenuSO rmSO, RadialElementSO reSO)
+    {
         // RectTransform canvasRect = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
 
         // Vector3 canvasRectHalf = new Vector3(canvasRect.rect.width / 2, canvasRect.rect.height / 2);
         RadialMenu newRM = Instantiate(radialMenuPrefab).GetComponent<RadialMenu>();
-        newRM.transform.SetParent(transform.parent,false);
-        newRM.data=rmSO;
+        newRM.transform.SetParent(transform.parent, false);
+        newRM.data = rmSO;
 
         const string BACK_RE = "Back";
         newRM.parent = reSO.elementName != BACK_RE ? data : null;
 
         newRM.BuildRM();
-        
+
         newRM.GetComponent<RectTransform>().anchoredPosition = GetComponent<RectTransform>().anchoredPosition;
         newRM.gameObject.SetActive(true);
         // parent = rmGO.GetComponent<RadialMenu>();

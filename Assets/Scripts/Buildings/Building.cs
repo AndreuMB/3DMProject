@@ -80,12 +80,21 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Storage:
             data.storageBool = true;
             break;
+         case BuildingsEnum.Refinery:
+            data.storageBool = true;
+            Foundry refinery = gameObject.AddComponent<Foundry>();
+            buildingType = refinery;
+            GameObject craftPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
+            refinery.SetFoundryPanel(craftPanel.GetComponent<FoundryPanel>());
+            refinery.buildCraftingType = GameMaterialTypesEnum.refined;
+            break;
          case BuildingsEnum.Foundry:
             data.storageBool = true;
             Foundry foundry = gameObject.AddComponent<Foundry>();
             buildingType = foundry;
             GameObject foundryPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
-            foundry.SetFoundryPanel(foundryPanel);
+            foundry.SetFoundryPanel(foundryPanel.GetComponent<FoundryPanel>());
+            foundry.buildCraftingType = GameMaterialTypesEnum.element;
             break;
       }
    }
@@ -209,5 +218,6 @@ public enum BuildingsEnum
    MainBase,
    Extractor,
    Storage,
+   Refinery,
    Foundry,
 }
