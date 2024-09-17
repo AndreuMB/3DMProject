@@ -9,7 +9,7 @@ public class Blender : MonoBehaviour, IBuilding
     // [SerializeField] GameObject hud;
     readonly List<ButtonData> buttonsList = new();
     HUD hud;
-    FoundryPanel foundryPanel;
+    BlenderPanel foundryPanel;
     public GameMaterialTypesEnum buildCraftingType;
 
     void Awake()
@@ -36,11 +36,11 @@ public class Blender : MonoBehaviour, IBuilding
 
         foundryPanel.GenerateListCombinations(buildCraftingType);
         // need for references of the building resource
-        foundryPanel.GetComponent<FoundryPanel>().buildingParent = gameObject.GetComponent<Building>();
-        foundryPanel.GetComponent<FoundryPanel>().hud = hud;
+        foundryPanel.GetComponent<BlenderPanel>().buildingParent = gameObject.GetComponent<Building>();
+        foundryPanel.GetComponent<BlenderPanel>().hud = hud;
     }
 
-    public void SetFoundryPanel(FoundryPanel foundryPP)
+    public void SetFoundryPanel(BlenderPanel foundryPP)
     {
         foundryPanel = foundryPP;
     }

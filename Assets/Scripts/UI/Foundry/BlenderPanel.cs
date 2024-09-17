@@ -1,15 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FoundryPanel : MonoBehaviour
+public class BlenderPanel : MonoBehaviour
 {
     [SerializeField] GameObject foundryEntryPrefab;
     [SerializeField] Transform listPanel;
     ResourceCombinationManager resourceCombinationM;
-    public Building buildingParent;
-    public HUD hud;
+    [NonSerialized] public Building buildingParent;
+    [NonSerialized] public HUD hud;
 
     void CraftElement(ResourceCombination elementCombination)
     {
@@ -19,7 +19,6 @@ public class FoundryPanel : MonoBehaviour
         buildingParent.AddResource(elementCombination.result.gameMaterialSO, 1);
         // remove resources
         buildingParent.RemoveResources(elementCombination);
-        // TODO showgohud should take autom the player selected object
         // update resourcesHUD
         hud.ShowGOHUD(buildingParent.gameObject);
     }
@@ -32,18 +31,24 @@ public class FoundryPanel : MonoBehaviour
         {
             if (elementCombination.result.gameMaterialSO.type != combinationsResultType) continue;
             GameObject entry = Instantiate(foundryEntryPrefab, listPanel);
-            FoundryEntry foundryEntry = entry.GetComponent<FoundryEntry>();
-            foundryEntry.resource1Text.text = elementCombination.resource1.gameMaterialSO.materialName.ToString();
+            BlenderEntry foundryEntry = entry.GetComponent<BlenderEntry>();
+
+            // foundryEntry.resource1Text.text = elementCombination.resource1.gameMaterialSO.materialName.ToString();
+            // if (elementCombination.resource1.quantity > 1) foundryEntry.resource1Text.text += " x " + elementCombination.resource1.quantity;
+            SetTextGameMaterialBlendEntry(foundryEntry.resource1Text, elementCombination.resource1);
+
             if (elementCombination.resource2.gameMaterialSO)
             {
                 foundryEntry.resource2Text.gameObject.SetActive(true);
-                foundryEntry.resource2Text.text = elementCombination.resource2.gameMaterialSO.materialName.ToString();
+                foundryEntry.operationText.gameObject.SetActive(true);
+                SetTextGameMaterialBlendEntry(foundryEntry.resource2Text, elementCombination.resource2);
             }
             else
             {
                 foundryEntry.resource2Text.gameObject.SetActive(false);
+                foundryEntry.operationText.gameObject.SetActive(false);
             }
-            foundryEntry.elementText.text = elementCombination.result.gameMaterialSO.materialName.ToString();
+            SetTextGameMaterialBlendEntry(foundryEntry.elementText, elementCombination.result);
 
             entry.GetComponent<Button>().onClick.AddListener(() => CraftElement(elementCombination));
         }
@@ -55,6 +60,12 @@ public class FoundryPanel : MonoBehaviour
         {
             Destroy(entry.gameObject);
         }
+    }
+
+    void SetTextGameMaterialBlendEntry(TMP_Text textEntry, GameMaterial gameMaterial)
+    {
+        textEntry.text = gameMaterial.gameMaterialSO.materialName.ToString();
+        if (gameMaterial.quantity > 1) textEntry.text += " x " + gameMaterial.quantity;
     }
 
 

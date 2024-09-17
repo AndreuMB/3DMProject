@@ -82,7 +82,6 @@ public class SavesMenu : MonoBehaviour
 
     void DeleteEntry(FileInfo f, GameObject entry)
     {
-        print(f.FullName);
         if (File.Exists(f.FullName))
         {
             File.Delete(f.FullName);

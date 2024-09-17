@@ -146,10 +146,10 @@ GameObject:
   - component: {fileID: 3013733920586461749}
   - component: {fileID: 1807255147052896749}
   - component: {fileID: 857993977236319150}
-  - component: {fileID: 2318522211120354849}
   - component: {fileID: 8294279572928071665}
+  - component: {fileID: 4078846601505808995}
   m_Layer: 5
-  m_Name: FoundryEntry
+  m_Name: BlenderEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -243,21 +243,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &2318522211120354849
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3232270304294117188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4dd0f8a11ea3f8459a3e995cacb000f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  resource1Text: {fileID: 184066869694563113}
-  resource2Text: {fileID: 7385917258169876843}
-  elementText: {fileID: 452149717366592314}
 --- !u!114 &8294279572928071665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302,6 +287,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4078846601505808995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3232270304294117188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6a0717d4676cd47bd2375d7a5e8e64, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resource1Text: {fileID: 184066869694563113}
+  resource2Text: {fileID: 7385917258169876843}
+  elementText: {fileID: 452149717366592314}
+  operationText: {fileID: 5195475756892415771}
 --- !u!1 &3838410961685866318
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +583,7 @@ GameObject:
   - component: {fileID: 6070064104432671711}
   - component: {fileID: 5195475756892415771}
   m_Layer: 5
-  m_Name: Sum
+  m_Name: Operation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

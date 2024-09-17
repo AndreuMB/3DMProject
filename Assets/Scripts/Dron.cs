@@ -71,10 +71,6 @@ public class Dron : MonoBehaviour
                 return;  // Return early to avoid continuing the normal movement logic
             }
         }
-        // print("origin = " + originV);
-        // print("destination = " + destinationV);
-        // print("dron = " + transform.position);
-        // print("movingto = " + movingTo);
 
         float distanceX = destinationV.x - transform.position.x;
         float distanceZ = destinationV.z - transform.position.z;

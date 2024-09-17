@@ -25,11 +25,8 @@ public class ObjectPlacer : MonoBehaviour
     {
         GameObject newObject = Instantiate(buildingPrefab);
         Building building = newObject.GetComponent<Building>();
-        // if (building){
         newObject.name = bType.ToString() + placedGameObject.Count;
-        // print();
         if (prefab) building.SetModel(prefab);
-        // }
         GameObject newParent = new GameObject();
         newObject.transform.parent = newParent.transform;
         newParent.transform.parent = buildingsContainer;

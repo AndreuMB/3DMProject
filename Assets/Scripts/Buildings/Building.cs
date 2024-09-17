@@ -140,6 +140,7 @@ public class Building : MonoBehaviour
          else
          {
             addressStorage.Add(new GameMaterial(dron.material.gameMaterialSO, dron.material.quantity));
+            if (player.selectedGO == dron.destination) hud.ShowGOHUD(player.selectedGO);
          }
       }
 
@@ -178,17 +179,11 @@ public class Building : MonoBehaviour
    public bool CheckResources(ResourceCombination elementCombination)
    {
       GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName, data.storage);
-      print(storagedMaterial1 + " found");
-      print(storagedMaterial1.quantity + " found1");
-      print(elementCombination.resource1.quantity + " found2");
       if (storagedMaterial1 == null || storagedMaterial1.quantity < elementCombination.resource1.quantity) return false;
-      print("pass first check");
       // if only one element
       if (elementCombination.resource2.gameMaterialSO == null) return true;
-      print("pass second check");
       GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName, data.storage);
       if (storagedMaterial2 == null || storagedMaterial2.quantity < elementCombination.resource2.quantity) return false;
-      print("pass 3 check");
 
       return true;
    }
@@ -208,11 +203,11 @@ public class Building : MonoBehaviour
    void SetBlender(GameMaterialTypesEnum gameMaterialTypesEnum)
    {
       data.storageBool = true;
-      Blender refinery = gameObject.AddComponent<Blender>();
-      buildingType = refinery;
-      GameObject craftPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
-      refinery.SetFoundryPanel(craftPanel.GetComponent<FoundryPanel>());
-      refinery.buildCraftingType = gameMaterialTypesEnum;
+      Blender blender = gameObject.AddComponent<Blender>();
+      buildingType = blender;
+      GameObject craftPanel = buildingsUtilsPrefabManager.GetPrefab("BlenderPanel");
+      blender.SetFoundryPanel(craftPanel.GetComponent<BlenderPanel>());
+      blender.buildCraftingType = gameMaterialTypesEnum;
    }
 
 }
