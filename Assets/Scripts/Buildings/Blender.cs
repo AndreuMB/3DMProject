@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Foundry : MonoBehaviour, IBuilding
+public class Blender : MonoBehaviour, IBuilding
 {
     // [SerializeField] GameObject hud;
     readonly List<ButtonData> buttonsList = new();
@@ -36,7 +36,7 @@ public class Foundry : MonoBehaviour, IBuilding
 
         foundryPanel.GenerateListCombinations(buildCraftingType);
         // need for references of the building resource
-        foundryPanel.GetComponent<FoundryPanel>().foundryParent = this;
+        foundryPanel.GetComponent<FoundryPanel>().buildingParent = gameObject.GetComponent<Building>();
         foundryPanel.GetComponent<FoundryPanel>().hud = hud;
     }
 

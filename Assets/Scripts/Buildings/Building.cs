@@ -81,20 +81,10 @@ public class Building : MonoBehaviour
             data.storageBool = true;
             break;
          case BuildingsEnum.Refinery:
-            data.storageBool = true;
-            Foundry refinery = gameObject.AddComponent<Foundry>();
-            buildingType = refinery;
-            GameObject craftPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
-            refinery.SetFoundryPanel(craftPanel.GetComponent<FoundryPanel>());
-            refinery.buildCraftingType = GameMaterialTypesEnum.refined;
+            SetBlender(GameMaterialTypesEnum.refined);
             break;
          case BuildingsEnum.Foundry:
-            data.storageBool = true;
-            Foundry foundry = gameObject.AddComponent<Foundry>();
-            buildingType = foundry;
-            GameObject foundryPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
-            foundry.SetFoundryPanel(foundryPanel.GetComponent<FoundryPanel>());
-            foundry.buildCraftingType = GameMaterialTypesEnum.element;
+            SetBlender(GameMaterialTypesEnum.element);
             break;
       }
    }
@@ -121,7 +111,7 @@ public class Building : MonoBehaviour
 
          if (dron.newMaterial != null) dron.material = dron.newMaterial;
 
-         GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName);
+         GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName, data.storage);
          if (storageResource == null) yield return null;
 
          // check storage quantity and choose dron storage quantity
@@ -155,7 +145,7 @@ public class Building : MonoBehaviour
 
    }
 
-   GameMaterial FindGameMaterialInStorage(GameMaterialsEnum gameMaterialsEnum, List<GameMaterial> storage = null)
+   GameMaterial FindGameMaterialInStorage(GameMaterialsEnum gameMaterialsEnum, List<GameMaterial> storage)
    {
       storage ??= data.storage;
       return storage.Find(x => x.gameMaterialSO.materialName == gameMaterialsEnum);
@@ -187,28 +177,42 @@ public class Building : MonoBehaviour
 
    public bool CheckResources(ResourceCombination elementCombination)
    {
-      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName);
+      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName, data.storage);
+      print(storagedMaterial1 + " found");
+      print(storagedMaterial1.quantity + " found1");
+      print(elementCombination.resource1.quantity + " found2");
       if (storagedMaterial1 == null || storagedMaterial1.quantity < elementCombination.resource1.quantity) return false;
-
+      print("pass first check");
       // if only one element
       if (elementCombination.resource2.gameMaterialSO == null) return true;
-
-      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName);
+      print("pass second check");
+      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName, data.storage);
       if (storagedMaterial2 == null || storagedMaterial2.quantity < elementCombination.resource2.quantity) return false;
+      print("pass 3 check");
 
       return true;
    }
 
    public void RemoveResources(ResourceCombination elementCombination)
    {
-      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName);
+      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName, data.storage);
       storagedMaterial1.quantity -= elementCombination.resource1.quantity;
 
       // if only one element
       if (elementCombination.resource2.gameMaterialSO == null) return;
 
-      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName);
+      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName, data.storage);
       storagedMaterial2.quantity -= elementCombination.resource2.quantity;
+   }
+
+   void SetBlender(GameMaterialTypesEnum gameMaterialTypesEnum)
+   {
+      data.storageBool = true;
+      Blender refinery = gameObject.AddComponent<Blender>();
+      buildingType = refinery;
+      GameObject craftPanel = buildingsUtilsPrefabManager.GetPrefab("FoundryPanel");
+      refinery.SetFoundryPanel(craftPanel.GetComponent<FoundryPanel>());
+      refinery.buildCraftingType = gameMaterialTypesEnum;
    }
 
 }
