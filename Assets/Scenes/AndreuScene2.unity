@@ -3287,6 +3287,7 @@ MonoBehaviour:
   buildingPrefab: {fileID: 7818300422196003943, guid: 862bc10c1cd8d2d4fa3ab343f5eaef2c, type: 3}
   buildingsContainer: {fileID: 1454101842}
   oresContainer: {fileID: 1552556790}
+  placeholderMaterial: {fileID: 2100000, guid: b32a66d1082ff694380742aaca271bb9, type: 2}
 --- !u!1 &1833621277
 GameObject:
   m_ObjectHideFlags: 0
@@ -4682,7 +4683,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 167575552451499714, guid: 364dbff4dc815d544b2b9eb409a74e38, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00036621094
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 4529497420123330999, guid: 364dbff4dc815d544b2b9eb409a74e38, type: 3}
       propertyPath: m_AnchorMax.x

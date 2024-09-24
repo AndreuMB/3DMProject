@@ -18,23 +18,40 @@ MonoBehaviour:
     <Type>k__BackingField: 0
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 5043309358324641, guid: 058fc00d8db1ab84b84ed78289615a18, type: 3}
+    <GameMaterialsBuild>k__BackingField: []
   - <Name>k__BackingField: Extractor
     <ID>k__BackingField: 0
     <Type>k__BackingField: 1
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 9012277065814441623, guid: 732ba62e36888114587db050489eb1c4, type: 3}
+    <GameMaterialsBuild>k__BackingField:
+    - gameMaterialSO: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+      quantity: 2
+    - gameMaterialSO: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
+      quantity: 1
   - <Name>k__BackingField: Storage
     <ID>k__BackingField: 0
     <Type>k__BackingField: 2
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 1488443158187168093, guid: 0fa1a29f5ebb9a64d9c9970f38af1abe, type: 3}
+    <GameMaterialsBuild>k__BackingField: []
   - <Name>k__BackingField: Foundry
     <ID>k__BackingField: 0
     <Type>k__BackingField: 4
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 1488443158187168093, guid: 490777d93fb3e1d4ca3e86e4d02a8efe, type: 3}
+    <GameMaterialsBuild>k__BackingField:
+    - gameMaterialSO: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+      quantity: 5
+    - gameMaterialSO: {fileID: 11400000, guid: d710ed0216a988b40812d0cb3a5853be, type: 2}
+      quantity: 5
   - <Name>k__BackingField: Refinery
     <ID>k__BackingField: 0
     <Type>k__BackingField: 3
     <Size>k__BackingField: {x: 1, y: 1}
     <Prefab>k__BackingField: {fileID: 7299243917981370000, guid: f84a9939cd9e6644196a7671804234fa, type: 3}
+    <GameMaterialsBuild>k__BackingField:
+    - gameMaterialSO: {fileID: 11400000, guid: b25498e6f02639c44afa21847576d6c5, type: 2}
+      quantity: 5
+    - gameMaterialSO: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
+      quantity: 2

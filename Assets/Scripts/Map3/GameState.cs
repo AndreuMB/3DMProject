@@ -67,7 +67,7 @@ public class GameState : IBuildingtState
         return selectedData.CanPlaceObjectAt(gridPosition, size);
     }
 
-    public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType, Vector3 gridPositionFloat)
+    public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType, Vector3 gridPositionFloat, bool completeBuilding)
     {
         ObjectData buildingData = database.objectsData.Find(x => x.Type == bType);
         bool placementValidity = CheckPlacementValidity(gridPosition, buildingData.Size);
@@ -75,7 +75,7 @@ public class GameState : IBuildingtState
         // int index = objectPlacer.PlaceObject(database.objectsData[selectedObjectIndex].Prefab, grid.CellToWorld(gridPosition));
         Vector3 positionWorld = grid.CellToWorld(gridPosition);
 
-        (int, GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat, bType);
+        (int, GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat, bType, completeBuilding);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
         if (bType == BuildingsEnum.Extractor) Remove(gridPosition);

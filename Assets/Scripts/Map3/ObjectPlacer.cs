@@ -12,6 +12,7 @@ public class ObjectPlacer : MonoBehaviour
     [SerializeField] GameObject buildingPrefab;
     [SerializeField] Transform buildingsContainer;
     [SerializeField] Transform oresContainer;
+    [SerializeField] Material placeholderMaterial;
 
     public int PlaceObject(GameObject prefab, Vector3 position)
     {
@@ -21,12 +22,14 @@ public class ObjectPlacer : MonoBehaviour
         return placedGameObject.Count - 1;
     }
 
-    public (int, GameObject) PlaceBuild(GameObject prefab, Vector3 position, BuildingsEnum bType)
+    public (int, GameObject) PlaceBuild(GameObject prefab, Vector3 position, BuildingsEnum bType, bool completeBuilding)
     {
         GameObject newObject = Instantiate(buildingPrefab);
         Building building = newObject.GetComponent<Building>();
         newObject.name = bType.ToString() + placedGameObject.Count;
-        if (prefab) building.SetModel(prefab);
+        if (!prefab) return (0, null);
+        building.SetBuildType(bType, completeBuilding);
+        building.SetModel(prefab, placeholderMaterial, completeBuilding);
         GameObject newParent = new GameObject();
         newObject.transform.parent = newParent.transform;
         newParent.transform.parent = buildingsContainer;
@@ -34,7 +37,6 @@ public class ObjectPlacer : MonoBehaviour
         newParent.transform.position = transform.InverseTransformPoint(position);
         FixYAxyGO(newParent.transform);
 
-        building.SetBuildType(bType);
         placedGameObject.Add(newObject);
         // if (player) player.SetActiveGO(newObject);
         return (placedGameObject.Count - 1, newObject);

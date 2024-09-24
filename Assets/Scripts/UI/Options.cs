@@ -28,7 +28,8 @@ public class Options : MonoBehaviour
         }
         else
         {
-            MainBaseSpawn();
+            Vector3 mainBasePosition = MainBaseSpawn();
+            StorageSpawn(mainBasePosition);
             ResourceCellsSpawn();
         }
 
@@ -127,13 +128,26 @@ public class Options : MonoBehaviour
         }
     }
 
-    void MainBaseSpawn(Vector3? position = null)
+    Vector3 MainBaseSpawn()
     {
         GameObject mainBase;
-        mainBase = position == null ? ps.LoadBuildings(RandomCell(), BuildingsEnum.MainBase)
-            : ps.LoadBuildings(position.Value, BuildingsEnum.MainBase);
+        mainBase = ps.LoadBuildings(PositionOnTerrain(), BuildingsEnum.MainBase);
         mainBase.AddComponent<Player>();
         FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
+        return mainBase.transform.position;
+    }
+
+    void StorageSpawn(Vector3 mainStoragePosition)
+    {
+        GameObject storage;
+        int randomX = Random.Range(0, 2) == 0 ? Random.Range(-4, 0) : Random.Range(1, 4);
+        int randomZ = Random.Range(0, 2) == 0 ? Random.Range(-4, 0) : Random.Range(1, 4);
+        mainStoragePosition.x += randomX;
+        mainStoragePosition.z += randomZ;
+        mainStoragePosition = PositionOnTerrain(mainStoragePosition);
+        storage = ps.LoadBuildings(mainStoragePosition, BuildingsEnum.Storage);
+        storage.GetComponent<Building>().AddResource(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.iron), 10);
+        storage.GetComponent<Building>().AddResource(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.copper), 5);
     }
 
     void ResourceCellsSpawn()
@@ -141,17 +155,24 @@ public class Options : MonoBehaviour
         for (int i = 0; i < 20; i++)
         {
             (GameObject oreGO, OreData oreData) = rm.GetRandomResourceGO();
-            oreData.position = RandomCell();
+            oreData.position = PositionOnTerrain();
             ps.PlaceOre(oreGO, oreData.position);
             // resourceGO.transform.position = resourceData.position;
             resourceDataList.Add(oreData);
         }
     }
 
-    Vector3 RandomCell()
+    Vector3 PositionOnTerrain(Vector3? position = null)
     {
-
-        Ray ray = new Ray(new(Random.Range(-50, 50) + 0.5f, 50, Random.Range(-50, 50) + 0.5f), Vector3.down);
+        Ray ray;
+        if (position == null)
+        {
+            ray = new Ray(new(Random.Range(-50, 50) + 0.5f, 50, Random.Range(-50, 50) + 0.5f), Vector3.down);
+        }
+        else
+        {
+            ray = new Ray(new(position.Value.x, 50, position.Value.z), Vector3.down);
+        }
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
         {

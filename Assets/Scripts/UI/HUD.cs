@@ -20,6 +20,7 @@ public class HUD : MonoBehaviour
     public GameObject buttonPrefab;
     // [SerializeField] GameObject dronManagerPrefab;
     public Transform buildingButtpnsPanel;
+    public PlacementSystem placementSystem;
 
     public void Start()
     {
@@ -28,6 +29,7 @@ public class HUD : MonoBehaviour
         player = FindObjectOfType<Player>();
 
         player.selectedGOev.AddListener(ShowGOHUD);
+        placementSystem = FindObjectOfType<PlacementSystem>();
         // DMBtn.SetActive(false);
         // DMMenu.SetActive(false);
         // DronUpgradeBtn.SetActive(false);
@@ -53,20 +55,58 @@ public class HUD : MonoBehaviour
 
         CleanHUDContainer();
         Building selectedBuilding = selectedGO.GetComponent<Building>();
-        if (selectedBuilding.buildingType != null)
+
+        if (selectedBuilding.placingOnGoing)
         {
-            selectedBuilding.GetComponent<IBuilding>().ShowHUD();
+            ShowBuildResourcesBuilding(selectedGO.GetComponent<Building>());
+            return;
         }
-        if (selectedBuilding.data.storageBool)
+        else
         {
-            SetDronManagerButton();
-            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
+            if (selectedBuilding.buildingType != null)
+            {
+                selectedBuilding.GetComponent<IBuilding>().ShowHUD();
+            }
+            if (selectedBuilding.data.storageBool)
+            {
+                SetDronManagerButton();
+                ShowResourcesBuilding(selectedGO.GetComponent<Building>());
+            }
         }
+
     }
 
     void ShowResourcesBuilding(Building selectedBuilding)
     {
         materialsBuilding = selectedBuilding.data.storage;
+
+        materialsBuilding.RemoveAll(gameMaterial =>
+        {
+            if (gameMaterial.quantity <= 0)
+            {
+                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor) return false;
+                foreach (DronData dron in selectedBuilding.data.setDrons)
+                {
+                    if (dron.material.gameMaterialSO.materialName == gameMaterial.gameMaterialSO.materialName) return false;
+                }
+                return true;
+            }
+            return false;
+        });
+        foreach (GameMaterial resource in materialsBuilding)
+        {
+            GameObject newResource = Instantiate(resourcePrefab);
+            newResource.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName + ": " + resource.quantity.ToString();
+            newResource.transform.SetParent(resourceContainer.transform, false);
+            resource.HUDGO = newResource;
+        }
+    }
+
+    void ShowBuildResourcesBuilding(Building selectedBuilding)
+    {
+        ObjectData buildingInfo = placementSystem.database.objectsData.Find(x => x.Type == selectedBuilding.data.buildingType);
+        List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
+        materialsBuilding = gameMaterialsBuild;
 
         materialsBuilding.RemoveAll(gameMaterial =>
         {

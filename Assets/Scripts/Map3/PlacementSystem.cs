@@ -8,7 +8,7 @@ public class PlacementSystem : MonoBehaviour
 {
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Grid grid;
-    [SerializeField] private ObjectsDatabaseSO database;
+    public ObjectsDatabaseSO database;
     [SerializeField] private GameObject gridVisualization;
 
     public GridData floorData, buildData;
@@ -59,7 +59,7 @@ public class PlacementSystem : MonoBehaviour
 
     public void Placement(BuildingsEnum bType)
     {
-        buildingtState.Build(gridPosition, bType, gridPositionFloat);
+        buildingtState.Build(gridPosition, bType, gridPositionFloat, true);
     }
 
     public void Remove()
@@ -88,7 +88,7 @@ public class PlacementSystem : MonoBehaviour
         gridPosition = grid.WorldToCell(position);
         // buildingtState.SelectCell(gridPosition);
         if (buildingtState == null) BuildingtStateGS();
-        GameObject building = buildingtState.Build(gridPosition, bType, position);
+        GameObject building = buildingtState.Build(gridPosition, bType, position, false);
         return building;
     }
 

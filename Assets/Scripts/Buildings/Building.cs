@@ -12,6 +12,7 @@ public class Building : MonoBehaviour
    public HUD hud;
    public IBuilding buildingType;
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
+   public bool placingOnGoing = true;
 
    // Start is called before the first frame update
    void Start()
@@ -32,18 +33,7 @@ public class Building : MonoBehaviour
       while (isActiveAndEnabled)
       {
          yield return new WaitForSeconds(data.rate);
-         // if (data.storage.Count > 0)
-         // {
-         //    // when storage full stop producing
-         //    if (data.storage[0].quantity < data.maxStorage) data.storage[0].quantity += data.quantity;
-         // }
-         // else
-         // {
-         //    data.storage.Add(new Resource(resource.ToString(), data.quantity));
-         // }
          AddResource(data.storage[0].gameMaterialSO, data.quantity);
-         // hud.ShowGOHUD(player.selectedGO);
-
       }
       yield break;
    }
@@ -53,11 +43,10 @@ public class Building : MonoBehaviour
       StopCoroutine(dronCoroutine);
    }
 
-   public void SetBuildType(BuildingsEnum bType)
+   public void SetBuildType(BuildingsEnum bType, bool completeBuilding)
    {
       data.buildingType = bType;
-      // buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
-      // Format();
+      placingOnGoing = completeBuilding;
    }
 
    void Format()
@@ -89,12 +78,25 @@ public class Building : MonoBehaviour
       }
    }
 
-   public void SetModel(GameObject model)
+   public void SetModel(GameObject model, Material placeholderMaterial, bool completeBuilding)
    {
       transform.GetChild(0).GetComponent<MeshFilter>().mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
-      transform.GetChild(0).GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
+
+      // set placeholder material
+      Material[] materialToArrayMaterials = new Material[1];
+      materialToArrayMaterials[0] = placeholderMaterial;
+      transform.GetChild(0).GetComponent<MeshRenderer>().materials = materialToArrayMaterials;
+
       transform.GetChild(0).localScale = model.transform.localScale;
       transform.GetChild(0).rotation = model.transform.rotation;
+      if (!placingOnGoing) CompleteBuilding(model);
+
+   }
+
+   public void CompleteBuilding(GameObject model)
+   {
+      transform.GetChild(0).GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
+      placingOnGoing = false;
    }
 
    public IEnumerator StartDronCoroutineV2(Dron dron)
