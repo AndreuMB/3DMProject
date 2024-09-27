@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
    public IBuilding buildingType;
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
    public bool placingOnGoing = true;
+   Material[] materials;
 
    // Start is called before the first frame update
    void Start()
@@ -76,11 +77,20 @@ public class Building : MonoBehaviour
             SetBlender(GameMaterialTypesEnum.element);
             break;
       }
+
+      if (data.storageBool && placingOnGoing)
+      {
+         ObjectData buildingInfo = FindObjectOfType<PlacementSystem>().database.objectsData.Find(x => x.Type == data.buildingType);
+         List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
+         gameMaterialsBuild.ForEach(material => AddResource(material.gameMaterialSO, -material.quantity));
+      }
    }
 
-   public void SetModel(GameObject model, Material placeholderMaterial, bool completeBuilding)
+   public void SetModel(GameObject model, Material placeholderMaterial)
    {
+      // set model
       transform.GetChild(0).GetComponent<MeshFilter>().mesh = model.GetComponentInChildren<MeshFilter>().sharedMesh;
+      materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
 
       // set placeholder material
       Material[] materialToArrayMaterials = new Material[1];
@@ -89,13 +99,14 @@ public class Building : MonoBehaviour
 
       transform.GetChild(0).localScale = model.transform.localScale;
       transform.GetChild(0).rotation = model.transform.rotation;
-      if (!placingOnGoing) CompleteBuilding(model);
+      if (!placingOnGoing) CompleteBuilding();
 
    }
 
-   public void CompleteBuilding(GameObject model)
+   public void CompleteBuilding()
    {
-      transform.GetChild(0).GetComponent<MeshRenderer>().materials = model.GetComponentInChildren<MeshRenderer>().sharedMaterials;
+      // set materials
+      transform.GetChild(0).GetComponent<MeshRenderer>().materials = materials;
       placingOnGoing = false;
    }
 
@@ -116,33 +127,75 @@ public class Building : MonoBehaviour
          GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName, data.storage);
          if (storageResource == null) yield return null;
 
-         // check storage quantity and choose dron storage quantity
-         dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
+         if (dron.successDelivery)
+         {
+            // check storage quantity and choose dron storage quantity
+            dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
 
-         storageResource.quantity += -dron.material.quantity;
+            storageResource.quantity += -dron.material.quantity;
+         }
+
+         dron.successDelivery = true;
+
       }
       else
       {
          if (dron.detele)
          {
             mainBase.SetDrons(mainBase.drons + 1);
-            List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
+            List<DronData> listDrons = data.setDrons;
             listDrons.Remove(dron.dronData);
             if (dron.row) Destroy(dron.row);
             Destroy(dron.gameObject);
             yield return null;
          }
-         List<GameMaterial> addressStorage = dron.destination.GetComponent<Building>().data.storage;
+         Building addressBuilding = dron.destination.GetComponent<Building>();
+         List<GameMaterial> addressStorage = addressBuilding.data.storage;
          GameMaterialsEnum gameMaterialsEnum = dron.material.gameMaterialSO.materialName;
-         GameMaterial addressR = FindGameMaterialInStorage(gameMaterialsEnum, addressStorage);
-         if (addressR != null)
+         GameMaterial addressMaterial = FindGameMaterialInStorage(gameMaterialsEnum, addressStorage);
+         if (addressBuilding.placingOnGoing)
          {
-            addressR.quantity += dron.material.quantity;
+            if (addressMaterial == null)
+            {
+               dron.successDelivery = false;
+            }
+            else
+            {
+               if (addressMaterial.quantity >= 0)
+               {
+                  dron.successDelivery = false;
+               }
+               else
+               {
+                  addressMaterial.quantity += dron.material.quantity;
+                  // check if complete
+                  bool complete = true;
+                  foreach (GameMaterial gameMaterial in addressStorage)
+                  {
+                     print(gameMaterial.gameMaterialSO.name);
+                     print(gameMaterial.quantity);
+                     if (gameMaterial.quantity < 0) complete = false;
+                  }
+                  print(complete);
+                  if (complete)
+                  {
+                     dron.detele = true;
+                     addressBuilding.CompleteBuilding();
+                  }
+               }
+            }
          }
          else
          {
-            addressStorage.Add(new GameMaterial(dron.material.gameMaterialSO, dron.material.quantity));
-            if (player.selectedGO == dron.destination) hud.ShowGOHUD(player.selectedGO);
+            if (addressMaterial != null)
+            {
+               addressMaterial.quantity += dron.material.quantity;
+            }
+            else
+            {
+               addressStorage.Add(new GameMaterial(dron.material.gameMaterialSO, dron.material.quantity));
+               if (player.selectedGO == dron.destination) hud.ShowGOHUD(player.selectedGO);
+            }
          }
       }
 

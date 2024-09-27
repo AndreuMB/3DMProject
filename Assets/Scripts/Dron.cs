@@ -23,6 +23,7 @@ public class Dron : MonoBehaviour
     [NonSerialized] public Vector3 originV;
     Terrain terrain;
     [SerializeField] float dronHeight = 1;
+    [NonSerialized] public bool successDelivery;
 
     public void SetData(GameObject origin, GameObject destination, GameMaterial material, Vector3 movingTo)
     {

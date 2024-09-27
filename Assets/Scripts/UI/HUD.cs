@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour
     Player player;
     MainBase mainBase;
     [SerializeField] GameObject resourceContainer;
+    [SerializeField] GameObject sendResourceContainer;
     [SerializeField] GameObject resourcePrefab;
     List<GameMaterial> materialsBuilding;
     [SerializeField] GameObject dronMenuBtn;
@@ -59,20 +60,20 @@ public class HUD : MonoBehaviour
         if (selectedBuilding.placingOnGoing)
         {
             ShowBuildResourcesBuilding(selectedGO.GetComponent<Building>());
+            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
             return;
         }
-        else
+
+        if (selectedBuilding.buildingType != null)
         {
-            if (selectedBuilding.buildingType != null)
-            {
-                selectedBuilding.GetComponent<IBuilding>().ShowHUD();
-            }
-            if (selectedBuilding.data.storageBool)
-            {
-                SetDronManagerButton();
-                ShowResourcesBuilding(selectedGO.GetComponent<Building>());
-            }
+            selectedBuilding.GetComponent<IBuilding>().ShowHUD();
         }
+        if (selectedBuilding.data.storageBool)
+        {
+            SetDronManagerButton();
+            ShowResourcesBuilding(selectedGO.GetComponent<Building>());
+        }
+
 
     }
 
@@ -82,7 +83,7 @@ public class HUD : MonoBehaviour
 
         materialsBuilding.RemoveAll(gameMaterial =>
         {
-            if (gameMaterial.quantity <= 0)
+            if (gameMaterial.quantity <= 0 && !selectedBuilding.placingOnGoing)
             {
                 if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor) return false;
                 foreach (DronData dron in selectedBuilding.data.setDrons)
@@ -104,6 +105,7 @@ public class HUD : MonoBehaviour
 
     void ShowBuildResourcesBuilding(Building selectedBuilding)
     {
+        sendResourceContainer.SetActive(true);
         ObjectData buildingInfo = placementSystem.database.objectsData.Find(x => x.Type == selectedBuilding.data.buildingType);
         List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
         materialsBuilding = gameMaterialsBuild;
@@ -125,7 +127,7 @@ public class HUD : MonoBehaviour
         {
             GameObject newResource = Instantiate(resourcePrefab);
             newResource.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName + ": " + resource.quantity.ToString();
-            newResource.transform.SetParent(resourceContainer.transform, false);
+            newResource.transform.SetParent(sendResourceContainer.transform, false);
             resource.HUDGO = newResource;
         }
     }
@@ -140,6 +142,12 @@ public class HUD : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        foreach (Transform child in sendResourceContainer.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        sendResourceContainer.SetActive(false);
     }
     public void UpdateDronsHUD(int dronsNumber)
     {
