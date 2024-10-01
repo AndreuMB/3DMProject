@@ -99,4 +99,5 @@ public enum Tags
     MainBase,
     Building,
     Ore,
+    Rock
 }

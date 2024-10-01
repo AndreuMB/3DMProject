@@ -20,29 +20,29 @@ public class PlacementSystem : MonoBehaviour
 
     private Vector3Int lastDetectedPosition = Vector3Int.zero;
 
-    public GameState buildingtState;
+    public GameState buildingState;
     Vector3Int gridPosition;
 
-    Vector3 gridPositionFloat;
+    public Vector3 gridPositionFloat;
 
 
     private void Start()
     {
         gridVisualization.SetActive(true);
         // StopPlacement();
-        if (buildingtState == null) BuildingtStateGS();
+        if (buildingState == null) BuildingtStateGS();
     }
 
     private void Update()
     {
-        if (buildingtState == null) { return; }
+        if (buildingState == null) { return; }
         if (FindObjectOfType<RadialMenu>() != null) { return; }
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
 
         Vector3 mousePositionCenter = new Vector3(Mathf.Floor(mousePosition.x) + 0.5f, 50, Mathf.Floor(mousePosition.z) + 0.5f);
         Ray ray = new(mousePositionCenter, Vector3.down);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100, GameObject.FindObjectOfType<InputManager>().GetPlacementLayer()))
+        if (Physics.Raycast(ray, out hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
         {
             mousePositionCenter = new Vector3(mousePositionCenter.x, hit.point.y, mousePositionCenter.z);
         }
@@ -50,7 +50,7 @@ public class PlacementSystem : MonoBehaviour
         Vector3Int gridPosition = grid.WorldToCell(mousePositionCenter);
         if (lastDetectedPosition != gridPosition)
         {
-            buildingtState.UpdateState(gridPosition, mousePositionCenter);
+            buildingState.UpdateState(gridPosition, mousePositionCenter);
             gridPositionFloat = mousePositionCenter;
             lastDetectedPosition = gridPosition;
         }
@@ -59,12 +59,12 @@ public class PlacementSystem : MonoBehaviour
 
     public void Placement(BuildingsEnum bType)
     {
-        buildingtState.Build(gridPosition, bType, gridPositionFloat, true);
+        buildingState.Build(gridPosition, bType, gridPositionFloat, true);
     }
 
     public void Remove()
     {
-        buildingtState.Remove(gridPosition);
+        buildingState.Remove(gridPosition);
     }
 
     public Vector3Int GetCell()
@@ -79,7 +79,7 @@ public class PlacementSystem : MonoBehaviour
         // GameState buildingtState2 = new GameState(grid,preview2,floorData,buildData,objectPlacer,database);
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         gridPosition = grid.WorldToCell(mousePosition);
-        buildingtState.SelectCell(gridPosition, gridPositionFloat, secondaryIndicator);
+        buildingState.SelectCell(gridPosition, gridPositionFloat, secondaryIndicator);
         return gridPosition;
     }
 
@@ -87,8 +87,8 @@ public class PlacementSystem : MonoBehaviour
     {
         gridPosition = grid.WorldToCell(position);
         // buildingtState.SelectCell(gridPosition);
-        if (buildingtState == null) BuildingtStateGS();
-        GameObject building = buildingtState.Build(gridPosition, bType, position, false);
+        if (buildingState == null) BuildingtStateGS();
+        GameObject building = buildingState.Build(gridPosition, bType, position, false);
         return building;
     }
 
@@ -96,13 +96,13 @@ public class PlacementSystem : MonoBehaviour
     {
         floorData = new();
         buildData = new();
-        buildingtState = new GameState(grid, preview, floorData, buildData, objectPlacer, database);
+        buildingState = new GameState(grid, preview, floorData, buildData, objectPlacer, database);
     }
 
     public void PlaceOre(GameObject oreGO, Vector3 orePosition)
     {
         gridPosition = grid.WorldToCell(orePosition);
-        buildingtState.BuildOre(gridPosition, oreGO, orePosition);
+        buildingState.BuildOre(gridPosition, oreGO, orePosition);
     }
 
 }

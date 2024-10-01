@@ -33,6 +33,8 @@ public class CameraController : MonoBehaviour
     GameObject optionsMenu;
     bool hasCameraMoved = false;
     Vector3 cameraStartPosition;
+    [SerializeField] LayerMask obstacleLayerMask;
+    bool obstacleCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -50,8 +52,21 @@ public class CameraController : MonoBehaviour
 
         if (optionsMenu.activeSelf) return;
 
+
         HandleKeyboardInput();
         HandleMouseInput();
+
+        // if (ForwardRaycastCheck(newPosition))
+        // {
+        //     newPosition = transform.position;
+        //     return;
+        // }
+
+        // if (obstacleCheck)
+        // {
+        //     newPosition = transform.position;
+        //     return;
+        // }
 
         // update rotation
         transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, Time.deltaTime * movementTime);
@@ -63,6 +78,7 @@ public class CameraController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementTime);
 
         CheckTerrainHeight();
+
 
     }
 
@@ -233,5 +249,36 @@ public class CameraController : MonoBehaviour
     public void ResetHasCameraMove()
     {
         hasCameraMoved = false;
+    }
+
+    // bool ForwardRaycastCheck(Vector3 newPosition)
+    // {
+    //     // Define the ray direction (forward from the gameObject's position)
+    //     Ray ray = new Ray(newPosition, transform.forward);
+    //     RaycastHit hit;
+    //     Debug.DrawRay(transform.position, transform.forward * 2, Color.red);
+
+    //     // Cast a ray forward and check if it hits an obstacle in the defined range
+    //     if (Physics.Raycast(ray, out hit, 2, obstacleLayerMask))
+    //     {
+    //         // If hit, print the object name or handle the obstacle hit
+    //         return true;
+    //     }
+
+
+    //     return false;
+    // }
+
+    void OnTriggerEnter(Collider other)
+    {
+        print("enter trigger");
+        // obstacleCheck = other.gameObject.CompareTag(Tags.Rock.ToString()) ? true : false;
+        obstacleCheck = true;
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        print("exit trigger");
+        obstacleCheck = false;
     }
 }

@@ -78,12 +78,12 @@ public class PreviewSystem : MonoBehaviour
             Destroy(previewObject);
         }
     }
-    public void UndatePosition(Vector3 position, bool validity, bool selector = false, bool secondaryIndicator = false)
+    public void UndatePosition(Vector3 position, bool validity, Color color, bool selector = false, bool secondaryIndicator = false)
     {
         if (previewObject != null && !selector)
         {
             MovePreview(position);
-            ApllyFeedbackToPreview(validity);
+            ApllyFeedbackToPreview(validity, color);
         }
         else if (selector && secondaryIndicator)
         {
@@ -99,18 +99,19 @@ public class PreviewSystem : MonoBehaviour
         {
             MoveCursor(position);
         }
-        ApllyFeedbackToCursor(validity);
+        ApllyFeedbackToCursor(validity, color);
     }
 
-    private void ApllyFeedbackToPreview(bool validity)
+    private void ApllyFeedbackToPreview(bool validity, Color color)
     {
-        Color c = validity ? Color.cyan : Color.red;
+        print("validity = " + validity);
+        Color c = validity ? color : Color.red;
         c.a = 0.5f;
         previewMaterialInstance.color = c;
     }
-    private void ApllyFeedbackToCursor(bool validity)
+    private void ApllyFeedbackToCursor(bool validity, Color color)
     {
-        Color c = validity ? Color.cyan : Color.blue;
+        Color c = validity ? color : Color.blue;
         c.a = 0.5f;
         cellIndicatorRenderer.material.color = c;
     }
@@ -129,13 +130,13 @@ public class PreviewSystem : MonoBehaviour
     {
         cellIndicator.SetActive(true);
         PrepareCursor(Vector2Int.one);
-        ApllyFeedbackToCursor(false);
+        ApllyFeedbackToCursor(false, Color.blue);
     }
 
     internal void StartShowingPreview()
     {
         cellIndicator.SetActive(true);
         PrepareCursor(Vector2Int.one);
-        ApllyFeedbackToCursor(false);
+        ApllyFeedbackToCursor(false, Color.blue);
     }
 }

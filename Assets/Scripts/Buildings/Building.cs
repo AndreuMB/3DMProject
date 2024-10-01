@@ -62,7 +62,7 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Extractor:
             data.storageBool = true;
             PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
-            GameMaterialSO gameMaterialSO = placementSystem.buildingtState.GetOreResource(transform.parent.position);
+            GameMaterialSO gameMaterialSO = placementSystem.buildingState.GetOreResource(transform.parent.position);
             data.storage.Add(new GameMaterial(gameMaterialSO, 0));
             resourceSO = gameMaterialSO;
             StartCoroutine(nameof(ExtractResource));
@@ -125,21 +125,28 @@ public class Building : MonoBehaviour
          if (dron.newMaterial != null) dron.material = dron.newMaterial;
 
          GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName, data.storage);
-         if (storageResource == null) yield return null;
-
-         if (dron.successDelivery)
+         if (storageResource != null && storageResource.quantity > 0)
          {
-            // check storage quantity and choose dron storage quantity
-            dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
+            if (dron.successDelivery)
+            {
+               // check storage quantity and choose dron storage quantity
+               dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
 
-            storageResource.quantity += -dron.material.quantity;
+               storageResource.quantity += -dron.material.quantity;
+            }
+            dron.successDelivery = true;
+         }
+         else
+         {
+            dron.detele = true;
          }
 
-         dron.successDelivery = true;
+
 
       }
       else
       {
+         print("dron.detele = " + dron.detele);
          if (dron.detele)
          {
             mainBase.SetDrons(mainBase.drons + 1);
@@ -172,11 +179,8 @@ public class Building : MonoBehaviour
                   bool complete = true;
                   foreach (GameMaterial gameMaterial in addressStorage)
                   {
-                     print(gameMaterial.gameMaterialSO.name);
-                     print(gameMaterial.quantity);
                      if (gameMaterial.quantity < 0) complete = false;
                   }
-                  print(complete);
                   if (complete)
                   {
                      dron.detele = true;

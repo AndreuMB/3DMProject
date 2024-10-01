@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
             Vector3Int selectedCell = placementSystem.GetCell();
             bool content = placementSystem.floorData.VoidCell(selectedCell);
             RadialMenuSO RMSO;
+            if (placementSystem.buildingState.CheckObstacle(placementSystem.gridPositionFloat)) return;
             if (content)
             {
                 RMSO = rMManager.RMSOs.Find(x => x.name == "VoidCell");

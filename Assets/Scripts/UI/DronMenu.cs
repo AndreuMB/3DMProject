@@ -51,7 +51,7 @@ public class DronMenu : MonoBehaviour
     void OnDisable()
     {
         if (player == null) return;
-        player.placementSystem.buildingtState.EndState(true);
+        player.placementSystem.buildingState.EndState(true);
         player.SetMouseSelectorStatus(true);
     }
 
@@ -76,7 +76,7 @@ public class DronMenu : MonoBehaviour
         addBtn.GetComponent<Button>().interactable = false;
         if (!BasicDronCheck())
         {
-            player.placementSystem.buildingtState.EndState(true);
+            player.placementSystem.buildingState.EndState(true);
             return;
         }
         // show placeholder if the building is capable of storage

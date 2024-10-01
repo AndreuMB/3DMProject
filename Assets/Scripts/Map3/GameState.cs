@@ -42,29 +42,42 @@ public class GameState : IBuildingtState
         focus = !focus;
     }
 
-    private bool CheckIfSelectedIsValid(Vector3Int gridPosition)
+    private (bool, Color) CheckIfSelectedIsValid(Vector3Int gridPosition, Vector3 gridPositionFloat)
     {
-        return !(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one));
+        if (CheckObstacle(gridPositionFloat)) return (true, Color.red);
+
+        return (!(buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) && floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one)), Color.cyan);
+    }
+
+    public bool CheckObstacle(Vector3 gridPositionFloat)
+    {
+        Ray ray = new Ray(new(gridPositionFloat.x, 50, gridPositionFloat.z), Vector3.down);
+        RaycastHit hit;
+        // Check for an obstacle first
+        if (Physics.Raycast(ray, out hit, 100f, LayerMask.GetMask("Obstacles")))
+        {
+            // Ray hit an obstacle, stop further processing
+            return true;
+        }
+        return false;
     }
 
     public void UpdateState(Vector3Int gridPosition, Vector3 gridPositionFloat)
     {
         if (GameObject.FindObjectOfType<RadialMenu>()) return;
 
-        bool validity = CheckIfSelectedIsValid(gridPosition);
-        Vector3 positionWorld = grid.CellToWorld(gridPosition);
-        // Debug.Log(gridPositionFloat);
-        // Debug.Log(positionWorld);
-        // Debug.Log(gridPosition);
-        // positionWorld.y = gridPositionFloat.y;
-        previewSystem.UndatePosition(gridPositionFloat, validity);
-        // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), true);
+        (bool validity, Color color) = CheckIfSelectedIsValid(gridPosition, gridPositionFloat);
+
+        previewSystem.UndatePosition(gridPositionFloat, validity, color);
     }
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, Vector2Int size)
     {
         GridData selectedData = floorData;
-        return selectedData.CanPlaceObjectAt(gridPosition, size);
+        if (!selectedData.CanPlaceObjectAt(gridPosition, size)) return false;
+
+
+        return true;
     }
 
     public GameObject Build(Vector3Int gridPosition, BuildingsEnum bType, Vector3 gridPositionFloat, bool completeBuilding)
@@ -143,7 +156,7 @@ public class GameState : IBuildingtState
 
     public void SelectCell(Vector3Int gridPosition, Vector3 gridPositionFloat, bool secondaryIndicator = false)
     {
-        previewSystem.UndatePosition(gridPositionFloat, true, true, secondaryIndicator);
+        previewSystem.UndatePosition(gridPositionFloat, true, Color.cyan, true, secondaryIndicator);
     }
 
     public void BuildOre(Vector3Int gridPosition, GameObject oreGO, Vector3 position)
