@@ -52,6 +52,7 @@ public class Building : MonoBehaviour
 
    void Format()
    {
+      print("data.buildingType = " + data.buildingType);
       switch (data.buildingType)
       {
          case BuildingsEnum.MainBase:
@@ -65,7 +66,7 @@ public class Building : MonoBehaviour
             GameMaterialSO gameMaterialSO = placementSystem.buildingState.GetOreResource(transform.parent.position);
             data.storage.Add(new GameMaterial(gameMaterialSO, 0));
             resourceSO = gameMaterialSO;
-            StartCoroutine(nameof(ExtractResource));
+            // StartCoroutine(nameof(ExtractResource));
             break;
          case BuildingsEnum.Storage:
             data.storageBool = true;
@@ -146,7 +147,6 @@ public class Building : MonoBehaviour
       }
       else
       {
-         print("dron.detele = " + dron.detele);
          if (dron.detele)
          {
             mainBase.SetDrons(mainBase.drons + 1);
@@ -185,6 +185,8 @@ public class Building : MonoBehaviour
                   {
                      dron.detele = true;
                      addressBuilding.CompleteBuilding();
+                     if (addressBuilding.data.buildingType == BuildingsEnum.Extractor)
+                        addressBuilding.StartCoroutine(nameof(addressBuilding.ExtractResource));
                   }
                }
             }

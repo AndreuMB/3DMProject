@@ -132,7 +132,7 @@ public class HUD : MonoBehaviour
         }
     }
 
-    void CleanHUDContainer()
+    public void CleanHUDContainer()
     {
         // DMBtn.SetActive(false);
         // DronUpgradeBtn.SetActive(false);

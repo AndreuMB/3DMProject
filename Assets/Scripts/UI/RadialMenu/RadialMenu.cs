@@ -15,6 +15,7 @@ public class RadialMenu : MonoBehaviour
     PlacementSystem ps;
     RadialElement clickedRE;
     Player player;
+    HUD hud;
 
 
     void Start()
@@ -22,6 +23,7 @@ public class RadialMenu : MonoBehaviour
         // BuildRM();
         ps = FindObjectOfType<PlacementSystem>();
         player = FindObjectOfType<Player>();
+        hud = FindObjectOfType<HUD>();
     }
 
     public void BuildRM()
@@ -89,6 +91,7 @@ public class RadialMenu : MonoBehaviour
 
     public void DestroyBuilding()
     {
+        hud.CleanHUDContainer();
         ps.Remove();
     }
 

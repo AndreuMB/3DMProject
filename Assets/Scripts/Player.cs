@@ -164,12 +164,4 @@ public class Player : MonoBehaviour
         return mouseSelector;
     }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.clickCount == 2)
-        {
-            Debug.Log("double click");
-        }
-    }
-
 }

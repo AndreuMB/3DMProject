@@ -71,7 +71,7 @@ public class ObjectPlacer : MonoBehaviour
         {
             return;
         }
-        Destroy(placedGameObject[gameObjectIndex]);
+        Destroy(placedGameObject[gameObjectIndex].transform.parent.gameObject);
         placedGameObject[gameObjectIndex] = null;
     }
 
