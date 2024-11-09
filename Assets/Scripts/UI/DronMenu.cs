@@ -41,7 +41,8 @@ public class DronMenu : MonoBehaviour
         List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
         foreach (DronData dron in listDrons)
         {
-            if (dron.dronRef.origin == player.selectedGO) AddRow(dron.dronRef);
+            // if (dron.dronRef.origin == player.selectedGO) AddRow(dron.dronRef);
+            AddRow(dron.dronRef);
         }
 
         player.SetMouseSelectorStatus(false);
@@ -112,7 +113,7 @@ public class DronMenu : MonoBehaviour
         rowGO.transform.SetParent(contentGO.transform, false);
         TMP_Dropdown dropdown = rowGO.GetComponentsInChildren<TMP_Dropdown>()[0];
         dron.row = rowGO;
-        if (dron.detele) dron.row.GetComponentInChildren<Button>().interactable = false;
+        if (dron.delete) dron.row.GetComponentInChildren<Button>().interactable = false;
 
         dropdown.ClearOptions();
 
@@ -133,7 +134,7 @@ public class DronMenu : MonoBehaviour
     void RemoveDron(Dron dron)
     {
         dron.row.GetComponentInChildren<Button>().interactable = false;
-        dron.detele = true;
+        dron.CheckDeleteDron();
     }
 
     void ChangeResource(Dron dron, TMP_Dropdown rowDropdown)
@@ -141,7 +142,8 @@ public class DronMenu : MonoBehaviour
         // string from dropdown to enum
         GameMaterialsEnum parsed_enum = (GameMaterialsEnum)Enum.Parse(typeof(GameMaterialsEnum), rowDropdown.options[rowDropdown.value].text);
         // enum to gamematerialSO
-        dron.newMaterial = new GameMaterial(MaterialManager.GetGameMaterialSO(parsed_enum), 0);
+        GameMaterial newMaterial = new GameMaterial(MaterialManager.GetGameMaterialSO(parsed_enum), mainBase.dronStorage);
+        dron.ChangeMaterial(newMaterial);
     }
 
     public void ToggleMenu()

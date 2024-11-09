@@ -105,7 +105,7 @@ public class HUD : MonoBehaviour
 
     void ShowBuildResourcesBuilding(Building selectedBuilding)
     {
-        sendResourceContainer.SetActive(true);
+        // sendResourceContainer.SetActive(true);
         ObjectData buildingInfo = placementSystem.database.objectsData.Find(x => x.Type == selectedBuilding.data.buildingType);
         List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
         materialsBuilding = gameMaterialsBuild;
@@ -130,6 +130,10 @@ public class HUD : MonoBehaviour
             newResource.transform.SetParent(sendResourceContainer.transform, false);
             resource.HUDGO = newResource;
         }
+
+        Color redColor = Color.red;
+        redColor.a = 0.33f;
+        resourceContainer.GetComponent<Image>().color = redColor;
     }
 
     public void CleanHUDContainer()
@@ -147,6 +151,11 @@ public class HUD : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+
+        Color blackColor = Color.black;
+        blackColor.a = 0.33f;
+        resourceContainer.GetComponent<Image>().color = blackColor;
+
         sendResourceContainer.SetActive(false);
     }
     public void UpdateDronsHUD(int dronsNumber)

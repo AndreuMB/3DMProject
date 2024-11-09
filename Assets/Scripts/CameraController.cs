@@ -271,14 +271,12 @@ public class CameraController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        print("enter trigger");
         // obstacleCheck = other.gameObject.CompareTag(Tags.Rock.ToString()) ? true : false;
         obstacleCheck = true;
     }
 
     void OnTriggerExit(Collider other)
     {
-        print("exit trigger");
         obstacleCheck = false;
     }
 }
