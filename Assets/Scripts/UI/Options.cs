@@ -196,7 +196,7 @@ public class Options : MonoBehaviour
             dron.dronData = dronData;
             dron.dronData.dronRef = dron;
             dron.SetData(origin, GameObject.Find(dronData.destination), dronData.material, dronData.movingTo);
-            origin.GetComponent<Building>().StartDronV2(dron);
+            origin.GetComponent<Building>().StartDron(dron);
             dron.dronGoal.Invoke();
         }
 

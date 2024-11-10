@@ -55,7 +55,7 @@ public class Dron : MonoBehaviour
 
     public float GetDistance()
     {
-        return Vector2.Distance(transform.position, movingTo);
+        return Vector2.Distance(transform.position, destination.transform.position);
     }
 
     void Update()

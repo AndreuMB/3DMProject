@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     GameObject optionsMenu;
     RMManager rMManager;
     public GameObject rmGO;
-    public GameObject selectedGO;
+    GameObject selectedGO;
     public UnityEvent<GameObject> selectedGOev = new();
     public Canvas canvasCPS;
     public PlacementSystem placementSystem;
@@ -147,6 +147,11 @@ public class Player : MonoBehaviour
     {
         selectedGO = sGO;
         selectedGOev.Invoke(selectedGO);
+    }
+
+    public GameObject GetActiveGO()
+    {
+        return selectedGO;
     }
 
     public bool OptionsStatus()

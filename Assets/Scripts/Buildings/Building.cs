@@ -23,7 +23,7 @@ public class Building : MonoBehaviour
       hud = FindObjectOfType<HUD>();
       buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
       Format();
-      if (hud)
+      if (hud && !FindObjectOfType<DronMenu>())
       {
          player.SetActiveGO(gameObject);
       }
@@ -110,109 +110,13 @@ public class Building : MonoBehaviour
       placingOnGoing = false;
    }
 
-   // public IEnumerator StartDronCoroutineV2(Dron dron)
-   // {
-
-   //    if (!mainBase) mainBase = FindObjectOfType<MainBase>();
-   //    float distance = dron.GetDistance();
-   //    dron.speed = mainBase.dronSpeed;
-
-   //    yield return new WaitForSeconds(distance / dron.speed);
-
-   //    if (dron.movingTo == dron.destination.transform.position)
-   //    {
-
-   //       if (dron.newMaterial != null) dron.material = dron.newMaterial;
-
-   //       GameMaterial storageResource = FindGameMaterialInStorage(dron.material.gameMaterialSO.materialName, data.storage);
-   //       if (storageResource != null && storageResource.quantity > 0)
-   //       {
-   //          if (dron.successDelivery)
-   //          {
-   //             // check storage quantity and choose dron storage quantity
-   //             dron.material.quantity = storageResource.quantity > mainBase.dronStorage ? mainBase.dronStorage : storageResource.quantity;
-
-   //             storageResource.quantity += -dron.material.quantity;
-   //          }
-   //          dron.successDelivery = true;
-   //       }
-   //       else
-   //       {
-   //          dron.delete = true;
-   //       }
-
-
-
-   //    }
-   //    else
-   //    {
-   //       if (dron.delete)
-   //       {
-   //          mainBase.SetDrons(mainBase.drons + 1);
-   //          List<DronData> listDrons = data.setDrons;
-   //          listDrons.Remove(dron.dronData);
-   //          if (dron.row) Destroy(dron.row);
-   //          Destroy(dron.gameObject);
-   //          yield return null;
-   //       }
-   //       Building addressBuilding = dron.destination.GetComponent<Building>();
-   //       List<GameMaterial> addressStorage = addressBuilding.data.storage;
-   //       GameMaterialsEnum gameMaterialsEnum = dron.material.gameMaterialSO.materialName;
-   //       GameMaterial addressMaterial = FindGameMaterialInStorage(gameMaterialsEnum, addressStorage);
-   //       if (addressBuilding.placingOnGoing)
-   //       {
-   //          if (addressMaterial == null)
-   //          {
-   //             dron.successDelivery = false;
-   //          }
-   //          else
-   //          {
-   //             if (addressMaterial.quantity >= 0)
-   //             {
-   //                dron.successDelivery = false;
-   //             }
-   //             else
-   //             {
-   //                addressMaterial.quantity += dron.material.quantity;
-   //                // check if complete
-   //                bool complete = true;
-   //                foreach (GameMaterial gameMaterial in addressStorage)
-   //                {
-   //                   if (gameMaterial.quantity < 0) complete = false;
-   //                }
-   //                if (complete)
-   //                {
-   //                   dron.delete = true;
-   //                   addressBuilding.CompleteBuilding();
-   //                   if (addressBuilding.data.buildingType == BuildingsEnum.Extractor)
-   //                      addressBuilding.StartCoroutine(nameof(addressBuilding.ExtractResource));
-   //                }
-   //             }
-   //          }
-   //       }
-   //       else
-   //       {
-   //          if (addressMaterial != null)
-   //          {
-   //             addressMaterial.quantity += dron.material.quantity;
-   //          }
-   //          else
-   //          {
-   //             addressStorage.Add(new GameMaterial(dron.material.gameMaterialSO, dron.material.quantity));
-   //             if (player.selectedGO == dron.destination) hud.ShowGOHUD(player.selectedGO);
-   //          }
-   //       }
-   //    }
-   // }
-
-
    public GameMaterial FindGameMaterialInStorage(GameMaterialsEnum gameMaterialsEnum, List<GameMaterial> storage)
    {
       storage ??= data.storage;
       return storage.Find(x => x.gameMaterialSO.materialName == gameMaterialsEnum);
    }
 
-   public void StartDronV2(Dron dron)
+   public void StartDron(Dron dron)
    {
       // Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dron));
       // dron.dronGoal.AddListener(() => StartCoroutine(StartDronCoroutineV2(dron)));
@@ -230,8 +134,6 @@ public class Building : MonoBehaviour
 
    public void AddResource(GameMaterialSO gameMaterialSO, int quantity)
    {
-      // if (data.storage.Count <= 0) return;
-
       GameMaterial storagedResource = data.storage.Find(
          resource => resource.gameMaterialSO.materialName == gameMaterialSO.materialName);
       if (storagedResource != null)
@@ -243,6 +145,8 @@ public class Building : MonoBehaviour
       {
          data.storage.Add(new GameMaterial(gameMaterialSO, quantity));
       }
+
+      CheckCompleteBuilding();
 
    }
 
@@ -280,6 +184,24 @@ public class Building : MonoBehaviour
       blender.buildCraftingType = gameMaterialTypesEnum;
    }
 
+   bool CheckBuildingInProcess()
+   {
+      bool buildingInProcess = false;
+      foreach (GameMaterial gameMaterial in data.storage)
+      {
+         if (gameMaterial.quantity < 0) buildingInProcess = true;
+      }
+      return buildingInProcess;
+   }
+
+   void CheckCompleteBuilding()
+   {
+      if (placingOnGoing)
+      {
+         placingOnGoing = CheckBuildingInProcess();
+         if (!placingOnGoing) CompleteBuilding();
+      }
+   }
 }
 
 public enum BuildingsEnum

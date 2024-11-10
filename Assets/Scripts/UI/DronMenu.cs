@@ -29,19 +29,19 @@ public class DronMenu : MonoBehaviour
 
     void OnEnable()
     {
-        if (!player || !player.selectedGO) return;
+        if (!player || !player.GetActiveGO()) return;
         foreach (Transform child in contentGO.transform)
         {
             Destroy(child.gameObject);
         }
 
-        dataSGO = player.selectedGO.GetComponent<Building>().data;
+        dataSGO = player.GetActiveGO().GetComponent<Building>().data;
         selectedGODron = null;
 
-        List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
+        List<DronData> listDrons = player.GetActiveGO().GetComponent<Building>().data.setDrons;
         foreach (DronData dron in listDrons)
         {
-            // if (dron.dronRef.origin == player.selectedGO) AddRow(dron.dronRef);
+            // if (dron.dronRef.origin == player.GetActiveGO()) AddRow(dron.dronRef);
             AddRow(dron.dronRef);
         }
 
@@ -82,7 +82,7 @@ public class DronMenu : MonoBehaviour
         }
         // show placeholder if the building is capable of storage
         player.placementSystem.SelectCell(true);
-        if (player.selectedGO.GetComponent<Building>().data.storage.Count <= 0) return;
+        if (player.GetActiveGO().GetComponent<Building>().data.storage.Count <= 0) return;
         // enable button if u can send materials to the building
         addBtn.GetComponent<Button>().interactable = true;
     }
@@ -96,14 +96,14 @@ public class DronMenu : MonoBehaviour
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
-        dron.SetData(player.selectedGO, selectedGODron, dronR, selectedGODron.transform.position);
+        dron.SetData(player.GetActiveGO(), selectedGODron, dronR, selectedGODron.transform.position);
         dron.CreateData();
         dron.transform.position = dron.originV;
-        player.selectedGO.GetComponent<Building>().StartDronV2(dron);
+        player.GetActiveGO().GetComponent<Building>().StartDron(dron);
 
         AddRow(dron);
 
-        List<DronData> listDrons = player.selectedGO.GetComponent<Building>().data.setDrons;
+        List<DronData> listDrons = player.GetActiveGO().GetComponent<Building>().data.setDrons;
         listDrons.Add(dron.dronData);
     }
 
@@ -154,7 +154,7 @@ public class DronMenu : MonoBehaviour
     bool BasicDronCheck()
     {
         if (!selectedGODron) return false;
-        if (selectedGODron == player.selectedGO) return false;
+        if (selectedGODron == player.GetActiveGO()) return false;
         if (!selectedGODron.GetComponent<Building>().data.storageBool) return false;
         return true;
     }
