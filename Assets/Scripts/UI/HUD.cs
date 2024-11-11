@@ -131,9 +131,7 @@ public class HUD : MonoBehaviour
             resource.HUDGO = newResource;
         }
 
-        Color redColor = Color.red;
-        redColor.a = 0.33f;
-        resourceContainer.GetComponent<Image>().color = redColor;
+        UpdateBuildingResourceContainerColor(selectedBuilding);
     }
 
     public void CleanHUDContainer()
@@ -152,9 +150,8 @@ public class HUD : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        Color blackColor = Color.black;
-        blackColor.a = 0.33f;
-        resourceContainer.GetComponent<Image>().color = blackColor;
+        Color whiteColor = Color.white;
+        resourceContainer.GetComponent<Image>().color = whiteColor;
 
         sendResourceContainer.SetActive(false);
     }
@@ -184,5 +181,21 @@ public class HUD : MonoBehaviour
     void SetDronManagerButton()
     {
         Instantiate(dronMenuBtn, buildingButtpnsPanel);
+    }
+
+    public void UpdateBuildingResourceContainerColor(Building building)
+    {
+        if (building.placingOnGoing)
+        {
+            Color redColor = Color.red;
+            // redColor.a = 0.33f;
+            resourceContainer.GetComponent<Image>().color = redColor;
+        }
+        else
+        {
+            Color whiteColor = Color.white;
+            // blackColor.a = 0.33f;
+            resourceContainer.GetComponent<Image>().color = whiteColor;
+        }
     }
 }

@@ -28,6 +28,7 @@ public class Dron : MonoBehaviour
     MainBase mainBase;
     public float duration;
     bool coroutineRunning = false;
+    public bool whilePlacingOnGoing = false;
 
     void Start()
     {
@@ -140,6 +141,8 @@ public class Dron : MonoBehaviour
 
             // remove material
             origin.GetComponent<Building>().AddResource(material.gameMaterialSO, -material.quantity);
+
+            if (whilePlacingOnGoing != destination.GetComponent<Building>().placingOnGoing) yield break;
         }
 
         coroutineRunning = true;
@@ -159,8 +162,18 @@ public class Dron : MonoBehaviour
         // already on destination
         if (parentBuildingGO != destination)
         {
-            // add material
-            destination.GetComponent<Building>().AddResource(material.gameMaterialSO, material.quantity);
+            print(material.gameMaterialSO.materialName);
+            print(CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName));
+            if (EnoughBuildingStorage() && CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName))
+            {
+                // add material destination
+                destination.GetComponent<Building>().AddResource(material.gameMaterialSO, material.quantity);
+            }
+            else
+            {
+                // return material to origin
+                origin.GetComponent<Building>().AddResource(material.gameMaterialSO, material.quantity);
+            };
         }
 
         // swap values
@@ -195,7 +208,8 @@ public class Dron : MonoBehaviour
         if (parentBuildingGO != destination)
         {
             // building placingOnGoing
-            if (destination.GetComponent<Building>().placingOnGoing)
+            // whilePlacingOnGoing
+            if (whilePlacingOnGoing)
             {
                 Building destinationBuilding = destination.GetComponent<Building>();
                 GameMaterial materialInBuilding = destinationBuilding.FindGameMaterialInStorage(materialName, destinationBuilding.data.storage);

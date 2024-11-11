@@ -69,7 +69,6 @@ public class DronMenu : MonoBehaviour
             }
         }
 
-
     }
 
     void AddRowBtnStatus()
@@ -99,6 +98,8 @@ public class DronMenu : MonoBehaviour
         dron.SetData(player.GetActiveGO(), selectedGODron, dronR, selectedGODron.transform.position);
         dron.CreateData();
         dron.transform.position = dron.originV;
+        dron.whilePlacingOnGoing = selectedGODron.GetComponent<Building>().placingOnGoing;
+
         player.GetActiveGO().GetComponent<Building>().StartDron(dron);
 
         AddRow(dron);
