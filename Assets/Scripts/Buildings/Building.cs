@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 public class Building : MonoBehaviour
 {
    public GameMaterialSO resourceSO;
@@ -14,6 +15,7 @@ public class Building : MonoBehaviour
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
    public bool placingOnGoing = true;
    public Material[] materials;
+   public UnityEvent buildComplete = new UnityEvent();
 
    // Start is called before the first frame update
    void Start()
@@ -39,10 +41,10 @@ public class Building : MonoBehaviour
       yield break;
    }
 
-   public void StopDron(Coroutine dronCoroutine)
-   {
-      StopCoroutine(dronCoroutine);
-   }
+   // public void StopDron(Coroutine dronCoroutine)
+   // {
+   //    StopCoroutine(dronCoroutine);
+   // }
 
    public void SetBuildType(BuildingsEnum bType, bool completeBuilding)
    {
@@ -61,10 +63,11 @@ public class Building : MonoBehaviour
             break;
          case BuildingsEnum.Extractor:
             data.storageBool = true;
+            Extractor extractor = gameObject.AddComponent<Extractor>();
             PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
             GameMaterialSO gameMaterialSO = placementSystem.buildingState.GetOreResource(transform.parent.position);
-            data.storage.Add(new GameMaterial(gameMaterialSO, 0));
-            resourceSO = gameMaterialSO;
+            extractor.SetGameMaterial(new GameMaterial(gameMaterialSO, 1));
+            // resourceSO = gameMaterialSO;
             // StartCoroutine(nameof(ExtractResource));
             break;
          case BuildingsEnum.Storage:
@@ -108,6 +111,9 @@ public class Building : MonoBehaviour
       // set materials
       transform.GetChild(0).GetComponent<MeshRenderer>().materials = materials;
       placingOnGoing = false;
+      if (hud) hud.UpdateBuildingResourceContainerColor(this);
+      // trigger event
+      buildComplete.Invoke();
    }
 
    public GameMaterial FindGameMaterialInStorage(GameMaterialsEnum gameMaterialsEnum, List<GameMaterial> storage)
@@ -118,9 +124,6 @@ public class Building : MonoBehaviour
 
    public void StartDron(Dron dron)
    {
-      // Coroutine coroutineInstance = StartCoroutine(StartDronCoroutine(dron));
-      // dron.dronGoal.AddListener(() => StartCoroutine(StartDronCoroutineV2(dron)));
-
       if (!mainBase) mainBase = FindObjectOfType<MainBase>();
       float distance = dron.GetDistance();
       dron.speed = mainBase.dronSpeed;
@@ -129,6 +132,7 @@ public class Building : MonoBehaviour
 
       // dron.dronGoal.AddListener(() => StartCoroutine(DronTransport(time, dron)));
       dron.duration = time;
+
       StartCoroutine(dron.DronTransport());
    }
 
