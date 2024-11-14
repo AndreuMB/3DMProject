@@ -85,7 +85,7 @@ public class HUD : MonoBehaviour
         {
             if (gameMaterial.quantity <= 0 && !selectedBuilding.placingOnGoing)
             {
-                if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor) return false;
+                // if (selectedBuilding.data.buildingType == BuildingsEnum.Extractor) return false;
                 foreach (DronData dron in selectedBuilding.data.setDrons)
                 {
                     if (dron.material.gameMaterialSO.materialName == gameMaterial.gameMaterialSO.materialName) return false;

@@ -12,12 +12,11 @@ public class DronData
     public Vector3 dronPosition;
     public Dron dronRef;
 
-    public DronData(string origin, string destination, GameMaterial material, Dron dron, Vector3 movingTo)
+    public DronData(string origin, string destination, GameMaterial material, Dron dron)
     {
         this.origin = origin;
         this.destination = destination;
         this.material = material;
-        this.movingTo = movingTo;
         dronRef = dron;
     }
 }

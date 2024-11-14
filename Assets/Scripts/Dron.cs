@@ -13,14 +13,11 @@ public class Dron : MonoBehaviour
     [NonSerialized] public GameMaterial material;
     GameMaterial newMaterial;
     // public Coroutine coroutine;
-    [NonSerialized] public Vector3 movingTo;
     [NonSerialized] public float speed;
     [NonSerialized] public DronData dronData;
     [NonSerialized] public UnityEvent dronGoal = new UnityEvent();
     [NonSerialized] public GameObject row;
     [NonSerialized] public bool delete;
-    Vector3 destinationV;
-    [NonSerialized] public Vector3 originV;
     Terrain terrain;
     [SerializeField] float dronHeight = 1;
     [NonSerialized] public bool successDelivery;
@@ -35,93 +32,32 @@ public class Dron : MonoBehaviour
         mainBase = FindAnyObjectByType<MainBase>();
     }
 
-    public void SetData(GameObject origin, GameObject destination, GameMaterial material, Vector3 movingTo)
+    public void SetData(GameObject origin, GameObject destination, GameMaterial material)
     {
         this.origin = origin;
         this.destination = destination;
         this.material = material;
-        this.movingTo = movingTo;
         parentBuildingGO = origin;
         speed = FindObjectOfType<MainBase>().dronSpeed;
 
-        destinationV = destination.transform.position;
-        originV = origin.transform.position;
         terrain = Terrain.activeTerrain;
     }
 
     public void CreateData()
     {
-        dronData = new(origin.name, destination.name, material, this, movingTo);
+        dronData = new(origin.name, destination.name, material, this);
     }
 
     public float GetDistance()
     {
-        return Vector2.Distance(transform.position, destination.transform.position);
+        float distance = Vector3.Distance(origin.transform.position, destination.transform.position);
+        return distance;
     }
 
-    void Update()
+    float GetTerrainHeight(Vector3 position)
     {
-        // if (!destination) return;
-        // RaycastHit hit;
-
-        // // Raycast in the forward direction to detect obstacles
-        // if (Physics.Raycast(transform.position, transform.forward, out hit, 1, LayerMask.GetMask("Obstacles")))
-        // {
-        //     if (hit.collider != null)
-        //     {
-        //         // If we hit an object, rotate around it
-        //         // Example: move to the left of the obstacle by adjusting the direction
-        //         Vector3 obstacleAvoidanceDirection = Vector3.Cross(transform.up, transform.forward).normalized;
-        //         Vector3 newPositionAroundObstacle = transform.position + obstacleAvoidanceDirection * speed * Time.deltaTime;
-
-        //         newPositionAroundObstacle.y = GetTerrainHeight(newPositionAroundObstacle) + dronHeight;
-        //         transform.position = newPositionAroundObstacle;
-
-        //         // Optionally, you can adjust the look direction to face where you are moving
-        //         transform.LookAt(newPositionAroundObstacle);
-
-        //         return;  // Return early to avoid continuing the normal movement logic
-        //     }
-        // }
-
-        // float distanceX = destinationV.x - transform.position.x;
-        // float distanceZ = destinationV.z - transform.position.z;
-        // const float RANGE = 0.5f;
-
-        // if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == destinationV)
-        // {
-        //     dronGoal.Invoke();
-        //     movingTo = originV;
-        //     dronData.movingTo = originV;
-        //     transform.LookAt(movingTo);
-        // }
-
-        // // if (originV == transform.position){
-        // distanceX = originV.x - transform.position.x;
-        // distanceZ = originV.z - transform.position.z;
-        // if (Math.Abs(distanceX) <= RANGE && Math.Abs(distanceZ) <= RANGE && movingTo == originV)
-        // {
-        //     dronGoal.Invoke();
-        //     movingTo = destinationV;
-        //     dronData.movingTo = destinationV;
-        //     transform.LookAt(movingTo);
-        // }
-
-        // // GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, movingTo, step));
-        // // transform.position = Vector3.MoveTowards(transform.position, movingTo, step);
-        // Vector3 direction = (movingTo - transform.position).normalized;
-        // Vector3 newPosition = transform.position + direction * speed * Time.deltaTime;
-
-        // newPosition.y = GetTerrainHeight(newPosition) + dronHeight;
-
-        // transform.position = newPosition;
-        // dronData.dronPosition = transform.position;
+        return terrain.SampleHeight(position) + terrain.transform.position.y;
     }
-
-    // float GetTerrainHeight(Vector3 position)
-    // {
-    //     return terrain.SampleHeight(position) + terrain.transform.position.y;
-    // }
 
     public IEnumerator DronTransport()
     {
@@ -149,7 +85,9 @@ public class Dron : MonoBehaviour
 
         while (timeElapsed < duration)
         {
-            transform.position = Vector3.Lerp(origin.transform.position, destination.transform.position, timeElapsed / duration);
+            Vector3 newPosition = Vector3.Lerp(origin.transform.position, destination.transform.position, timeElapsed / duration);
+            newPosition.y = GetTerrainHeight(newPosition) + dronHeight;
+            transform.position = newPosition;
             timeElapsed += Time.deltaTime;
             yield return null;
         }
@@ -162,8 +100,6 @@ public class Dron : MonoBehaviour
         // already on destination
         if (parentBuildingGO != destination)
         {
-            print(material.gameMaterialSO.materialName);
-            print(CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName));
             if (EnoughBuildingStorage() && CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName))
             {
                 // add material destination
