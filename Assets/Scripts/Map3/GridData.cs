@@ -40,7 +40,7 @@ public class GridData
         return true;
     }
 
-    public bool VoidCell(Vector3Int gridPosition)
+    public bool IsCellVoid(Vector3Int gridPosition)
     {
         List<Vector3Int> positionToOccupy = CalculatePositions(gridPosition, Vector2Int.one);
         foreach (var pos in positionToOccupy)
@@ -52,7 +52,7 @@ public class GridData
 
     internal int GetRepresentationIndex(Vector3Int gridPosition)
     {
-        if (placedObjects.ContainsKey(gridPosition) == false) {  return -1; }
+        if (placedObjects.ContainsKey(gridPosition) == false) { return -1; }
         return placedObjects[gridPosition].PlacedObjectIndex;
     }
 

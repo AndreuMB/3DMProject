@@ -34,7 +34,7 @@ public class Extractor : MonoBehaviour, IBuilding
         while (isActiveAndEnabled && !building.placingOnGoing)
         {
             yield return new WaitForSeconds(rate);
-            GetComponent<Building>().AddResource(gameMaterial.gameMaterialSO, gameMaterial.quantity);
+            GetComponent<Building>().AddGameMaterial(gameMaterial.gameMaterialSO, gameMaterial.quantity);
         }
         yield break;
     }

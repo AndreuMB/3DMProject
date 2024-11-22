@@ -28,7 +28,6 @@ public class InputManager : MonoBehaviour
         {
             lastPosition = hit.point;
         }
-
         return lastPosition;
     }
 

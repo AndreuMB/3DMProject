@@ -9,16 +9,17 @@ public class BlenderPanel : MonoBehaviour
     [SerializeField] Transform listPanel;
     ResourceCombinationManager resourceCombinationM;
     [NonSerialized] public Building buildingParent;
+    [NonSerialized] public Blender blenderParent;
     [NonSerialized] public HUD hud;
 
     void CraftElement(ResourceCombination elementCombination)
     {
         // check resource
-        if (!buildingParent.CheckResources(elementCombination)) return;
+        if (!blenderParent.CheckResources(elementCombination)) return;
         // add to foundry storage elementCombination.result
-        buildingParent.AddResource(elementCombination.result.gameMaterialSO, 1);
+        buildingParent.AddGameMaterial(elementCombination.result.gameMaterialSO, 1);
         // remove resources
-        buildingParent.RemoveResources(elementCombination);
+        blenderParent.RemoveResources(elementCombination);
         // update resourcesHUD
         hud.ShowGOHUD(buildingParent.gameObject);
     }

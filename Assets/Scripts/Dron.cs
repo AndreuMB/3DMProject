@@ -61,7 +61,7 @@ public class Dron : MonoBehaviour
 
     public IEnumerator DronTransport()
     {
-
+        // check if building in progress and needs resource
         if (!MaterialTransportIsValid()) yield break;
 
         float timeElapsed = 0f;
@@ -72,11 +72,14 @@ public class Dron : MonoBehaviour
             // set new material for transport
             if (newMaterial != null && newMaterial != material) material = newMaterial;
 
+            // check there are enough materials to transport
+            if (!NotEnoughMaterialsOnStorage()) yield break;
+
             // check destination storage
             if (!EnoughBuildingStorage()) yield break;
 
             // remove material
-            origin.GetComponent<Building>().AddResource(material.gameMaterialSO, -material.quantity);
+            origin.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, -material.quantity);
 
             if (whilePlacingOnGoing != destination.GetComponent<Building>().placingOnGoing) yield break;
         }
@@ -103,12 +106,12 @@ public class Dron : MonoBehaviour
             if (EnoughBuildingStorage() && CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName))
             {
                 // add material destination
-                destination.GetComponent<Building>().AddResource(material.gameMaterialSO, material.quantity);
+                destination.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, material.quantity);
             }
             else
             {
                 // return material to origin
-                origin.GetComponent<Building>().AddResource(material.gameMaterialSO, material.quantity);
+                origin.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, material.quantity);
             };
         }
 
@@ -201,7 +204,18 @@ public class Dron : MonoBehaviour
         GameMaterialsEnum materialName = material.gameMaterialSO.materialName;
         GameMaterial materialInBuilding = destinationBuilding.FindGameMaterialInStorage(materialName, destinationBuilding.data.storage);
 
-        if (materialInBuilding.quantity >= destinationBuilding.data.maxStorage) return false;
+        if (materialInBuilding != null && materialInBuilding.quantity >= destinationBuilding.data.maxStorage) return false;
         return true;
     }
+    bool NotEnoughMaterialsOnStorage()
+    {
+        Building originBuilding = origin.GetComponent<Building>();
+        GameMaterialsEnum materialName = material.gameMaterialSO.materialName;
+        // we get the material from the origin building
+        GameMaterial materialInBuilding = originBuilding.FindGameMaterialInStorage(materialName, originBuilding.data.storage);
+        // if not enough material return false
+        if (materialInBuilding != null && materialInBuilding.quantity < material.quantity) return false;
+        return true;
+    }
+
 }

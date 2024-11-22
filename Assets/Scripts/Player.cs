@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -56,10 +54,10 @@ public class Player : MonoBehaviour
                 return;
             }
             Vector3Int selectedCell = placementSystem.GetCell();
-            bool content = placementSystem.floorData.VoidCell(selectedCell);
-            RadialMenuSO RMSO;
+            bool voidCell = placementSystem.floorData.IsCellVoid(selectedCell);
+            RadialMenuSO RMSO = null;
             if (placementSystem.buildingState.CheckObstacle(placementSystem.gridPositionFloat)) return;
-            if (content)
+            if (voidCell)
             {
                 RMSO = rMManager.RMSOs.Find(x => x.name == "VoidCell");
             }
@@ -73,11 +71,9 @@ public class Player : MonoBehaviour
                     case "Ore":
                         RMSO = rMManager.RMSOs.Find(x => x.name == "OreCell");
                         break;
-                    default:
-                        RMSO = rMManager.RMSOs.Find(x => x.name == "BuildCell");
-                        break;
                 }
             }
+            if (RMSO == null) return;
 
             RectTransform canvasRect = canvasCPS.GetComponent<RectTransform>();
 
@@ -106,13 +102,13 @@ public class Player : MonoBehaviour
             if (Time.time - lastClickTime < doubleClickThreshold)
             {
                 // Double-click detected
-                cameraController.FocusBuilding(selectedGO.transform.position, true);
+                if (selectedGO) cameraController.FocusBuilding(selectedGO.transform.position, true);
             }
             else
             {
                 // Single-click detected, reset lastClickTime
                 lastClickTime = Time.time;
-                SetClickedGO();
+                SetClickedGOFromMouse(Input.mousePosition);
                 placementSystem.SelectCell();
             }
         }
@@ -131,14 +127,17 @@ public class Player : MonoBehaviour
         return null;
     }
 
-    void SetClickedGO()
+    public void SetClickedGOFromMouse(Vector3 mousePosition)
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Vector3 selectedPositionFromCameraPerspective = Camera.main.ScreenToWorldPoint(mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+        // Vector3 mousePositionCenter = placementSystem.GetCenterPositionCell(selectedPositionFromCameraPerspective);
+        // Ray ray = new(mousePositionCenter, Vector3.down);
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        if (Physics.Raycast(ray, out RaycastHit hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
         {
-            if (!hit.transform.gameObject.CompareTag("Building")) return;
-            selectedGO = hit.transform.gameObject;
+            Vector3 mousePositionCenter = placementSystem.GetCenterPositionCell(hit.point);
+            SetClickedGOFromVector3(mousePositionCenter);
         }
         if (selectedGO != null) selectedGOev.Invoke(selectedGO);
     }
@@ -167,6 +166,23 @@ public class Player : MonoBehaviour
     public bool GetMouseSelectorStatus()
     {
         return mouseSelector;
+    }
+
+    public void SetClickedGOFromVector3(Vector3 position, bool selectCell = false)
+    {
+        Vector3 mousePositionCenter = placementSystem.GetCenterPositionCell(position);
+        Ray ray = new(mousePositionCenter, Vector3.down);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (!hit.transform.gameObject.CompareTag("Building")) return;
+            selectedGO = hit.transform.gameObject;
+        }
+        if (selectedGO != null)
+        {
+            selectedGOev.Invoke(selectedGO);
+            if (selectCell) placementSystem.SelectCellFromVector3(position);
+        }
     }
 
 }

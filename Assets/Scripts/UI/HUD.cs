@@ -10,10 +10,9 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] TMP_Text drons;
     Player player;
-    MainBase mainBase;
-    [SerializeField] GameObject resourceContainer;
-    [SerializeField] GameObject sendResourceContainer;
-    [SerializeField] GameObject resourcePrefab;
+    [SerializeField] GameObject gameMaterialContainer;
+    [SerializeField] GameObject sendGameMaterialContainer;
+    [SerializeField] GameObject gameMaterialPrefab;
     List<GameMaterial> materialsBuilding;
     [SerializeField] GameObject dronMenuBtn;
     // public GameObject DMMenu;
@@ -68,6 +67,7 @@ public class HUD : MonoBehaviour
         {
             selectedBuilding.GetComponent<IBuilding>().ShowHUD();
         }
+
         if (selectedBuilding.data.storageBool)
         {
             SetDronManagerButton();
@@ -94,12 +94,12 @@ public class HUD : MonoBehaviour
             }
             return false;
         });
-        foreach (GameMaterial resource in materialsBuilding)
+        foreach (GameMaterial gameMaterial in materialsBuilding)
         {
-            GameObject newResource = Instantiate(resourcePrefab);
-            newResource.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName + ": " + resource.quantity.ToString();
-            newResource.transform.SetParent(resourceContainer.transform, false);
-            resource.HUDGO = newResource;
+            GameObject newGameMaterial = Instantiate(gameMaterialPrefab);
+            newGameMaterial.GetComponent<TMP_Text>().text = gameMaterial.gameMaterialSO.materialName + ": " + gameMaterial.quantity.ToString();
+            newGameMaterial.transform.SetParent(gameMaterialContainer.transform, false);
+            gameMaterial.HUDGO = newGameMaterial;
         }
     }
 
@@ -125,9 +125,9 @@ public class HUD : MonoBehaviour
         });
         foreach (GameMaterial resource in materialsBuilding)
         {
-            GameObject newResource = Instantiate(resourcePrefab);
+            GameObject newResource = Instantiate(gameMaterialPrefab);
             newResource.GetComponent<TMP_Text>().text = resource.gameMaterialSO.materialName + ": " + resource.quantity.ToString();
-            newResource.transform.SetParent(sendResourceContainer.transform, false);
+            newResource.transform.SetParent(sendGameMaterialContainer.transform, false);
             resource.HUDGO = newResource;
         }
 
@@ -140,20 +140,20 @@ public class HUD : MonoBehaviour
         // DronUpgradeBtn.SetActive(false);
         CleanButtonsPanel();
         materialsBuilding = null;
-        foreach (Transform child in resourceContainer.transform)
+        foreach (Transform child in gameMaterialContainer.transform)
         {
             Destroy(child.gameObject);
         }
 
-        foreach (Transform child in sendResourceContainer.transform)
+        foreach (Transform child in sendGameMaterialContainer.transform)
         {
             Destroy(child.gameObject);
         }
 
         Color whiteColor = Color.white;
-        resourceContainer.GetComponent<Image>().color = whiteColor;
+        gameMaterialContainer.GetComponent<Image>().color = whiteColor;
 
-        sendResourceContainer.SetActive(false);
+        sendGameMaterialContainer.SetActive(false);
     }
     public void UpdateDronsHUD(int dronsNumber)
     {
@@ -165,8 +165,21 @@ public class HUD : MonoBehaviour
         foreach (ButtonData buttonData in buttonsList)
         {
             GameObject buttonGO = Instantiate(buttonPrefab, buildingButtpnsPanel);
+            UpgradeButton upgradeButton = buttonGO.GetComponent<UpgradeButton>();
             buttonGO.GetComponent<Button>().onClick.AddListener(() => buttonData.buttonAction());
-            buttonGO.GetComponentInChildren<TMP_Text>().text = buttonData.buttonName;
+            upgradeButton.title.text = buttonData.buttonName;
+            if (buttonData.actionCost != null)
+            {
+                upgradeButton.costContainer.SetActive(true);
+                foreach (GameMaterial gameMaterial in buttonData.actionCost)
+                {
+                    GameObject newGameMaterial = Instantiate(gameMaterialPrefab);
+                    newGameMaterial.GetComponent<TMP_Text>().color = Color.black;
+                    newGameMaterial.GetComponent<TMP_Text>().fontSize = 15;
+                    newGameMaterial.GetComponent<TMP_Text>().text = gameMaterial.gameMaterialSO.materialName + ": " + gameMaterial.quantity.ToString();
+                    newGameMaterial.transform.SetParent(upgradeButton.costContainer.transform, false);
+                }
+            }
         }
     }
 
@@ -189,13 +202,13 @@ public class HUD : MonoBehaviour
         {
             Color redColor = Color.red;
             // redColor.a = 0.33f;
-            resourceContainer.GetComponent<Image>().color = redColor;
+            gameMaterialContainer.GetComponent<Image>().color = redColor;
         }
         else
         {
             Color whiteColor = Color.white;
             // blackColor.a = 0.33f;
-            resourceContainer.GetComponent<Image>().color = whiteColor;
+            gameMaterialContainer.GetComponent<Image>().color = whiteColor;
         }
     }
 }

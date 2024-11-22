@@ -39,13 +39,7 @@ public class PlacementSystem : MonoBehaviour
         if (FindObjectOfType<RadialMenu>() != null) { return; }
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
 
-        Vector3 mousePositionCenter = new Vector3(Mathf.Floor(mousePosition.x) + 0.5f, 50, Mathf.Floor(mousePosition.z) + 0.5f);
-        Ray ray = new(mousePositionCenter, Vector3.down);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
-        {
-            mousePositionCenter = new Vector3(mousePositionCenter.x, hit.point.y, mousePositionCenter.z);
-        }
+        Vector3 mousePositionCenter = GetCenterPositionAboveMap(mousePosition);
 
         Vector3Int gridPosition = grid.WorldToCell(mousePositionCenter);
         if (lastDetectedPosition != gridPosition)
@@ -76,10 +70,16 @@ public class PlacementSystem : MonoBehaviour
 
     public Vector3Int SelectCell(bool secondaryIndicator = false)
     {
-        // GameState buildingtState2 = new GameState(grid,preview2,floorData,buildData,objectPlacer,database);
         Vector3 mousePosition = inputManager.GetSelectedMapPosition();
         gridPosition = grid.WorldToCell(mousePosition);
         buildingState.SelectCell(gridPosition, gridPositionFloat, secondaryIndicator);
+        return gridPosition;
+    }
+
+    public Vector3Int SelectCellFromVector3(Vector3 position)
+    {
+        gridPosition = grid.WorldToCell(position);
+        buildingState.SelectCell(gridPosition, position, false);
         return gridPosition;
     }
 
@@ -103,6 +103,25 @@ public class PlacementSystem : MonoBehaviour
     {
         gridPosition = grid.WorldToCell(orePosition);
         buildingState.BuildOre(gridPosition, oreGO, orePosition);
+    }
+
+    Vector3 GetCenterPositionAboveMap(Vector3 position)
+    {
+        Vector3 mousePositionCenter = GetCenterPositionCell(position);
+        Ray ray = new(mousePositionCenter, Vector3.down);
+        RaycastHit hit;
+        // calculate y axy center from map
+        if (Physics.Raycast(ray, out hit, 100, FindObjectOfType<InputManager>().GetPlacementLayer()))
+        {
+            mousePositionCenter = new Vector3(mousePositionCenter.x, hit.point.y, mousePositionCenter.z);
+        }
+        return mousePositionCenter;
+    }
+
+    public Vector3 GetCenterPositionCell(Vector3 position)
+    {
+        Vector3 mousePositionCenter = new Vector3(Mathf.Floor(position.x) + 0.5f, 50, Mathf.Floor(position.z) + 0.5f);
+        return mousePositionCenter;
     }
 
 }

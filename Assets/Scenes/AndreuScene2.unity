@@ -5977,9 +5977,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   drons: {fileID: 2115718413246863731}
-  resourceContainer: {fileID: 2176917240904514151}
-  sendResourceContainer: {fileID: 1771389410}
-  resourcePrefab: {fileID: 389905282815478981, guid: 3ae8e3227db1ce0499f0bbc28c1453f3, type: 3}
+  gameMaterialContainer: {fileID: 2176917240904514151}
+  sendGameMaterialContainer: {fileID: 1771389410}
+  gameMaterialPrefab: {fileID: 389905282815478981, guid: 3ae8e3227db1ce0499f0bbc28c1453f3, type: 3}
   dronMenuBtn: {fileID: 9119537870039359816, guid: b493c8ab150449743952b1fc5ed29287, type: 3}
   buttonPrefab: {fileID: 273398927633722498, guid: 4268aca2a1ae44c489cf218ec61079bb, type: 3}
   buildingButtpnsPanel: {fileID: 1833621278}

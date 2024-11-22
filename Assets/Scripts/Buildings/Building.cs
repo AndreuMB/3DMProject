@@ -25,26 +25,11 @@ public class Building : MonoBehaviour
       hud = FindObjectOfType<HUD>();
       buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
       Format();
-      if (hud && !FindObjectOfType<DronMenu>())
-      {
-         player.SetActiveGO(gameObject);
-      }
+      // if (hud && !FindObjectOfType<DronMenu>())
+      // {
+      //    player.SetActiveGO(gameObject);
+      // }
    }
-
-   IEnumerator ExtractResource()
-   {
-      while (isActiveAndEnabled)
-      {
-         yield return new WaitForSeconds(data.rate);
-         AddResource(data.storage[0].gameMaterialSO, data.quantity);
-      }
-      yield break;
-   }
-
-   // public void StopDron(Coroutine dronCoroutine)
-   // {
-   //    StopCoroutine(dronCoroutine);
-   // }
 
    public void SetBuildType(BuildingsEnum bType, bool completeBuilding)
    {
@@ -57,8 +42,10 @@ public class Building : MonoBehaviour
       switch (data.buildingType)
       {
          case BuildingsEnum.MainBase:
+            data.storageBool = true;
             MainBase mainBase = gameObject.AddComponent<MainBase>();
             mainBase.hud = hud;
+            // interface type
             buildingType = mainBase;
             break;
          case BuildingsEnum.Extractor:
@@ -85,7 +72,7 @@ public class Building : MonoBehaviour
       {
          ObjectData buildingInfo = FindObjectOfType<PlacementSystem>().database.objectsData.Find(x => x.Type == data.buildingType);
          List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
-         gameMaterialsBuild.ForEach(material => AddResource(material.gameMaterialSO, -material.quantity));
+         gameMaterialsBuild.ForEach(material => AddGameMaterial(material.gameMaterialSO, -material.quantity));
       }
    }
 
@@ -136,7 +123,7 @@ public class Building : MonoBehaviour
       StartCoroutine(dron.DronTransport());
    }
 
-   public void AddResource(GameMaterialSO gameMaterialSO, int quantity)
+   public void AddGameMaterial(GameMaterialSO gameMaterialSO, int quantity)
    {
       GameMaterial storagedResource = data.storage.Find(
          resource => resource.gameMaterialSO.materialName == gameMaterialSO.materialName);
@@ -152,30 +139,6 @@ public class Building : MonoBehaviour
 
       CheckCompleteBuilding();
 
-   }
-
-   public bool CheckResources(ResourceCombination elementCombination)
-   {
-      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName, data.storage);
-      if (storagedMaterial1 == null || storagedMaterial1.quantity < elementCombination.resource1.quantity) return false;
-      // if only one element
-      if (elementCombination.resource2.gameMaterialSO == null) return true;
-      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName, data.storage);
-      if (storagedMaterial2 == null || storagedMaterial2.quantity < elementCombination.resource2.quantity) return false;
-
-      return true;
-   }
-
-   public void RemoveResources(ResourceCombination elementCombination)
-   {
-      GameMaterial storagedMaterial1 = FindGameMaterialInStorage(elementCombination.resource1.gameMaterialSO.materialName, data.storage);
-      storagedMaterial1.quantity -= elementCombination.resource1.quantity;
-
-      // if only one element
-      if (elementCombination.resource2.gameMaterialSO == null) return;
-
-      GameMaterial storagedMaterial2 = FindGameMaterialInStorage(elementCombination.resource2.gameMaterialSO.materialName, data.storage);
-      storagedMaterial2.quantity -= elementCombination.resource2.quantity;
    }
 
    void SetBlender(GameMaterialTypesEnum gameMaterialTypesEnum)
@@ -206,6 +169,18 @@ public class Building : MonoBehaviour
          if (!placingOnGoing) CompleteBuilding();
       }
    }
+
+   public void RemoveGameMaterial(GameMaterialsEnum gameMaterialEnum, int quantity)
+   {
+      GameMaterial storagedResource = data.storage.Find(
+      resource => resource.gameMaterialSO.materialName == gameMaterialEnum);
+      if (storagedResource != null && storagedResource.quantity - quantity >= 0)
+      {
+         // when is enough material remove it
+         storagedResource.quantity -= quantity;
+      }
+   }
+
 }
 
 public enum BuildingsEnum

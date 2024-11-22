@@ -146,8 +146,8 @@ public class Options : MonoBehaviour
         mainStoragePosition.z += randomZ;
         mainStoragePosition = PositionOnTerrain(mainStoragePosition);
         storage = ps.LoadBuildings(mainStoragePosition, BuildingsEnum.Storage);
-        storage.GetComponent<Building>().AddResource(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.iron), 10);
-        storage.GetComponent<Building>().AddResource(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.copper), 5);
+        storage.GetComponent<Building>().AddGameMaterial(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.iron), 10);
+        storage.GetComponent<Building>().AddGameMaterial(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.copper), 5);
     }
 
     void ResourceCellsSpawn()

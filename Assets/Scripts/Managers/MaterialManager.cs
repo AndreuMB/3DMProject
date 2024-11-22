@@ -47,7 +47,7 @@ public enum GameMaterialTypesEnum
 
 public class MaterialManager : MonoBehaviour
 {
-    static List<GameMaterialSO> gameMaterialsList;
+    public static List<GameMaterialSO> gameMaterialsList;
     Dictionary<RockFormationsEnum, GameObject> rockFormationDictionary = new();
     Dictionary<GameMaterialSO, Material> resourceMaterialDictionary = new();
     [SerializeField] GameObject rockFormation1;
@@ -138,6 +138,19 @@ public class MaterialManager : MonoBehaviour
         return gameMaterialsList.Find(
             material => material.materialName == gameMaterial
         );
+    }
+
+    public static bool CanAfford(List<GameMaterial> cost, Building building)
+    {
+        foreach (GameMaterial gameMaterial in cost)
+        {
+            GameMaterial gameMaterialStorage = building.FindGameMaterialInStorage(gameMaterial.gameMaterialSO.materialName, building.data.storage);
+            if (gameMaterialStorage == null || gameMaterialStorage.quantity < gameMaterial.quantity)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 
