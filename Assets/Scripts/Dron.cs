@@ -218,4 +218,8 @@ public class Dron : MonoBehaviour
         return true;
     }
 
+    public string GetNextMaterialName()
+    {
+        return newMaterial != null ? newMaterial.gameMaterialSO.materialName.ToString() : material.gameMaterialSO.materialName.ToString();
+    }
 }

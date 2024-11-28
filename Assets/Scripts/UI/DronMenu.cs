@@ -123,7 +123,9 @@ public class DronMenu : MonoBehaviour
             dropdown.options.Add(new TMP_Dropdown.OptionData(resource.gameMaterialSO.materialName.ToString()));
         }
 
-        int selected = dropdown.options.FindIndex(o => o.text == dron.material.gameMaterialSO.materialName.ToString());
+        int selected = dropdown.options.FindIndex(o =>
+        o.text == dron.GetNextMaterialName()
+        );
         dropdown.value = selected;
 
         dropdown.onValueChanged.AddListener((int selected) => ChangeResource(dron, dropdown));
