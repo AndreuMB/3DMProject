@@ -6,22 +6,16 @@ using UnityEngine.UI;
 
 public class Extractor : MonoBehaviour, IBuilding
 {
-    // [SerializeField] GameObject hud;
-    // readonly List<ButtonData> buttonsList = new();
-    HUD hud;
     float rate = 1;
-    GameMaterial gameMaterial;
+    public GameMaterial gameMaterial;
     Building building;
 
-    void Awake()
-    {
-        // buttonsList.Add(new ButtonData("Craft", ToggleFoundryMenu));
-    }
     void Start()
     {
-        hud = FindObjectOfType<HUD>();
         building = GetComponent<Building>();
         building.buildComplete.AddListener(() => StartCoroutine(ExtractResource()));
+        // gameMaterial = new GameMaterial(GetGameMaterialSOFromMaterialCell(), 1);
+        gameMaterial = new GameMaterial(GetComponent<Building>().placeholderMaterialSO, 1);
     }
 
     public void ShowHUD()
@@ -39,8 +33,10 @@ public class Extractor : MonoBehaviour, IBuilding
         yield break;
     }
 
-    public void SetGameMaterial(GameMaterial gameMaterial)
-    {
-        this.gameMaterial = gameMaterial;
-    }
+    // GameMaterialSO GetGameMaterialSOFromMaterialCell()
+    // {
+    //     PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
+    //     GameMaterialSO gameMaterialSO = placementSystem.buildingState.GetOreResource(transform.parent.position);
+    //     return gameMaterialSO;
+    // }
 }

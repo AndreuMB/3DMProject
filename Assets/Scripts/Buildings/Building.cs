@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 public class Building : MonoBehaviour
 {
-   public GameMaterialSO resourceSO;
+   public GameMaterialSO placeholderMaterialSO;
    public BuildingData data;
    Player player;
    MainBase mainBase;
@@ -51,9 +51,6 @@ public class Building : MonoBehaviour
          case BuildingsEnum.Extractor:
             data.storageBool = true;
             Extractor extractor = gameObject.AddComponent<Extractor>();
-            PlacementSystem placementSystem = FindObjectOfType<PlacementSystem>();
-            GameMaterialSO gameMaterialSO = placementSystem.buildingState.GetOreResource(transform.parent.position);
-            extractor.SetGameMaterial(new GameMaterial(gameMaterialSO, 1));
             // resourceSO = gameMaterialSO;
             // StartCoroutine(nameof(ExtractResource));
             break;

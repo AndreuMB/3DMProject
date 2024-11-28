@@ -91,26 +91,66 @@ public class GameState : IBuildingtState
         (int, GameObject) dataB = objectPlacer.PlaceBuild(buildingData.Prefab, gridPositionFloat, bType, completeBuilding);
         // GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : buildData;
         GridData selectedData = floorData;
-        if (bType == BuildingsEnum.Extractor) Remove(gridPosition);
+        if (bType == BuildingsEnum.Extractor)
+        {
+            GridData selectedData2 = GetGridFilledData(gridPosition);
+            selectedObjectIndex = GetIndexBuildingFromGridPosition(selectedData2, gridPosition);
+            GameObject objectInCell = objectPlacer.GetGObjectAt(selectedObjectIndex);
+            if (objectInCell)
+            {
+                GameMaterialSO oreGameMaterial = objectInCell.GetComponent<Ore>().oreData.gameMaterialSO;
+                // send to extractor
+                dataB.Item2.GetComponent<Building>().placeholderMaterialSO = oreGameMaterial;
+            }
+            Remove(gridPosition);
+        }
         selectedData.AddObjectAt(gridPosition, buildingData.Size, buildingData.ID, dataB.Item1);
-        dataB.Item2.GetComponent<Building>().data.id = dataB.Item1;
         SelectCell(gridPosition, gridPositionFloat);
         // previewSystem.UndatePosition(grid.CellToWorld(gridPosition), false, true);
         return dataB.Item2;
     }
 
-    public GameMaterialSO GetOreResource(Vector3 position)
-    {
-        Vector3Int gridPosition = grid.WorldToCell(position);
-        GameObject oreGO = GetGOFromCell(gridPosition);
-        if (!oreGO || !oreGO.GetComponent<Ore>())
-            return MaterialManager.GetGameMaterialSO(GameMaterialsEnum.copper);
-        GameMaterialSO gameMaterialSO = oreGO.GetComponent<Ore>().oreData.gameMaterialSO;
-        Remove(gridPosition);
-        return gameMaterialSO;
-    }
+    // public GameMaterialSO GetOreResource(Vector3 position)
+    // {
+    //     Vector3Int gridPosition = grid.WorldToCell(position);
+    //     GameObject oreGO = GetGOFromCell(gridPosition);
+    //     if (!oreGO || !oreGO.GetComponent<Ore>())
+    //         return MaterialManager.GetGameMaterialSO(GameMaterialsEnum.copper);
+    //     GameMaterialSO gameMaterialSO = oreGO.GetComponent<Ore>().oreData.gameMaterialSO;
+    //     Remove(gridPosition);
+    //     return gameMaterialSO;
+    // }
 
     public void Remove(Vector3Int gridPosition)
+    {
+
+        GridData selectedData = GetGridFilledData(gridPosition);
+        if (selectedData == null) return;
+        selectedObjectIndex = GetIndexBuildingFromGridPosition(selectedData, gridPosition);
+        if (selectedObjectIndex == -1) return;
+        selectedData.RemoveObjectAt(gridPosition);
+        // delete GameObject
+        objectPlacer.RemoveObjectAt(selectedObjectIndex);
+    }
+
+    int GetIndexBuildingFromGridPosition(GridData selectedData, Vector3Int gridPosition)
+    {
+        if (buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
+        {
+            selectedData = buildData;
+        }
+        else if (floorData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
+        {
+            selectedData = floorData;
+        }
+
+        if (selectedData == null) return -1;
+
+        selectedObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
+        return selectedObjectIndex;
+    }
+
+    GridData GetGridFilledData(Vector3Int gridPosition)
     {
         GridData selectedData = null;
         if (buildData.CanPlaceObjectAt(gridPosition, Vector2Int.one) == false)
@@ -122,12 +162,7 @@ public class GameState : IBuildingtState
             selectedData = floorData;
         }
 
-        if (selectedData == null) return;
-
-        selectedObjectIndex = selectedData.GetRepresentationIndex(gridPosition);
-        if (selectedObjectIndex == -1) { return; }
-        selectedData.RemoveObjectAt(gridPosition);
-        objectPlacer.RemoveObjectAt(selectedObjectIndex);
+        return selectedData;
     }
 
     public GameObject GetGOFromCell(Vector3Int gridPosition)
