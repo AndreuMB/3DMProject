@@ -8,7 +8,6 @@ public class Building : MonoBehaviour
 {
    public GameMaterialSO placeholderMaterialSO;
    public BuildingData data;
-   Player player;
    MainBase mainBase;
    public HUD hud;
    public IBuilding buildingType;
@@ -16,11 +15,11 @@ public class Building : MonoBehaviour
    public bool placingOnGoing = true;
    public Material[] materials;
    public UnityEvent buildComplete = new UnityEvent();
+   public UnityEvent buildSet = new();
 
    // Start is called before the first frame update
    void Start()
    {
-      player = FindObjectOfType<Player>();
       mainBase = FindObjectOfType<MainBase>();
       hud = FindObjectOfType<HUD>();
       buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
@@ -71,6 +70,7 @@ public class Building : MonoBehaviour
          List<GameMaterial> gameMaterialsBuild = buildingInfo.GameMaterialsBuild;
          gameMaterialsBuild.ForEach(material => AddGameMaterial(material.gameMaterialSO, -material.quantity));
       }
+      buildSet.Invoke();
    }
 
    public void SetModel(GameObject model, Material placeholderMaterial)
@@ -108,9 +108,7 @@ public class Building : MonoBehaviour
 
    public void StartDron(Dron dron)
    {
-      if (!mainBase) mainBase = FindObjectOfType<MainBase>();
       float distance = dron.GetDistance();
-      dron.speed = mainBase.dronSpeed;
 
       float time = distance / dron.speed;
 

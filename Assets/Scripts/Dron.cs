@@ -32,13 +32,13 @@ public class Dron : MonoBehaviour
         mainBase = FindAnyObjectByType<MainBase>();
     }
 
-    public void SetData(GameObject origin, GameObject destination, GameMaterial material)
+    public void SetData(GameObject origin, GameObject destination, GameMaterial material, float speed)
     {
         this.origin = origin;
         this.destination = destination;
         this.material = material;
         parentBuildingGO = origin;
-        speed = FindObjectOfType<MainBase>().dronSpeed;
+        this.speed = speed;
 
         terrain = Terrain.activeTerrain;
     }

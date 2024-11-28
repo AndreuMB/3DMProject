@@ -12,7 +12,7 @@ public class MainBase : MonoBehaviour, IBuilding
     Building building;
 
     [Header("Dron Settings")]
-    public int drons = 2;
+    public int drons;
     public int dronStorage = 1;
     public float dronSpeed = 2;
 
@@ -42,7 +42,6 @@ public class MainBase : MonoBehaviour, IBuilding
         hud = FindObjectOfType<HUD>();
         materialManager = FindObjectOfType<MaterialManager>();
         building = GetComponent<Building>();
-        SetDrons(2);
         // select main base on load
         Player player = GetComponent<Player>();
         if (!player) return;

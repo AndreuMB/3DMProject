@@ -77,7 +77,7 @@ public class ObjectPlacer : MonoBehaviour
 
     internal GameObject GetGObjectAt(int gameObjectIndex)
     {
-        if (placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
+        if (gameObjectIndex < 0 || placedGameObject.Count <= gameObjectIndex || placedGameObject[gameObjectIndex] == null)
         {
             return null;
         }

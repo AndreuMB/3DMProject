@@ -96,7 +96,7 @@ public class GameState : IBuildingtState
             GridData selectedData2 = GetGridFilledData(gridPosition);
             selectedObjectIndex = GetIndexBuildingFromGridPosition(selectedData2, gridPosition);
             GameObject objectInCell = objectPlacer.GetGObjectAt(selectedObjectIndex);
-            if (objectInCell)
+            if (objectInCell != null)
             {
                 GameMaterialSO oreGameMaterial = objectInCell.GetComponent<Ore>().oreData.gameMaterialSO;
                 // send to extractor

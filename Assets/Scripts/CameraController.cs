@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour
     bool hasCameraMoved = false;
     Vector3 cameraStartPosition;
     [SerializeField] LayerMask obstacleLayerMask;
-    bool obstacleCheck = false;
+    // bool obstacleCheck = false;
 
     // Start is called before the first frame update
     void Start()
@@ -269,14 +269,14 @@ public class CameraController : MonoBehaviour
     //     return false;
     // }
 
-    void OnTriggerEnter(Collider other)
-    {
-        // obstacleCheck = other.gameObject.CompareTag(Tags.Rock.ToString()) ? true : false;
-        obstacleCheck = true;
-    }
+    // void OnTriggerEnter(Collider other)
+    // {
+    //     // obstacleCheck = other.gameObject.CompareTag(Tags.Rock.ToString()) ? true : false;
+    //     // obstacleCheck = true;
+    // }
 
-    void OnTriggerExit(Collider other)
-    {
-        obstacleCheck = false;
-    }
+    // void OnTriggerExit(Collider other)
+    // {
+    //     // obstacleCheck = false;
+    // }
 }

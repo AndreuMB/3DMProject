@@ -95,7 +95,7 @@ public class DronMenu : MonoBehaviour
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
-        dron.SetData(player.GetActiveGO(), selectedGODron, dronR);
+        dron.SetData(player.GetActiveGO(), selectedGODron, dronR, mainBase.dronSpeed);
         dron.CreateData();
         dron.transform.position = dron.origin.transform.position;
         dron.whilePlacingOnGoing = selectedGODron.GetComponent<Building>().placingOnGoing;

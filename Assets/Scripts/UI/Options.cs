@@ -28,7 +28,9 @@ public class Options : MonoBehaviour
         }
         else
         {
-            Vector3 mainBasePosition = MainBaseSpawn();
+            Building mainBase = MainBaseSpawn();
+            mainBase.buildSet.AddListener(() => mainBase.GetComponent<MainBase>().SetDrons(2));
+            Vector3 mainBasePosition = mainBase.transform.position;
             StorageSpawn(mainBasePosition);
             ResourceCellsSpawn();
         }
@@ -81,17 +83,13 @@ public class Options : MonoBehaviour
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
             if (!buildingGO) continue;
             buildingGO.GetComponent<Building>().data = building;
-            if (building.buildingType == BuildingsEnum.MainBase) buildingGO.AddComponent<Player>();
+            if (building.buildingType == BuildingsEnum.MainBase)
+            {
+                buildingGO.AddComponent<Player>();
+                buildingGO.GetComponent<Building>().buildSet.AddListener(() => SetDronsUpgrades(buildingGO.GetComponent<MainBase>(), data));
+            }
             buildingGO.name = building.parentName;
         }
-
-        MainBase mainBase = FindObjectOfType<MainBase>();
-        if (!mainBase) return;
-
-        // dron upgrades
-        mainBase.drons = data.drons;
-        mainBase.dronStorage = data.dronStorage;
-        mainBase.dronSpeed = data.dronSpeed;
 
         // set camera position
         if (data.cameraPosition != Vector3.zero)
@@ -105,7 +103,7 @@ public class Options : MonoBehaviour
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
             Building building = buildingGO.GetComponent<Building>();
-            if (building) LoadDrons(building.data.setDrons, buildingGO);
+            if (building != null) LoadDrons(building.data.setDrons, buildingGO, data);
         }
 
         // restore ore manage var
@@ -128,13 +126,13 @@ public class Options : MonoBehaviour
         }
     }
 
-    Vector3 MainBaseSpawn()
+    Building MainBaseSpawn()
     {
         GameObject mainBase;
         mainBase = ps.LoadBuildings(PositionOnTerrain(), BuildingsEnum.MainBase);
         mainBase.AddComponent<Player>();
         FindObjectOfType<CameraController>().FocusBuilding(mainBase.transform.position);
-        return mainBase.transform.position;
+        return mainBase.GetComponent<Building>();
     }
 
     void StorageSpawn(Vector3 mainStoragePosition)
@@ -186,7 +184,7 @@ public class Options : MonoBehaviour
         savesMenu.ClosePanel();
     }
 
-    public void LoadDrons(List<DronData> dronDataList, GameObject origin)
+    void LoadDrons(List<DronData> dronDataList, GameObject origin, GameData gameData)
     {
         foreach (DronData dronData in dronDataList)
         {
@@ -195,10 +193,18 @@ public class Options : MonoBehaviour
             Dron dron = dronGO.GetComponent<Dron>();
             dron.dronData = dronData;
             dron.dronData.dronRef = dron;
-            dron.SetData(origin, GameObject.Find(dronData.destination), dronData.material);
+            dron.SetData(origin, GameObject.Find(dronData.destination), dronData.material, gameData.dronSpeed);
             origin.GetComponent<Building>().StartDron(dron);
             dron.dronGoal.Invoke();
         }
 
+    }
+
+    void SetDronsUpgrades(MainBase mainBase, GameData data)
+    {
+        // dron upgrades
+        mainBase.drons = data.drons;
+        mainBase.dronStorage = data.dronStorage;
+        mainBase.dronSpeed = data.dronSpeed;
     }
 }
