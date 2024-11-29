@@ -174,7 +174,7 @@ public class HUD : MonoBehaviour
                 foreach (GameMaterial gameMaterial in buttonData.actionCost)
                 {
                     GameObject newGameMaterial = Instantiate(gameMaterialPrefab);
-                    newGameMaterial.GetComponent<TMP_Text>().color = Color.black;
+                    newGameMaterial.GetComponent<TMP_Text>().color = upgradeButton.costTextColor;
                     newGameMaterial.GetComponent<TMP_Text>().fontSize = 15;
                     newGameMaterial.GetComponent<TMP_Text>().text = gameMaterial.gameMaterialSO.materialName + ": " + gameMaterial.quantity.ToString();
                     newGameMaterial.transform.SetParent(upgradeButton.costContainer.transform, false);

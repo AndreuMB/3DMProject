@@ -7,4 +7,5 @@ public class UpgradeButton : MonoBehaviour
 {
     public TMP_Text title;
     public GameObject costContainer;
+    public Color costTextColor;
 }
