@@ -8,6 +8,7 @@ public class DronData
     public string origin;
     public string destination;
     public GameMaterial material;
+    public GameMaterial newMaterial;
     public Vector3 movingTo;
     public Vector3 dronPosition;
     public Dron dronRef;

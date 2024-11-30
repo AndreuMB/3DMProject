@@ -10,8 +10,6 @@ public class Dron : MonoBehaviour
 {
     [NonSerialized] public GameObject origin;
     [NonSerialized] public GameObject destination;
-    [NonSerialized] public GameMaterial material;
-    GameMaterial newMaterial;
     // public Coroutine coroutine;
     [NonSerialized] public float speed;
     [NonSerialized] public DronData dronData;
@@ -34,19 +32,19 @@ public class Dron : MonoBehaviour
 
     public void SetData(GameObject origin, GameObject destination, GameMaterial material, float speed)
     {
+        dronData = new(origin.name, destination.name, material, this);
         this.origin = origin;
         this.destination = destination;
-        this.material = material;
         parentBuildingGO = origin;
         this.speed = speed;
 
         terrain = Terrain.activeTerrain;
     }
 
-    public void CreateData()
-    {
-        dronData = new(origin.name, destination.name, material, this);
-    }
+    // public void CreateData()
+    // {
+    //     dronData = new(origin.name, destination.name, dronData.material, this);
+    // }
 
     public float GetDistance()
     {
@@ -61,6 +59,7 @@ public class Dron : MonoBehaviour
 
     public IEnumerator DronTransport()
     {
+        transform.position = origin.transform.position;
         // check if building in progress and needs resource
         if (!MaterialTransportIsValid()) yield break;
 
@@ -70,7 +69,10 @@ public class Dron : MonoBehaviour
         if (parentBuildingGO == origin)
         {
             // set new material for transport
-            if (newMaterial != null && newMaterial != material) material = newMaterial;
+            if (dronData.newMaterial != null && dronData.newMaterial != dronData.material)
+            {
+                dronData.material = dronData.newMaterial;
+            }
 
             // check there are enough materials to transport
             if (!NotEnoughMaterialsOnStorage()) yield break;
@@ -79,7 +81,7 @@ public class Dron : MonoBehaviour
             if (!EnoughBuildingStorage()) yield break;
 
             // remove material
-            origin.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, -material.quantity);
+            origin.GetComponent<Building>().AddGameMaterial(dronData.material.gameMaterialSO, -dronData.material.quantity);
 
             if (whilePlacingOnGoing != destination.GetComponent<Building>().placingOnGoing) yield break;
         }
@@ -103,15 +105,15 @@ public class Dron : MonoBehaviour
         // already on destination
         if (parentBuildingGO != destination)
         {
-            if (EnoughBuildingStorage() && CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName))
+            if (EnoughBuildingStorage() && CheckMaterialPlacingOnGoing(dronData.material.gameMaterialSO.materialName))
             {
                 // add material destination
-                destination.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, material.quantity);
+                destination.GetComponent<Building>().AddGameMaterial(dronData.material.gameMaterialSO, dronData.material.quantity);
             }
             else
             {
                 // return material to origin
-                origin.GetComponent<Building>().AddGameMaterial(material.gameMaterialSO, material.quantity);
+                origin.GetComponent<Building>().AddGameMaterial(dronData.material.gameMaterialSO, dronData.material.quantity);
             };
         }
 
@@ -164,7 +166,7 @@ public class Dron : MonoBehaviour
 
     public void ChangeMaterial(GameMaterial newMaterial)
     {
-        this.newMaterial = newMaterial;
+        dronData.newMaterial = newMaterial;
         if (!coroutineRunning)
         {
             StartCoroutine(DronTransport());
@@ -175,13 +177,13 @@ public class Dron : MonoBehaviour
     {
         bool valid = false;
         // build dont have enough current material
-        if (CheckMaterialPlacingOnGoing(material.gameMaterialSO.materialName)) valid = true;
+        if (CheckMaterialPlacingOnGoing(dronData.material.gameMaterialSO.materialName)) valid = true;
 
         // new material selected
-        if (newMaterial != null)
+        if (dronData.newMaterial != null)
         {
             // build dont have enough new material selected
-            if (CheckMaterialPlacingOnGoing(newMaterial.gameMaterialSO.materialName)) valid = true;
+            if (CheckMaterialPlacingOnGoing(dronData.newMaterial.gameMaterialSO.materialName)) valid = true;
         }
 
         return valid;
@@ -201,7 +203,7 @@ public class Dron : MonoBehaviour
     bool EnoughBuildingStorage()
     {
         Building destinationBuilding = destination.GetComponent<Building>();
-        GameMaterialsEnum materialName = material.gameMaterialSO.materialName;
+        GameMaterialsEnum materialName = dronData.material.gameMaterialSO.materialName;
         GameMaterial materialInBuilding = destinationBuilding.FindGameMaterialInStorage(materialName, destinationBuilding.data.storage);
 
         if (materialInBuilding != null && materialInBuilding.quantity >= destinationBuilding.data.maxStorage) return false;
@@ -210,16 +212,16 @@ public class Dron : MonoBehaviour
     bool NotEnoughMaterialsOnStorage()
     {
         Building originBuilding = origin.GetComponent<Building>();
-        GameMaterialsEnum materialName = material.gameMaterialSO.materialName;
+        GameMaterialsEnum materialName = dronData.material.gameMaterialSO.materialName;
         // we get the material from the origin building
         GameMaterial materialInBuilding = originBuilding.FindGameMaterialInStorage(materialName, originBuilding.data.storage);
         // if not enough material return false
-        if (materialInBuilding != null && materialInBuilding.quantity < material.quantity) return false;
+        if (materialInBuilding != null && materialInBuilding.quantity < dronData.material.quantity) return false;
         return true;
     }
 
     public string GetNextMaterialName()
     {
-        return newMaterial != null ? newMaterial.gameMaterialSO.materialName.ToString() : material.gameMaterialSO.materialName.ToString();
+        return dronData.newMaterial != null ? dronData.newMaterial.gameMaterialSO.materialName.ToString() : dronData.material.gameMaterialSO.materialName.ToString();
     }
 }

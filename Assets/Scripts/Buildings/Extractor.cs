@@ -13,9 +13,16 @@ public class Extractor : MonoBehaviour, IBuilding
     void Start()
     {
         building = GetComponent<Building>();
-        building.buildComplete.AddListener(() => StartCoroutine(ExtractResource()));
-        // gameMaterial = new GameMaterial(GetGameMaterialSOFromMaterialCell(), 1);
         gameMaterial = new GameMaterial(GetComponent<Building>().placeholderMaterialSO, 1);
+        if (building.placingOnGoing)
+        {
+            building.buildComplete.AddListener(() => StartCoroutine(ExtractResource()));
+        }
+        else
+        {
+            gameMaterial.gameMaterialSO = MaterialManager.GetGameMaterialSO(gameMaterial.gameMaterialEnum);
+            StartCoroutine(ExtractResource());
+        }
     }
 
     public void ShowHUD()

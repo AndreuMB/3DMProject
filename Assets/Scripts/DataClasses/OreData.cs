@@ -7,5 +7,5 @@ public class OreData
 {
   public Vector3 position;
   public RockFormationsEnum rockFormation;
-  public GameMaterialSO gameMaterialSO;
+  public GameMaterialsEnum gameMaterialName;
 }

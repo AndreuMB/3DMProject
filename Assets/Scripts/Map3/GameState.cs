@@ -98,7 +98,7 @@ public class GameState : IBuildingtState
             GameObject objectInCell = objectPlacer.GetGObjectAt(selectedObjectIndex);
             if (objectInCell != null)
             {
-                GameMaterialSO oreGameMaterial = objectInCell.GetComponent<Ore>().oreData.gameMaterialSO;
+                GameMaterialSO oreGameMaterial = MaterialManager.GetGameMaterialSO(objectInCell.GetComponent<Ore>().oreData.gameMaterialName);
                 // send to extractor
                 dataB.Item2.GetComponent<Building>().placeholderMaterialSO = oreGameMaterial;
             }

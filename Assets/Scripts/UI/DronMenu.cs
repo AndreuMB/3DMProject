@@ -15,7 +15,7 @@ public class DronMenu : MonoBehaviour
     Player player;
     MainBase mainBase;
     GameObject selectedGODron;
-    BuildingData dataSGO;
+    BuildingData dataSelectedGO;
     [SerializeField] GameObject dronPrefab;
 
     // Start is called before the first frame update
@@ -35,7 +35,7 @@ public class DronMenu : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        dataSGO = player.GetActiveGO().GetComponent<Building>().data;
+        dataSelectedGO = player.GetActiveGO().GetComponent<Building>().data;
         selectedGODron = null;
 
         List<DronData> listDrons = player.GetActiveGO().GetComponent<Building>().data.setDrons;
@@ -91,12 +91,13 @@ public class DronMenu : MonoBehaviour
         if (mainBase.drons <= 0) return;
         mainBase.SetDrons(mainBase.drons - 1);
 
-        GameMaterial dronR = new GameMaterial(dataSGO.storage[0].gameMaterialSO, mainBase.dronStorage);
+        GameMaterial dronR = new GameMaterial(dataSelectedGO.storage[0].gameMaterialSO, mainBase.dronStorage);
+        // GameMaterial dronR = new GameMaterial(MaterialManager.GetGameMaterialSO(GameMaterialsEnum.iron), mainBase.dronStorage);
 
         GameObject dronGO = Instantiate(dronPrefab);
         Dron dron = dronGO.GetComponent<Dron>();
         dron.SetData(player.GetActiveGO(), selectedGODron, dronR, mainBase.dronSpeed);
-        dron.CreateData();
+        // dron.CreateData();
         dron.transform.position = dron.origin.transform.position;
         dron.whilePlacingOnGoing = selectedGODron.GetComponent<Building>().placingOnGoing;
 
@@ -118,7 +119,7 @@ public class DronMenu : MonoBehaviour
 
         dropdown.ClearOptions();
 
-        foreach (GameMaterial resource in dataSGO.storage)
+        foreach (GameMaterial resource in dataSelectedGO.storage)
         {
             dropdown.options.Add(new TMP_Dropdown.OptionData(resource.gameMaterialSO.materialName.ToString()));
         }

@@ -82,7 +82,8 @@ public class Options : MonoBehaviour
         {
             GameObject buildingGO = ps.LoadBuildings(building.parentPosition, building.buildingType);
             if (!buildingGO) continue;
-            buildingGO.GetComponent<Building>().data = building;
+            Building buildingComponent = buildingGO.GetComponent<Building>();
+            buildingComponent.data = building;
             if (building.buildingType == BuildingsEnum.MainBase)
             {
                 buildingGO.AddComponent<Player>();
@@ -100,6 +101,7 @@ public class Options : MonoBehaviour
         }
 
         // set drons in buildings
+        // it must be here because the destinationGO ref already exist at this point
         foreach (GameObject buildingGO in GameObject.FindGameObjectsWithTag("Building"))
         {
             Building building = buildingGO.GetComponent<Building>();
@@ -193,6 +195,7 @@ public class Options : MonoBehaviour
             Dron dron = dronGO.GetComponent<Dron>();
             dron.dronData = dronData;
             dron.dronData.dronRef = dron;
+            dronData.material.gameMaterialSO = MaterialManager.GetGameMaterialSO(dronData.material.gameMaterialEnum);
             dron.SetData(origin, GameObject.Find(dronData.destination), dronData.material, gameData.dronSpeed);
             origin.GetComponent<Building>().StartDron(dron);
             dron.dronGoal.Invoke();

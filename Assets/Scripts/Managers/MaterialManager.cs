@@ -49,7 +49,7 @@ public class MaterialManager : MonoBehaviour
 {
     public static List<GameMaterialSO> gameMaterialsList;
     Dictionary<RockFormationsEnum, GameObject> rockFormationDictionary = new();
-    Dictionary<GameMaterialSO, Material> resourceMaterialDictionary = new();
+    Dictionary<GameMaterialsEnum, Material> resourceMaterialDictionary = new();
     [SerializeField] GameObject rockFormation1;
     [SerializeField] GameObject rockFormation2;
     [SerializeField] GameObject rockFormation3;
@@ -81,9 +81,9 @@ public class MaterialManager : MonoBehaviour
         // ).ToList();
 
         // Resources Dictionary Fill
-        resourceMaterialDictionary.Add(GetGameMaterialSO(GameMaterialsEnum.iron), iron);
-        resourceMaterialDictionary.Add(GetGameMaterialSO(GameMaterialsEnum.copper), copper);
-        resourceMaterialDictionary.Add(GetGameMaterialSO(GameMaterialsEnum.gold), gold);
+        resourceMaterialDictionary.Add(GameMaterialsEnum.iron, iron);
+        resourceMaterialDictionary.Add(GameMaterialsEnum.copper, copper);
+        resourceMaterialDictionary.Add(GameMaterialsEnum.gold, gold);
     }
 
 
@@ -95,13 +95,13 @@ public class MaterialManager : MonoBehaviour
 
         // Random resource
         int randomIndexR = Random.Range(0, resourceMaterialDictionary.Count);
-        KeyValuePair<GameMaterialSO, Material> resourceEntry = resourceMaterialDictionary.ElementAt(randomIndexR);
+        KeyValuePair<GameMaterialsEnum, Material> resourceEntry = resourceMaterialDictionary.ElementAt(randomIndexR);
 
         // Save given properties
         OreData oreData = new()
         {
             rockFormation = rockFormationEntry.Key,
-            gameMaterialSO = resourceEntry.Key
+            gameMaterialName = resourceEntry.Key
         };
 
         GameObject oreGO = GenerateOre(oreData);
@@ -111,19 +111,19 @@ public class MaterialManager : MonoBehaviour
     public GameObject GenerateOre(OreData oreData)
     {
         GameObject oreGO = Instantiate(rockFormationDictionary[oreData.rockFormation]);
-        oreGO = SetMaterial(oreGO, oreData.gameMaterialSO);
+        oreGO = SetMaterial(oreGO, oreData.gameMaterialName);
         oreGO.AddComponent<Ore>().oreData = oreData;
         return oreGO;
     }
 
-    private GameObject SetMaterial(GameObject oreGO, GameMaterialSO gameMaterialSO)
+    private GameObject SetMaterial(GameObject oreGO, GameMaterialsEnum gameMaterialEnum)
     {
         foreach (Transform child in oreGO.transform)
         {
             MeshRenderer meshRenderer = child.GetComponent<MeshRenderer>();
             if (meshRenderer != null)
             {
-                meshRenderer.material = resourceMaterialDictionary[gameMaterialSO];
+                meshRenderer.material = resourceMaterialDictionary[gameMaterialEnum];
             }
             else
             {

@@ -57,3 +57,15 @@ MonoBehaviour:
       quantity: 2
     - gameMaterialSO: {fileID: 11400000, guid: 9ea571ffa3cd00040afc3869694f5904, type: 2}
       quantity: 5
+  - <Name>k__BackingField: Terraformer
+    <ID>k__BackingField: 0
+    <Type>k__BackingField: 5
+    <Size>k__BackingField: {x: 1, y: 1}
+    <Prefab>k__BackingField: {fileID: 7299243917981370000, guid: 17a8085fc270b264f8ab4c2ae5f318bd, type: 3}
+    <GameMaterialsBuild>k__BackingField:
+    - gameMaterialSO: {fileID: 11400000, guid: d2699cacf41d4b04db1292ce44c9e257, type: 2}
+      quantity: 5
+    - gameMaterialSO: {fileID: 11400000, guid: 44d002420986f494fa4854abd44a7b44, type: 2}
+      quantity: 23
+    - gameMaterialSO: {fileID: 11400000, guid: 989454e4a54fa414f8d53b4249472bb7, type: 2}
+      quantity: 14

@@ -8,7 +8,6 @@ public class Building : MonoBehaviour
 {
    public GameMaterialSO placeholderMaterialSO;
    public BuildingData data;
-   MainBase mainBase;
    public HUD hud;
    public IBuilding buildingType;
    BuildingsUtilsPrefabManager buildingsUtilsPrefabManager;
@@ -20,14 +19,9 @@ public class Building : MonoBehaviour
    // Start is called before the first frame update
    void Start()
    {
-      mainBase = FindObjectOfType<MainBase>();
       hud = FindObjectOfType<HUD>();
       buildingsUtilsPrefabManager = FindObjectOfType<BuildingsUtilsPrefabManager>();
       Format();
-      // if (hud && !FindObjectOfType<DronMenu>())
-      // {
-      //    player.SetActiveGO(gameObject);
-      // }
    }
 
    public void SetBuildType(BuildingsEnum bType, bool completeBuilding)
@@ -61,6 +55,8 @@ public class Building : MonoBehaviour
             break;
          case BuildingsEnum.Foundry:
             SetBlender(GameMaterialTypesEnum.element);
+            break;
+         case BuildingsEnum.Terraformer:
             break;
       }
 
@@ -185,4 +181,5 @@ public enum BuildingsEnum
    Storage,
    Refinery,
    Foundry,
+   Terraformer
 }
