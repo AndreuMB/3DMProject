@@ -15,6 +15,7 @@ public class HUD : MonoBehaviour
     [SerializeField] GameObject gameMaterialPrefab;
     List<GameMaterial> materialsBuilding;
     [SerializeField] GameObject dronMenuBtn;
+    public GameObject gameOverScreen;
     // public GameObject DMMenu;
     // [SerializeField] GameObject DronUpgradeBtn;
     public GameObject buttonPrefab;
@@ -34,6 +35,7 @@ public class HUD : MonoBehaviour
         // DMMenu.SetActive(false);
         // DronUpgradeBtn.SetActive(false);
         // UpdateDronsHUD();
+        gameOverScreen.SetActive(false);
     }
 
     void Update()

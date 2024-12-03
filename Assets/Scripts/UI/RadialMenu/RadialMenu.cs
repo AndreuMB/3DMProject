@@ -68,11 +68,11 @@ public class RadialMenu : MonoBehaviour
 
     void Arrange(GameObject element, float elementRadian, float order)
     {
-        // size of the circle
-        const float SEPARATION = 100f;
+        // radio of the circle declare the size of it
+        const float RADIO = 100f;
         // convert radian to coordinates, don't ask
-        float x = Mathf.Cos(elementRadian * order) * SEPARATION;
-        float y = Mathf.Sin(elementRadian * order) * SEPARATION;
+        float x = Mathf.Cos(elementRadian * order) * RADIO;
+        float y = Mathf.Sin(elementRadian * order) * RADIO;
 
         element.GetComponent<RectTransform>().anchoredPosition = new Vector3(x, y, 0);
     }

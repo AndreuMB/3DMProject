@@ -50,5 +50,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: d40f6e550e47f6847ae83096293fd83d, type: 2}
   parent: {fileID: 0}
-  radialElementPrefab: {fileID: 3831022693738628878, guid: 293160e0f0d1aa741b35ff80ca57e0a0, type: 3}
+  radialElementPrefab: {fileID: 3831022693738628878, guid: a2e12ac0957855a4d9ec23d1ae71a528, type: 3}
   radialMenuPrefab: {fileID: 5285085393587168083}

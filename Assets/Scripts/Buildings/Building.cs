@@ -57,6 +57,9 @@ public class Building : MonoBehaviour
             SetBlender(GameMaterialTypesEnum.element);
             break;
          case BuildingsEnum.Terraformer:
+            data.storageBool = true;
+            Terraformer terraformer = gameObject.AddComponent<Terraformer>();
+            buildingType = terraformer;
             break;
       }
 
@@ -172,6 +175,13 @@ public class Building : MonoBehaviour
       }
    }
 
+   public void ApplyCostUpgrade(List<GameMaterial> cost)
+   {
+      foreach (GameMaterial gameMaterial in cost)
+      {
+         RemoveGameMaterial(gameMaterial.gameMaterialSO.materialName, gameMaterial.quantity);
+      }
+   }
 }
 
 public enum BuildingsEnum

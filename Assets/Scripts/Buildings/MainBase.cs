@@ -58,7 +58,7 @@ public class MainBase : MonoBehaviour, IBuilding
         if (MaterialManager.CanAfford(cost, building))
         {
             dronStorage += 2;
-            ApplyCostUpgrade(cost);
+            building.ApplyCostUpgrade(cost);
             ScaleCost(cost);
             hud.UpdateDronsHUD(drons);
             hud.ShowGOHUD(gameObject);
@@ -76,14 +76,6 @@ public class MainBase : MonoBehaviour, IBuilding
         foreach (GameMaterial gameMaterial in cost)
         {
             gameMaterial.quantity = Mathf.CeilToInt(gameMaterial.quantity * costMultiplier);
-        }
-    }
-
-    void ApplyCostUpgrade(List<GameMaterial> cost)
-    {
-        foreach (GameMaterial gameMaterial in cost)
-        {
-            building.RemoveGameMaterial(gameMaterial.gameMaterialSO.materialName, gameMaterial.quantity);
         }
     }
 }
