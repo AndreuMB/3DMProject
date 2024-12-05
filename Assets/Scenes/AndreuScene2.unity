@@ -1450,7 +1450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputManager: {fileID: 1314514274}
   grid: {fileID: 1308928172}
-  database: {fileID: 11400000, guid: f247250d099846f4c801d99e44b1d211, type: 2}
+  database: {fileID: 11400000, guid: fcf98d742ea35f14bb219d2e1567fcf0, type: 2}
   gridVisualization: {fileID: 501543865}
   objectPlacer: {fileID: 1797702995}
   preview: {fileID: 963464134}
