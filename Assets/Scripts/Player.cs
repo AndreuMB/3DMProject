@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     bool mouseSelector = true;
     float lastClickTime = 0f;
     readonly float doubleClickThreshold = 0.3f; // Time in seconds within which two clicks are considered a double-click
+    AudioManager audioManager;
 
     void Awake()
     {
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
         optionsMenu = FindAnyObjectByType<Options>().gameObject;
         canvasCPS = GameObject.Find("CanvasCPS").GetComponent<Canvas>();
         cameraController = FindAnyObjectByType<CameraController>();
+        audioManager = FindObjectOfType<AudioManager>();
     }
 
     void Start()
@@ -177,6 +179,7 @@ public class Player : MonoBehaviour
         {
             if (!hit.transform.gameObject.CompareTag("Building")) return;
             selectedGO = hit.transform.gameObject;
+            audioManager.PlaySFX("sound2");
         }
         if (selectedGO != null)
         {
