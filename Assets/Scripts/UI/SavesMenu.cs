@@ -21,7 +21,13 @@ public class SavesMenu : MonoBehaviour
     void GenerateEntries(SavePanelOptions spo)
     {
         CleanEntries();
-        DirectoryInfo dir = new(Application.dataPath + EnvReader.GetEnvVariable("SAVES_PATH"));
+
+        // string filePath = Application.persistentDataPath + EnvReader.GetEnvVariable("SAVES_PATH");
+        string filePath = Application.persistentDataPath + "/save/";
+        bool exists = Directory.Exists(filePath);
+        if (!exists) Directory.CreateDirectory(filePath);
+        DirectoryInfo dir = new(filePath);
+
         info = dir.GetFiles("*.*");
         info = info.OrderBy(x => x.LastWriteTime).ToArray();
 
